@@ -11,7 +11,9 @@
     "preview": "vite preview",
     "typecheck": "tsc -b --noEmit",
     "test": "npx bun test",
-    "validate:og": "node --experimental-strip-types scripts/validate-og.ts"
+    "validate:og": "node --experimental-strip-types scripts/validate-og.ts",
+    "check:tracked-secrets": "node scripts/check-tracked-secrets.mjs",
+    "smoke-test": "node scripts/smoke-test.mjs"
   },
   "dependencies": {
     "@convex-dev/auth": "^0.0.90",

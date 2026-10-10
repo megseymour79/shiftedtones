@@ -8,20 +8,22 @@
 - Plausible SPA pageviews and funnel events are wired with a safe no-op when unconfigured.
 - Production error UX, global error reporting, focus rings, reduced-motion support, and anchored-section scroll margins are implemented.
 - Convex queries and mutations enforce authenticated `userId` row-level isolation.
-- `.env.keys` is comments-only; `.env.local`, archives, and build output are ignored. No secrets belong in tracked files.
+- `.env.keys` has been removed from the working tree; `.env.local`, archives, and build output are ignored. No secrets belong in tracked files.
 - Ops tooling (`/push-source`, `src/convex/githubPush.ts`, `/source-zip`, `_sourceSnapshot.ts`) is **not present** in this repository.
-- Verification: `bun tsc -b --noEmit`, `bun test`, `bun run build`, `bun scripts/validate-og.ts`, and `bun run test:ct`.
+- Verification: `npm run typecheck`, `npm test`, `npm run build`, `npm run validate:og`, and `npm run check:tracked-secrets`.
+- Launch procedure, platform configuration, external-action blockers, smoke tests, and monitoring: [`LAUNCH_READY.md`](./LAUNCH_READY.md) and [`docs/LAUNCH_RUNBOOK.md`](./docs/LAUNCH_RUNBOOK.md).
+- Legal-review drafts: [`docs/PRIVACY_POLICY_TEMPLATE.md`](./docs/PRIVACY_POLICY_TEMPLATE.md) and [`docs/TERMS_OF_SERVICE_TEMPLATE.md`](./docs/TERMS_OF_SERVICE_TEMPLATE.md). Do not publish before qualified legal review.
 
 ## 0. Secret rotation — required hard blocker
 
-A dotenvx private key was previously committed in `.env.keys`. Treat it as compromised.
+A dotenvx private key was previously committed in `.env.keys`. Treat it as compromised. Removing the current file does not remove its past Git blobs; complete the coordinated history rewrite in the runbook.
 
 1. **Rotate/revoke the old key first.** Rotation is the real fix; history purge only limits further exposure.
    - Regenerate the dotenvx private key or delete any `.env` files that used it.
    - Rotate any secrets it protected in the deployment secrets manager, Convex dashboard, or Vercel Environment Variables.
    - Confirm the old key no longer decrypts anything.
 2. **Purge `.env.keys` from all Git history** using `git-filter-repo` or BFG, then force-push all branches and tags after coordinating with collaborators.
-3. Ask GitHub Support to clear cached unreachable commits; have collaborators re-clone; never print the old value.
+3. Ask GitHub Support to clear cached unreachable commits; have collaborators re-clone; never print the old value. Follow the cache-clear and collaborator procedures in the runbook.
 4. Verify the purge and ensure replacement keys exist only in the secrets manager.
 
 ## 1. Production environment variables
@@ -50,6 +52,8 @@ Choose one hosting target: Vercel (`vercel.json`) or Deno Deploy (`main.ts`). De
 - [ ] Convex CORS is restricted to the production origin.
 - [ ] `VITE_CONVEX_URL` is the production URL.
 - [ ] No secrets remain in Git history or tracked files.
+- [ ] `npm run check:tracked-secrets` passes from the final launch commit.
+- [ ] `npm run smoke-test -- --url https://shiftedtone.com` passes after deployment.
 - [ ] Remove/disable `/push-source`, `src/convex/githubPush.ts`, `/source-zip`, and `src/convex/_sourceSnapshot.ts` before launch.
 - [ ] Lighthouse mobile score is at least 90 on `/`.
 - [ ] OG preview renders correctly in a messaging app.
