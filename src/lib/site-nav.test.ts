@@ -255,6 +255,15 @@ describe("layout wiring", () => {
     }
   });
 
+  test("the public footer links to the privacy policy and terms", () => {
+    const layout = readFileSync(
+      new URL("../components/PublicLayout.tsx", import.meta.url),
+      "utf8",
+    );
+    expect(layout).toContain('<Link to="/privacy"');
+    expect(layout).toContain('<Link to="/terms"');
+  });
+
   test("Landing remains a pure re-export of Home (the / route contract)", () => {
     const src = readFileSync(new URL("../pages/Landing.tsx", import.meta.url), "utf8");
     expect(src.trim()).toBe('export { default } from "./Home";');
