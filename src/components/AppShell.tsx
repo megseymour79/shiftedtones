@@ -23,6 +23,9 @@ import {
 import { Link, useLocation } from "react-router";
 import { type ReactNode } from "react";
 import { cn } from "@/lib/utils";
+import { api } from "@/convex/_generated/api";
+import { useQuery } from "convex/react";
+import { levelInfo } from "@/lib/gamify";
 
 interface NavItem {
   id: "dashboard" | "gym" | "calm" | "translate" | "quiz" | "reframe" | "progress";
@@ -51,6 +54,8 @@ export function AppShell({
   children: ReactNode;
 }) {
   const { signOut } = useAuth();
+  const progression = useQuery(api.dailyLog.progression);
+  const level = progression ? levelInfo(progression.totalXp) : null;
 
   const handleSignOut = async () => {
     await signOut();
@@ -87,6 +92,15 @@ export function AppShell({
           </nav>
 
           <div className="flex items-center gap-3">
+            {level && (
+              <Link
+                to="/dashboard#progress"
+                aria-label={`Level ${level.level}: ${level.label}, ${level.progressPct}% to next level`}
+                title="View your progression"
+              >
+                <LevelRing level={level.level} pct={level.progressPct} />
+              </Link>
+            )}
             <EverythingMenu />
             <button onClick={handleSignOut} className="nb nb-press flex items-center gap-2 bg-coral px-3 py-1.5 text-xs font-bold uppercase tracking-widest text-white">
               <LogOut className="size-3.5" />

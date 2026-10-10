@@ -177,7 +177,8 @@ function ArcPanel({ streakDays }: { streakDays: number }) {
   const dayPct = Math.min(100, Math.round((day / 21) * 100));
 
   return (
-    <NBPanel className="overflow-hidden">
+    <section id="progress">
+      <NBPanel className="overflow-hidden">
       <div className="flex items-center justify-between border-b-2 border-ink bg-mint px-5 py-3">
         <div className="font-display">The 21-day reprogramming arc</div>
         <span className="nb inline-flex items-center bg-ink px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-paper">
@@ -224,6 +225,7 @@ function ArcPanel({ streakDays }: { streakDays: number }) {
           <div className="h-full bg-ink" style={{ width: `${dayPct}%` }} />
         </div>
       </div>
-    </NBPanel>
+      </NBPanel>
+    </section>
   );
 }
