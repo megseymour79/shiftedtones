@@ -31,6 +31,13 @@ const checks = [
   { path: "/manifest.webmanifest", kind: "manifest" },
   { path: "/og.png", kind: "image" },
 ];
+const isProductionUrl = (value) => {
+  try {
+    return new URL(value).origin === "https://shiftedtone.com";
+  } catch {
+    return false;
+  }
+};
 let failed = false;
 let rootHtml = "";
 
@@ -50,12 +57,20 @@ for (const check of checks) {
       if (check.path === "/") rootHtml = body;
     } else if (check.kind === "robots") {
       const body = await response.text();
-      if (!/sitemap:\s*https:\/\/shiftedtone\.com\/sitemap\.xml/i.test(body)) {
+      const sitemapUrl = body.match(/^sitemap:\s*(\S+)\s*$/im)?.[1];
+      if (
+        !sitemapUrl ||
+        !isProductionUrl(sitemapUrl) ||
+        new URL(sitemapUrl).pathname !== "/sitemap.xml"
+      ) {
         throw new Error("does not reference the production sitemap");
       }
     } else if (check.kind === "sitemap") {
       const body = await response.text();
-      if (!body.includes("<urlset") || !body.includes("https://shiftedtone.com/")) {
+      const hasProductionLocation = [
+        ...body.matchAll(/<loc>\s*([^<]+)\s*<\/loc>/gi),
+      ].some(([, location]) => isProductionUrl(location.trim()));
+      if (!/<urlset\b/i.test(body) || !hasProductionLocation) {
         throw new Error("missing urlset or production canonical URL");
       }
     } else if (check.kind === "manifest") {
