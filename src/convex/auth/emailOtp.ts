@@ -14,9 +14,10 @@ export function nextOtpSendRateLimit(
   state: { otpAttemptsLeft?: number; otpLastAttemptTime?: number } | null,
   now: number,
 ) {
-  const elapsedMs = state?.otpLastAttemptTime !== undefined
-    ? Math.max(0, now - state.otpLastAttemptTime)
-    : ONE_HOUR_MS;
+  const elapsedMs =
+    state?.otpLastAttemptTime !== undefined
+      ? Math.max(0, now - state.otpLastAttemptTime)
+      : ONE_HOUR_MS;
   const attemptsLeft = Math.min(
     MAX_OTP_SENDS_PER_HOUR,
     Math.max(0, state?.otpAttemptsLeft ?? MAX_OTP_SENDS_PER_HOUR) +
@@ -44,7 +45,9 @@ export const consumeOtpSendLimit = internalMutation({
     const nextState = nextOtpSendRateLimit(rateLimit, now);
 
     if (nextState === null) {
-      throw new Error("Too many sign-in code requests. Please try again later.");
+      throw new Error(
+        "Too many sign-in code requests. Please try again later.",
+      );
     }
 
     if (rateLimit === null) {
@@ -73,16 +76,17 @@ export const emailOtp = Email({
     const alphabet = "0123456789";
     return generateRandomString(random, alphabet, 6);
   },
-  async sendVerificationRequest(
-    { identifier: email, token },
-    ctx?: ActionCtx,
-  ) {
+  async sendVerificationRequest({ identifier: email, token }, ctx?: ActionCtx) {
     const integrationKey = process.env.VLY_EMAIL_API_KEY;
     if (!integrationKey) {
-      throw new Error("We couldn't send your sign-in code. Please try again later.");
+      throw new Error(
+        "We couldn't send your sign-in code. Please try again later.",
+      );
     }
     if (!ctx) {
-      throw new Error("We couldn't send your sign-in code. Please try again later.");
+      throw new Error(
+        "We couldn't send your sign-in code. Please try again later.",
+      );
     }
 
     await ctx.runMutation(internal.auth.emailOtp.consumeOtpSendLimit, {
@@ -104,7 +108,9 @@ export const emailOtp = Email({
         },
       );
     } catch {
-      throw new Error("We couldn't send your sign-in code. Please try again later.");
+      throw new Error(
+        "We couldn't send your sign-in code. Please try again later.",
+      );
     }
   },
 });
