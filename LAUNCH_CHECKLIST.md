@@ -8,6 +8,7 @@
 - Plausible SPA pageviews and funnel events are wired with a safe no-op when unconfigured.
 - Production error UX, global error reporting, focus rings, reduced-motion support, and anchored-section scroll margins are implemented.
 - Convex queries and mutations enforce authenticated `userId` row-level isolation.
+- Production dependency audit reports no known vulnerabilities (`npm audit`).
 - `.env.keys` is comments-only; `.env.local`, archives, and build output are ignored. No secrets belong in tracked files.
 - Ops tooling (`/push-source`, `src/convex/githubPush.ts`, `/source-zip`, `_sourceSnapshot.ts`) is **not present** in this repository.
 - Verification: `npm run typecheck`, `npm test`, `npm run build`, and `npm run validate:og`.
@@ -23,6 +24,9 @@ A dotenvx private key was previously committed in `.env.keys`. Treat it as compr
 2. **Purge `.env.keys` from all Git history** using `git-filter-repo` or BFG, then force-push all branches and tags after coordinating with collaborators.
 3. Ask GitHub Support to clear cached unreachable commits; have collaborators re-clone; never print the old value.
 4. Verify the purge and ensure replacement keys exist only in the secrets manager.
+
+These account and repository administration steps require the account owner; a code change
+cannot revoke credentials or purge all remote branches, tags, and cached commits.
 
 ## 1. Production environment variables
 
@@ -52,6 +56,7 @@ Choose one hosting target: Vercel (`vercel.json`) or Deno Deploy (`main.ts`). De
 - [ ] `VITE_CONVEX_URL` is the production URL.
 - [ ] A support contact is published on the privacy page.
 - [ ] No secrets remain in Git history or tracked files.
+- [ ] `npm audit` reports no known vulnerabilities after dependency updates.
 - [ ] Confirm no source push/export tools are exposed in the deployed app.
 - [ ] Lighthouse mobile score is at least 90 on `/`.
 - [ ] OG preview renders correctly in a messaging app.

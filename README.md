@@ -41,8 +41,12 @@ Key variables:
 - `JWT_PRIVATE_KEY`
 - `DOTENV_PRIVATE_KEY_LOCAL`
 - `VLY_EMAIL_API_KEY`
+- `VLY_INTEGRATION_KEY`
 - `VITE_PLAUSIBLE_DOMAIN`
 - `VITE_PLAUSIBLE_API_HOST`
+
+Set production values in the Convex or hosting provider's secret settings; do
+not add live credentials to `.env.example` or commit them.
 
 ## Launch notes
 
