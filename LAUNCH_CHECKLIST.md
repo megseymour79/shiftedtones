@@ -13,6 +13,7 @@
 - Verification: `npm run typecheck`, `npm test`, `npm run build`, `npm run validate:og`, and `npm run check:tracked-secrets`.
 - Launch procedure, platform configuration, external-action blockers, smoke tests, and monitoring: [`LAUNCH_READY.md`](./LAUNCH_READY.md) and [`docs/LAUNCH_RUNBOOK.md`](./docs/LAUNCH_RUNBOOK.md).
 - Legal-review drafts: [`docs/PRIVACY_POLICY_TEMPLATE.md`](./docs/PRIVACY_POLICY_TEMPLATE.md) and [`docs/TERMS_OF_SERVICE_TEMPLATE.md`](./docs/TERMS_OF_SERVICE_TEMPLATE.md). Do not publish before qualified legal review.
+- The in-app `/privacy` and `/terms` pages are explicitly marked as drafts and are not approved for production use. Complete them with verified operator/provider details and obtain qualified legal review before launch.
 
 ## 0. Secret rotation — required hard blocker
 

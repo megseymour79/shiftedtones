@@ -16,10 +16,10 @@ All relevant application files live in `src`.
 
 ## Setup
 
-Install dependencies with npm:
+Install the exact locked dependencies with npm:
 
 ```bash
-npm install
+npm ci
 ```
 
 Start the dev server:
@@ -39,7 +39,6 @@ Key variables:
 - `CONVEX_SITE_URL`
 - `JWKS`
 - `JWT_PRIVATE_KEY`
-- `DOTENV_PRIVATE_KEY_LOCAL`
 - `VLY_EMAIL_API_KEY`
 - `VITE_PLAUSIBLE_DOMAIN`
 - `VITE_PLAUSIBLE_API_HOST`
@@ -47,4 +46,9 @@ Key variables:
 ## Launch notes
 
 - Review `./LAUNCH_CHECKLIST.md` before production deployment.
-- Keep `.env.keys` comments-only and never commit secrets.
+- Never commit real credentials or secret files. The exposed `.env.keys` file
+  was removed from the current tree, but removal does not purge Git history.
+  Complete the coordinated history purge in `docs/LAUNCH_RUNBOOK.md` before
+  launch.
+- The in-app Terms and Privacy pages are drafts requiring operator completion
+  and qualified legal review; do not present them as approved policies.

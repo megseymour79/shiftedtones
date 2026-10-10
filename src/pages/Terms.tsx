@@ -1,33 +1,101 @@
-import React from "react";
+import { PublicLayout } from "@/components/PublicLayout";
 
 export default function TermsOfService() {
   return (
-    <main className="max-w-3xl mx-auto px-4 py-8 text-neutral-800">
-      <h1 className="text-3xl font-bold mb-2">Terms of Service for ShiftedTone</h1>
-      <p className="text-sm text-neutral-500 mb-6">Effective: September 19, 2026</p>
+    <PublicLayout>
+      <main className="mx-auto max-w-3xl px-4 py-8 text-neutral-800">
+        <h1 className="mb-2 text-3xl font-bold">Terms of service for ShiftedTone</h1>
+        <p className="mb-6 text-sm text-neutral-500">Draft — not approved for production</p>
 
-      <section className="space-y-6 text-sm leading-relaxed">
-        <h2 className="text-xl font-semibold mt-6 mb-2">1. Educational and Rehearsal Tool Disclaimer (Not Therapy)</h2>
-        <p>
-          ShiftedTone is an educational communication practice, rehearsal, and self-awareness tool. It provides automated heuristics and software-generated feedback on speech pacing, volume, and estimated tone dynamics.
-        </p>
-        <p>
-          <strong>No Medical or Psychological Advice:</strong> The Service does <strong>not</strong> provide therapy, clinical diagnosis, counseling, or medical advice. ShiftedTone is not a substitute for professional mental health treatment, speech therapy, or psychological care.
-        </p>
+        <aside
+          aria-label="Draft terms"
+          className="mb-8 border-2 border-coral bg-card p-4 text-sm font-semibold"
+        >
+          This working draft is not approved for publication or user acceptance.
+          The service operator must complete the bracketed items and obtain
+          qualified legal review before launch.
+        </aside>
 
-        <h2 className="text-xl font-semibold mt-6 mb-2">2. Limitation of Liability</h2>
-        <p>
-          To the maximum extent permitted by applicable law, ShiftedTone and its officers, directors, employees, and agents shall not be liable for any indirect, incidental, special, consequential, or punitive damages, including loss of profits, data, or goodwill, arising out of or in connection with your access to or use of (or inability to access or use) the Service.
-        </p>
-        <p>
-          In no event shall ShiftedTone's aggregate liability for all claims related to the Service exceed the total amount of fees paid by you to ShiftedTone in the twelve (12) months preceding the event giving rise to liability, or $100 USD, whichever is greater.
-        </p>
+        <section className="space-y-6 text-sm leading-relaxed">
+          <div>
+            <h2 className="mb-2 text-xl font-semibold">Operator and effective date</h2>
+            <p>
+              Service operator: [LEGAL ENTITY AND ADDRESS]. Contact:
+              [SUPPORT CONTACT]. Effective date: [DATE APPROVED FOR PUBLICATION].
+              Governing law and venue: [COUNSEL TO COMPLETE].
+            </p>
+          </div>
 
-        <h2 className="text-xl font-semibold mt-6 mb-2">3. Dispute Resolution & Governing Law</h2>
-        <p>
-          Any dispute arising out of or relating to these Terms or the Service that cannot be resolved informally shall be settled by binding individual arbitration administered by JAMS or AAA in Boston, Massachusetts. You agree to resolve all disputes solely on an individual basis and waive any right to bring or participate in a class, collective, or representative lawsuit.
-        </p>
-      </section>
-    </main>
+          <div>
+            <h2 className="mb-2 text-xl font-semibold">Eligibility and accounts</h2>
+            <p>
+              Set the minimum age and geographic availability after reviewing
+              applicable law: [ELIGIBILITY]. Explain account security, sign-in,
+              and account closure procedures: [ACCOUNT TERMS].
+            </p>
+          </div>
+
+          <div>
+            <h2 className="mb-2 text-xl font-semibold">Service and limitations</h2>
+            <p>
+              ShiftedTone provides educational communication practice,
+              rehearsal, and software-generated feedback. It is not therapy,
+              clinical diagnosis, counseling, or medical advice, and is not a
+              substitute for professional care. Describe other product
+              limitations and availability: [COUNSEL/OPERATOR REVIEW].
+            </p>
+          </div>
+
+          <div>
+            <h2 className="mb-2 text-xl font-semibold">Acceptable use</h2>
+            <p>
+              Specify the prohibited uses, service protections, reporting
+              process, and any suspension or appeal procedure:
+              [ACCEPTABLE-USE TERMS].
+            </p>
+          </div>
+
+          <div>
+            <h2 className="mb-2 text-xl font-semibold">Your content and audio</h2>
+            <p>
+              Define ownership and the limited rights needed to operate the
+              service, including treatment of text submitted to AI features and
+              browser-captured audio. Confirm the wording against the production
+              app and privacy notice: [CONTENT LICENSE AND AUDIO TERMS].
+            </p>
+          </div>
+
+          <div>
+            <h2 className="mb-2 text-xl font-semibold">Fees and changes</h2>
+            <p>
+              State whether the service is free or paid, including applicable
+              charges, renewals, refunds, and notice of changes:
+              [PRICING AND CHANGE TERMS].
+            </p>
+          </div>
+
+          <div>
+            <h2 className="mb-2 text-xl font-semibold">Privacy and termination</h2>
+            <p>
+              Read the{" "}
+              <a className="underline" href="/privacy">
+                privacy notice draft
+              </a>
+              . Explain user/operator termination, effects on data, and
+              complaint handling: [TERMINATION AND SUPPORT PROCESS].
+            </p>
+          </div>
+
+          <div>
+            <h2 className="mb-2 text-xl font-semibold">Warranties, liability, and disputes</h2>
+            <p>
+              Have qualified counsel prepare warranty, liability, and dispute
+              provisions that apply to the operator and jurisdictions, including
+              any arbitration or class-action terms: [COUNSEL-APPROVED TERMS].
+            </p>
+          </div>
+        </section>
+      </main>
+    </PublicLayout>
   );
 }

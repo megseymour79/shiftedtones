@@ -264,6 +264,23 @@ describe("layout wiring", () => {
     expect(layout).toContain('<Link to="/terms"');
   });
 
+  test("the in-app legal drafts do not present unreviewed terms as approved", () => {
+    const privacy = src("Privacy");
+    const terms = src("Terms");
+    expect(privacy).toContain("Draft — not approved for production");
+    expect(privacy).toContain("[LEGAL ENTITY AND ADDRESS]");
+    expect(privacy).toContain("browser speech recognition");
+    expect(privacy).toContain("optional speech transcripts");
+    expect(terms).toContain("not approved for publication or user acceptance");
+    expect(terms).toContain("[COUNSEL-APPROVED TERMS]");
+    expect(terms).not.toContain("binding individual arbitration administered");
+    expect(terms).not.toContain("Boston, Massachusetts");
+    expect(privacy).toContain("PublicLayout");
+    expect(terms).toContain("PublicLayout");
+    expect(src("Auth")).toContain("not approved for production use");
+    expect(src("Auth")).not.toContain("you agree to ShiftedTone's");
+  });
+
   test("Landing remains a pure re-export of Home (the / route contract)", () => {
     const src = readFileSync(new URL("../pages/Landing.tsx", import.meta.url), "utf8");
     expect(src.trim()).toBe('export { default } from "./Home";');
