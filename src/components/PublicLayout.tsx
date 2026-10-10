@@ -136,6 +136,12 @@ export function PublicLayout({ children }: { children: ReactNode }) {
                 {item.label}
               </Link>
             ))}
+            <Link to="/privacy" className="hover:text-ink">
+              Privacy
+            </Link>
+            <Link to="/terms" className="hover:text-ink">
+              Terms
+            </Link>
           </nav>
           <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
             Train the tone. Keep what you mean.
