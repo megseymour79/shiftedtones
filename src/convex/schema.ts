@@ -20,6 +20,13 @@ const schema = defineSchema(
   {
     // default auth tables using convex auth.
     ...authTables, // do not remove or modify
+    authRateLimits: defineTable({
+      identifier: v.string(),
+      lastAttemptTime: v.number(),
+      attemptsLeft: v.number(),
+      otpLastAttemptTime: v.optional(v.number()),
+      otpAttemptsLeft: v.optional(v.number()),
+    }).index("identifier", ["identifier"]),
 
     // the users table is the default users table that is brought in by the authTables
     users: defineTable({

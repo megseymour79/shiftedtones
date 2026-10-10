@@ -9,6 +9,7 @@
 - Production error UX, global error reporting, focus rings, reduced-motion support, and anchored-section scroll margins are implemented.
 - Convex queries and mutations enforce authenticated `userId` row-level isolation.
 - Convex Auth limits failed email-code verification attempts to 5 per email per hour.
+- Email-code sends are limited to 3 per email per hour; confirm provider quotas and abuse monitoring before launch.
 - Production dependency audit reports no known vulnerabilities (`npm audit`).
 - `.env.keys` is comments-only; `.env.local`, archives, and build output are ignored. No secrets belong in tracked files.
 - Ops tooling (`/push-source`, `src/convex/githubPush.ts`, `/source-zip`, `_sourceSnapshot.ts`) is **not present** in this repository.
@@ -62,7 +63,7 @@ Choose one hosting target: Vercel (`vercel.json`) or Deno Deploy (`main.ts`). De
 - [ ] Have the privacy policy and terms reviewed for the business entity, providers, retention, and launch regions.
 - [ ] No secrets remain in Git history or tracked files.
 - [ ] `npm audit` reports no known vulnerabilities after dependency updates.
-- [ ] Confirm the email provider enforces sending quotas and abuse monitoring for OTP requests.
+- [ ] Confirm the email provider enforces sending quotas and abuse monitoring for OTP requests, in addition to the app's per-email limit.
 - [ ] Confirm no source push/export tools are exposed in the deployed app.
 - [ ] Lighthouse mobile score is at least 90 on `/`.
 - [ ] OG preview renders correctly in a messaging app.
