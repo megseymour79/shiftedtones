@@ -70,8 +70,18 @@ describe("page tour (back/forward pager)", () => {
   });
 
   test("every public page renders the pager", () => {
-    for (const page of ["Home", "HowItWorks", "ToneCheck", "Drills", "Watch", "Library"]) {
-      const src = readFileSync(new URL(`../pages/${page}.tsx`, import.meta.url), "utf8");
+    for (const page of [
+      "Home",
+      "HowItWorks",
+      "ToneCheck",
+      "Drills",
+      "Watch",
+      "Library",
+    ]) {
+      const src = readFileSync(
+        new URL(`../pages/${page}.tsx`, import.meta.url),
+        "utf8",
+      );
       expect(src).toContain("PagePager");
     }
   });
@@ -127,8 +137,20 @@ describe("app tour (signed-in pager)", () => {
   });
 
   test("AppShell renders the pager on every signed-in page", () => {
-    for (const page of ["Dashboard", "Gym", "Calm", "Practice", "Translate", "Quiz", "Reframe", "Progress"]) {
-      const src = readFileSync(new URL(`../pages/${page}.tsx`, import.meta.url), "utf8");
+    for (const page of [
+      "Dashboard",
+      "Gym",
+      "Calm",
+      "Practice",
+      "Translate",
+      "Quiz",
+      "Reframe",
+      "Progress",
+    ]) {
+      const src = readFileSync(
+        new URL(`../pages/${page}.tsx`, import.meta.url),
+        "utf8",
+      );
       expect(src).toContain("AppShell");
     }
   });
@@ -145,7 +167,16 @@ describe("nav ↔ router parity", () => {
 
   test("the authed routes still exist (no accidental removal)", () => {
     const main = readFileSync(new URL("../main.tsx", import.meta.url), "utf8");
-    for (const path of ["/auth", "/dashboard", "/gym", "/calm", "/progress", "/reframe", "/quiz", "/practice/:drillId"]) {
+    for (const path of [
+      "/auth",
+      "/dashboard",
+      "/gym",
+      "/calm",
+      "/progress",
+      "/reframe",
+      "/quiz",
+      "/practice/:drillId",
+    ]) {
       expect(main).toContain(`path="${path}"`);
     }
   });
@@ -246,7 +277,14 @@ describe("page split contracts", () => {
 
 describe("layout wiring", () => {
   test("PublicLayout is used by all six public pages", () => {
-    for (const page of ["Home", "HowItWorks", "ToneCheck", "Drills", "Watch", "Library"]) {
+    for (const page of [
+      "Home",
+      "HowItWorks",
+      "ToneCheck",
+      "Drills",
+      "Watch",
+      "Library",
+    ]) {
       const src = readFileSync(
         new URL(`../pages/${page}.tsx`, import.meta.url),
         "utf8",
@@ -265,8 +303,18 @@ describe("layout wiring", () => {
   });
 
   test("the in-app legal drafts do not present unreviewed terms as approved", () => {
-    const privacy = src("Privacy");
-    const terms = src("Terms");
+    const privacy = readFileSync(
+      new URL("../pages/Privacy.tsx", import.meta.url),
+      "utf8",
+    );
+    const terms = readFileSync(
+      new URL("../pages/Terms.tsx", import.meta.url),
+      "utf8",
+    );
+    const auth = readFileSync(
+      new URL("../pages/Auth.tsx", import.meta.url),
+      "utf8",
+    );
     expect(privacy).toContain("Draft — not approved for production");
     expect(privacy).toContain("[LEGAL ENTITY AND ADDRESS]");
     expect(privacy).toContain("browser speech recognition");
@@ -277,12 +325,15 @@ describe("layout wiring", () => {
     expect(terms).not.toContain("Boston, Massachusetts");
     expect(privacy).toContain("PublicLayout");
     expect(terms).toContain("PublicLayout");
-    expect(src("Auth")).toContain("not approved for production use");
-    expect(src("Auth")).not.toContain("you agree to ShiftedTone's");
+    expect(auth).toContain("not approved for production use");
+    expect(auth).not.toContain("you agree to ShiftedTone's");
   });
 
   test("Landing remains a pure re-export of Home (the / route contract)", () => {
-    const src = readFileSync(new URL("../pages/Landing.tsx", import.meta.url), "utf8");
+    const src = readFileSync(
+      new URL("../pages/Landing.tsx", import.meta.url),
+      "utf8",
+    );
     expect(src.trim()).toBe('export { default } from "./Home";');
   });
 });
