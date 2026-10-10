@@ -8,6 +8,7 @@
 - Plausible SPA pageviews and funnel events are wired with a safe no-op when unconfigured.
 - Production error UX, global error reporting, focus rings, reduced-motion support, and anchored-section scroll margins are implemented.
 - Convex queries and mutations enforce authenticated `userId` row-level isolation.
+- Convex Auth limits failed email-code verification attempts to 5 per email per hour.
 - Production dependency audit reports no known vulnerabilities (`npm audit`).
 - `.env.keys` is comments-only; `.env.local`, archives, and build output are ignored. No secrets belong in tracked files.
 - Ops tooling (`/push-source`, `src/convex/githubPush.ts`, `/source-zip`, `_sourceSnapshot.ts`) is **not present** in this repository.
@@ -51,13 +52,17 @@ Choose one hosting target: Vercel (`vercel.json`) or Deno Deploy (`main.ts`). De
 - [ ] Sign-out redirects `/dashboard` to `/auth?returnTo=/dashboard`.
 - [ ] Sign back in and confirm return to the dashboard.
 - [ ] Mic denial shows an inline error without crashing.
+- [ ] Confirm speech-to-text is off by default and only runs after the user opts in.
+- [ ] Test account deletion and verify app data and authentication records are removed.
 - [ ] Offline/throttled requests show failure without silent data loss.
 - [ ] User A cannot read or write User B's sessions, logs, or notes.
 - [ ] Convex CORS is restricted to the production origin.
 - [ ] `VITE_CONVEX_URL` is the production URL.
 - [ ] Set `VITE_SUPPORT_EMAIL` and confirm the contact appears on the privacy page.
+- [ ] Have the privacy policy and terms reviewed for the business entity, providers, retention, and launch regions.
 - [ ] No secrets remain in Git history or tracked files.
 - [ ] `npm audit` reports no known vulnerabilities after dependency updates.
+- [ ] Confirm the email provider enforces sending quotas and abuse monitoring for OTP requests.
 - [ ] Confirm no source push/export tools are exposed in the deployed app.
 - [ ] Lighthouse mobile score is at least 90 on `/`.
 - [ ] OG preview renders correctly in a messaging app.

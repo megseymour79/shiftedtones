@@ -133,7 +133,6 @@ function PracticeRunner({ drill, isDaily }: { drill: Drill; isDaily: boolean }) 
   const [saved, setSaved] = useState(false);
   const [transcriptionEnabled, setTranscriptionEnabled] = useState(false);
   const transcriptionEnabledRef = useRef(transcriptionEnabled);
-  transcriptionEnabledRef.current = transcriptionEnabled;
   // The user's own context: what this take is responding to or opening.
   const [context, setContext] = useState("");
   const [expandedFactor, setExpandedFactor] = useState<
@@ -359,7 +358,11 @@ function PracticeRunner({ drill, isDaily }: { drill: Drill; isDaily: boolean }) 
                 <input
                   type="checkbox"
                   checked={transcriptionEnabled}
-                  onChange={(event) => setTranscriptionEnabled(event.target.checked)}
+                  onChange={(event) => {
+                    const enabled = event.target.checked;
+                    transcriptionEnabledRef.current = enabled;
+                    setTranscriptionEnabled(enabled);
+                  }}
                   className="mt-1"
                 />
                 <span>

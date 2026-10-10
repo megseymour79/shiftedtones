@@ -49,10 +49,14 @@ export async function deleteCurrentAccount(
     throw new Error("Not authenticated");
   }
 
-  await deleteAccountData(ctx, user._id);
+  await deleteAccountData(ctx, user._id, user.email);
 }
 
-export async function deleteAccountData(ctx: MutationCtx, userId: Id<"users">) {
+export async function deleteAccountData(
+  ctx: MutationCtx,
+  userId: Id<"users">,
+  email?: string,
+) {
   await deleteByUser(ctx, "coachNotes", userId);
   await deleteByUser(ctx, "dailyLog", userId);
   await deleteByUser(ctx, "drillAttempts", userId);
@@ -73,7 +77,23 @@ export async function deleteAccountData(ctx: MutationCtx, userId: Id<"users">) {
       await ctx.db.delete(refreshToken._id);
     }
 
+    const verifiers = await ctx.db
+      .query("authVerifiers")
+      .filter((q) => q.eq(q.field("sessionId"), session._id))
+      .collect();
+    for (const verifier of verifiers) {
+      await ctx.db.delete(verifier._id);
+    }
+
     await ctx.db.delete(session._id);
+  }
+
+  if (email) {
+    const rateLimit = await ctx.db
+      .query("authRateLimits")
+      .withIndex("identifier", (q) => q.eq("identifier", email))
+      .unique();
+    if (rateLimit) await ctx.db.delete(rateLimit._id);
   }
 
   const accounts = await listAuthAccountsForUser(ctx, userId);

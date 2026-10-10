@@ -19,7 +19,7 @@ export default function PrivacyPolicy() {
   return (
     <main className="mx-auto max-w-3xl px-4 py-8 text-neutral-800">
       <h1 className="mb-2 text-3xl font-bold">Privacy Policy for ShiftedTone</h1>
-      <p className="mb-6 text-sm text-neutral-500">Effective: September 28, 2026</p>
+      <p className="mb-6 text-sm text-neutral-500">Effective: October 10, 2026</p>
 
       <section className="space-y-6 text-sm leading-relaxed">
         <div>
@@ -58,8 +58,8 @@ export default function PrivacyPolicy() {
             If enabled by the operator, Plausible receives page views and
             product events. If error monitoring is configured, technical error
             details, stack traces, and the current page URL may be sent to the
-            monitoring service. These services are not initialized when their
-            configuration is absent.
+            configured Vly monitoring service. These services are not
+            initialized when their configuration is absent.
           </p>
         </div>
 
@@ -90,6 +90,10 @@ export default function PrivacyPolicy() {
             ) : (
               "A support contact will be published before launch."
             )}
+          </p>
+          <p className="mt-2">
+            You can use this contact to ask questions or request access,
+            correction, or deletion of your data.
           </p>
         </div>
       </section>

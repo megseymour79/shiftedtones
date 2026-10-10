@@ -12,7 +12,9 @@ type TableName =
   | "authSessions"
   | "authRefreshTokens"
   | "authAccounts"
-  | "authVerificationCodes";
+  | "authVerificationCodes"
+  | "authVerifiers"
+  | "authRateLimits";
 
 type Doc = { _id: string; [key: string]: unknown };
 type Store = Record<TableName, Doc[]>;
@@ -26,6 +28,7 @@ const EXPECTED_INDEX: Partial<Record<TableName, string>> = {
   authSessions: "userId",
   authRefreshTokens: "sessionId",
   authVerificationCodes: "accountId",
+  authRateLimits: "identifier",
 };
 
 function makeCtx(store: Store) {
@@ -123,6 +126,8 @@ describe("deleteCurrentAccount", () => {
       authRefreshTokens: [],
       authAccounts: [],
       authVerificationCodes: [],
+      authVerifiers: [],
+      authRateLimits: [],
     });
 
     await expect(
@@ -184,9 +189,21 @@ describe("deleteAccountData", () => {
         { _id: "code_4", accountId: oauthAccountId },
         { _id: "code_3", accountId: otherAccountId },
       ],
+      authVerifiers: [
+        { _id: "verifier_1", sessionId },
+        { _id: "verifier_2", sessionId: otherSessionId },
+      ],
+      authRateLimits: [
+        { _id: "limit_1", identifier: "person@example.com" },
+        { _id: "limit_2", identifier: "other@example.com" },
+      ],
     };
 
-    await deleteAccountData(makeCtx(store) as never, userId);
+    await deleteAccountData(
+      makeCtx(store) as never,
+      userId,
+      "person@example.com",
+    );
 
     expect(store.users.map((doc) => doc._id)).toEqual([otherUserId]);
     expect(store.coachNotes.map((doc) => doc._id)).toEqual(["note_2"]);
@@ -198,5 +215,7 @@ describe("deleteAccountData", () => {
     expect(store.authRefreshTokens.map((doc) => doc._id)).toEqual(["refresh_2"]);
     expect(store.authAccounts.map((doc) => doc._id)).toEqual([otherAccountId]);
     expect(store.authVerificationCodes.map((doc) => doc._id)).toEqual(["code_3"]);
+    expect(store.authVerifiers.map((doc) => doc._id)).toEqual(["verifier_2"]);
+    expect(store.authRateLimits.map((doc) => doc._id)).toEqual(["limit_2"]);
   });
 });
