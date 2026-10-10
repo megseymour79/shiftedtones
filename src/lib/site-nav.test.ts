@@ -233,13 +233,14 @@ describe("page split contracts", () => {
     expect(tabs).toBe(4);
   });
 
-  test("the level ring still anchors to the progression panel on the dashboard", () => {
+  test("progress navigation opens the progress page and dashboard renders the streak arc", () => {
     const shell = readFileSync(
       new URL("../components/AppShell.tsx", import.meta.url),
       "utf8",
     );
-    expect(shell).toContain('to="/dashboard#progress"');
-    expect(src("Dashboard")).toContain('id="progress"');
+    const dashboard = src("Dashboard");
+    expect(shell).toContain('id: "progress", to: "/progress"');
+    expect(dashboard).toContain("<ArcPanel streakDays={stats.streakDays} />");
   });
 });
 
