@@ -92,7 +92,6 @@
     "vite": "^7.2.6"
   },
   "overrides": {
-    "undici": "6.29.0",
-    "@fastify/busboy": "3.2.2"
+    "undici": "6.29.0"
   }
 }

@@ -36,6 +36,7 @@ Set these only in the deployment secrets manager:
 - `VITE_PLAUSIBLE_DOMAIN` and optional `VITE_PLAUSIBLE_API_HOST`
 - `VLY_INTEGRATION_KEY`
 - `VLY_EMAIL_API_KEY`
+- `VITE_SUPPORT_EMAIL` — public privacy/support contact
 - `JWKS`, `JWT_PRIVATE_KEY`
 - `SITE_URL`, `CONVEX_SITE_URL`
 
@@ -54,7 +55,7 @@ Choose one hosting target: Vercel (`vercel.json`) or Deno Deploy (`main.ts`). De
 - [ ] User A cannot read or write User B's sessions, logs, or notes.
 - [ ] Convex CORS is restricted to the production origin.
 - [ ] `VITE_CONVEX_URL` is the production URL.
-- [ ] A support contact is published on the privacy page.
+- [ ] Set `VITE_SUPPORT_EMAIL` and confirm the contact appears on the privacy page.
 - [ ] No secrets remain in Git history or tracked files.
 - [ ] `npm audit` reports no known vulnerabilities after dependency updates.
 - [ ] Confirm no source push/export tools are exposed in the deployed app.

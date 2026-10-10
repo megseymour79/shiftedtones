@@ -1,4 +1,6 @@
 export default function PrivacyPolicy() {
+  const supportEmail = import.meta.env.VITE_SUPPORT_EMAIL;
+
   return (
     <main className="mx-auto max-w-3xl px-4 py-8 text-neutral-800">
       <h1 className="mb-2 text-3xl font-bold">Privacy Policy for ShiftedTone</h1>
@@ -47,9 +49,17 @@ export default function PrivacyPolicy() {
         <div>
           <h2 className="mb-2 text-xl font-semibold">5. Contact</h2>
           <p>
-            If you operate this app in production, provide a support contact or
-            policy mailbox before launch so users know where to send privacy
-            requests.
+            {supportEmail ? (
+              <>
+                For privacy requests or support, email{" "}
+                <a className="underline" href={`mailto:${supportEmail}`}>
+                  {supportEmail}
+                </a>
+                .
+              </>
+            ) : (
+              "A support contact will be published before launch."
+            )}
           </p>
         </div>
       </section>

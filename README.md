@@ -42,6 +42,7 @@ Key variables:
 - `DOTENV_PRIVATE_KEY_LOCAL`
 - `VLY_EMAIL_API_KEY`
 - `VLY_INTEGRATION_KEY`
+- `VITE_SUPPORT_EMAIL` — public contact shown on the privacy page
 - `VITE_PLAUSIBLE_DOMAIN`
 - `VITE_PLAUSIBLE_API_HOST`
 
