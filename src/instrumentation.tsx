@@ -1,34 +1,14 @@
 import { Button } from "@/components/ui/button";
 import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
-import {
   DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Dialog } from "@radix-ui/react-dialog";
-import { ChevronDown, ExternalLink } from "lucide-react";
+import { RefreshCw } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { isRuntimeError, normalizeRejection } from "@/lib/error-report";
-
-type SyncError = {
-  error: string;
-  stack: string;
-  filename: string;
-  lineno: number;
-  colno: number;
-};
-
-type AsyncError = {
-  error: string;
-  stack: string;
-};
-
-type GenericError = SyncError | AsyncError;
 
 async function reportErrorToVly(errorData: {
   error: string;
@@ -55,49 +35,18 @@ async function reportErrorToVly(errorData: {
   }
 }
 
-function ErrorDialog({
-  error,
-  setError,
-}: {
-  error: GenericError;
-  setError: (error: GenericError | null) => void;
-}) {
+function ErrorDialog() {
   return (
-    <Dialog
-      defaultOpen={true}
-      onOpenChange={() => {
-        setError(null);
-      }}
-    >
-      <DialogContent className="bg-red-700 text-white max-w-4xl">
+    <Dialog open>
+      <DialogContent className="max-w-md">
         <DialogHeader>
-          <DialogTitle>Runtime Error</DialogTitle>
+          <DialogTitle>Something went wrong</DialogTitle>
         </DialogHeader>
-        A runtime error occurred. Open the vly editor to automatically debug the
-        error.
-        <div className="mt-4">
-          <Collapsible>
-            <CollapsibleTrigger>
-              <div className="flex items-center font-bold cursor-pointer">
-                See error details <ChevronDown />
-              </div>
-            </CollapsibleTrigger>
-            <CollapsibleContent className="max-w-[460px]">
-              <div className="mt-2 p-3 bg-neutral-800 rounded text-white text-sm overflow-x-auto max-h-60 max-w-full [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-                <pre className="whitespace-pre">{error.stack}</pre>
-              </div>
-            </CollapsibleContent>
-          </Collapsible>
-        </div>
+        We couldn’t finish loading this page. Reload to try again.
         <DialogFooter>
-          <a
-            href={`https://freebuff.com/project/${import.meta.env.VITE_VLY_APP_ID}`}
-            target="_blank"
-          >
-            <Button>
-              <ExternalLink /> Open editor
-            </Button>
-          </a>
+          <Button onClick={() => window.location.reload()}>
+            <RefreshCw /> Reload page
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -106,7 +55,6 @@ function ErrorDialog({
 
 type ErrorBoundaryState = {
   hasError: boolean;
-  error: GenericError | null;
 };
 
 class ErrorBoundary extends React.Component<
@@ -117,7 +65,7 @@ class ErrorBoundary extends React.Component<
 > {
   constructor(props: { children: React.ReactNode }) {
     super(props);
-    this.state = { hasError: false, error: null };
+    this.state = { hasError: false };
   }
 
   static getDerivedStateFromError() {
@@ -125,45 +73,19 @@ class ErrorBoundary extends React.Component<
     return { hasError: true };
   }
 
-  componentDidCatch(error: Error, info: React.ErrorInfo) {
-    // logErrorToMyService(
-    //   error,
-    //   // Example "componentStack":
-    //   //   in ComponentThatThrows (created by App)
-    //   //   in ErrorBoundary (created by App)
-    //   //   in div (created by App)
-    //   //   in App
-    //   info.componentStack,
-    //   // Warning: `captureOwnerStack` is not available in production.
-    //   React.captureOwnerStack(),
-    // );
+  componentDidCatch(error: Error) {
     reportErrorToVly({
       error: error.message,
       stackTrace: error.stack,
     });
     this.setState({
       hasError: true,
-      error: {
-        error: error.message,
-        stack: info.componentStack ?? error.stack ?? "",
-      },
     });
   }
 
   render() {
     if (this.state.hasError) {
-      // You can render any custom fallback UI
-      return (
-        <ErrorDialog
-          error={
-            this.state.error ?? {
-              error: "An error occurred",
-              stack: "",
-            }
-          }
-          setError={() => {}}
-        />
-      );
+      return <ErrorDialog />;
     }
 
     return this.props.children;
@@ -175,7 +97,7 @@ export function InstrumentationProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [error, setError] = useState<GenericError | null>(null);
+  const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
     const handleError = async (event: ErrorEvent) => {
@@ -186,13 +108,7 @@ export function InstrumentationProvider({
       try {
         console.log(event);
         event.preventDefault();
-        setError({
-          error: event.message,
-          stack: event.error?.stack || "",
-          filename: event.filename || "",
-          lineno: event.lineno,
-          colno: event.colno,
-        });
+        setHasError(true);
 
         if (import.meta.env.VITE_VLY_APP_ID) {
           await reportErrorToVly({
@@ -221,10 +137,7 @@ export function InstrumentationProvider({
           });
         }
 
-        setError({
-          error: message,
-          stack,
-        });
+        setHasError(true);
       } catch (error) {
         console.error("Error in handleRejection:", error);
       }
@@ -241,7 +154,7 @@ export function InstrumentationProvider({
   return (
     <>
       <ErrorBoundary>{children}</ErrorBoundary>
-      {error && <ErrorDialog error={error} setError={setError} />}
+      {hasError && <ErrorDialog />}
     </>
   );
 }

@@ -10,7 +10,7 @@
 - Convex queries and mutations enforce authenticated `userId` row-level isolation.
 - `.env.keys` is comments-only; `.env.local`, archives, and build output are ignored. No secrets belong in tracked files.
 - Ops tooling (`/push-source`, `src/convex/githubPush.ts`, `/source-zip`, `_sourceSnapshot.ts`) is **not present** in this repository.
-- Verification: `bun tsc -b --noEmit`, `bun test`, `bun run build`, `bun scripts/validate-og.ts`, and `bun run test:ct`.
+- Verification: `npm run typecheck`, `npm test`, `npm run build`, and `npm run validate:og`.
 
 ## 0. Secret rotation — required hard blocker
 
@@ -31,6 +31,7 @@ Set these only in the deployment secrets manager:
 - `VITE_CONVEX_URL` — production Convex URL
 - `VITE_PLAUSIBLE_DOMAIN` and optional `VITE_PLAUSIBLE_API_HOST`
 - `VLY_INTEGRATION_KEY`
+- `VLY_EMAIL_API_KEY`
 - `JWKS`, `JWT_PRIVATE_KEY`
 - `SITE_URL`, `CONVEX_SITE_URL`
 
@@ -49,7 +50,8 @@ Choose one hosting target: Vercel (`vercel.json`) or Deno Deploy (`main.ts`). De
 - [ ] User A cannot read or write User B's sessions, logs, or notes.
 - [ ] Convex CORS is restricted to the production origin.
 - [ ] `VITE_CONVEX_URL` is the production URL.
+- [ ] A support contact is published on the privacy page.
 - [ ] No secrets remain in Git history or tracked files.
-- [ ] Remove/disable `/push-source`, `src/convex/githubPush.ts`, `/source-zip`, and `src/convex/_sourceSnapshot.ts` before launch.
+- [ ] Confirm no source push/export tools are exposed in the deployed app.
 - [ ] Lighthouse mobile score is at least 90 on `/`.
 - [ ] OG preview renders correctly in a messaging app.
