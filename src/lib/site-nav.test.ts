@@ -317,7 +317,7 @@ describe("layout wiring", () => {
     );
     expect(privacy).toContain("Draft — not approved for production");
     expect(privacy).toContain("[LEGAL ENTITY AND ADDRESS]");
-    expect(privacy).toContain("browser speech recognition");
+    expect(privacy).toContain("recognition provider's terms");
     expect(privacy).toContain("optional speech transcripts");
     expect(terms).toContain("not approved for publication or user acceptance");
     expect(terms).toContain("[COUNSEL-APPROVED TERMS]");
@@ -325,7 +325,7 @@ describe("layout wiring", () => {
     expect(terms).not.toContain("Boston, Massachusetts");
     expect(privacy).toContain("PublicLayout");
     expect(terms).toContain("PublicLayout");
-    expect(auth).toContain("not approved for production use");
+    expect(auth).toContain("are not approved for");
     expect(auth).not.toContain("you agree to ShiftedTone's");
   });
 
