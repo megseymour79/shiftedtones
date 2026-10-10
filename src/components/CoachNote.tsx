@@ -1,7 +1,6 @@
-import { useAction, useMutation, useQuery } from "convex/react";
+import { useAction, useQuery } from "convex/react";
 import { Loader2, Sparkles } from "lucide-react";
 import { useState } from "react";
-import { toast } from "sonner";
 import { api } from "@/convex/_generated/api";
 import type { Id } from "@/convex/_generated/dataModel";
 import { NBBadge, NBButton, NBPanel } from "@/components/nb";
@@ -14,7 +13,6 @@ export function CoachNote({ sessionId }: { sessionId: Id<"practiceSessions"> }) 
   const access = useQuery(api.coachNotes.checkAccess);
   const existing = useQuery(api.coachNotes.forSession, { sessionId });
   const generate = useAction(api.coach.generate);
-  const unlock = useMutation(api.coachNotes.unlock);
 
   const [note, setNote] = useState<{
     feedback: string;
@@ -75,15 +73,6 @@ export function CoachNote({ sessionId }: { sessionId: Id<"practiceSessions"> }) 
     }
   };
 
-  const handleUnlock = async () => {
-    try {
-      await unlock({});
-      toast.success("Coach unlocked — every take gets its note now.");
-    } catch {
-      toast.error("Couldn't unlock right now. Try again in a moment.");
-    }
-  };
-
   if (access.entitlement.needsUpgrade) {
     return (
       <NBPanel className="mt-5 bg-ink p-6 text-paper">
@@ -94,16 +83,14 @@ export function CoachNote({ sessionId }: { sessionId: Id<"practiceSessions"> }) 
           Your three free notes are in.
         </p>
         <p className="mt-2 max-w-md text-sm leading-relaxed text-paper/80">
-          This is the part worth paying for: a coach that read{" "}
+          This is the part worth having: a coach that read{" "}
           <span className="font-bold text-sun">your</span> pace, your pitch movement,
           your stability — and tells you the one thing to change. Not a tip bank.
           Your numbers.
         </p>
-        <div className="mt-4">
-          <NBButton onClick={handleUnlock} variant="sun">
-            Unlock the coach
-          </NBButton>
-        </div>
+        <p className="mt-4 text-sm text-paper/70">
+          More coach notes are not available yet.
+        </p>
       </NBPanel>
     );
   }

@@ -20,7 +20,7 @@ export const emailOtp = Email({
   async sendVerificationRequest({ identifier: email, token }) {
     const integrationKey = process.env.VLY_EMAIL_API_KEY;
     if (!integrationKey) {
-      throw new Error("VLY_EMAIL_API_KEY is not configured.");
+      throw new Error("We couldn't send your sign-in code. Please try again later.");
     }
 
     try {
@@ -37,8 +37,8 @@ export const emailOtp = Email({
           },
         },
       );
-    } catch (error) {
-      throw new Error(JSON.stringify(error));
+    } catch {
+      throw new Error("We couldn't send your sign-in code. Please try again later.");
     }
   },
 });

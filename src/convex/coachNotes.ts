@@ -1,5 +1,5 @@
 import { v } from "convex/values";
-import { internalMutation, mutation, query } from "./_generated/server";
+import { internalMutation, query } from "./_generated/server";
 import { getCurrentUser } from "./users";
 import { coachEntitlement, FREE_COACH_NOTES } from "../lib/entitlements";
 
@@ -100,18 +100,5 @@ export const store = internalMutation({
       }
     }
     return noteId;
-  },
-});
-
-/**
- * Dev/demo unlock — flips the paid flag for the signed-in user. Replace the
- * body with a real checkout verification (Stripe etc.) when wiring payments.
- */
-export const unlock = mutation({
-  args: {},
-  handler: async (ctx) => {
-    const user = await getCurrentUser(ctx);
-    if (!user) throw new Error("Not authenticated");
-    await ctx.db.patch(user._id, { coachUnlocked: true });
   },
 });

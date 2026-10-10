@@ -131,6 +131,9 @@ export default function Practice() {
 function PracticeRunner({ drill, isDaily }: { drill: Drill; isDaily: boolean }) {
   const capture = useToneCapture();
   const [saved, setSaved] = useState(false);
+  const [transcriptionEnabled, setTranscriptionEnabled] = useState(false);
+  const transcriptionEnabledRef = useRef(transcriptionEnabled);
+  transcriptionEnabledRef.current = transcriptionEnabled;
   // The user's own context: what this take is responding to or opening.
   const [context, setContext] = useState("");
   const [expandedFactor, setExpandedFactor] = useState<
@@ -158,7 +161,11 @@ function PracticeRunner({ drill, isDaily }: { drill: Drill; isDaily: boolean }) 
       if (countdown <= 1) {
         setCountdown(null);
         const c = captureRef.current;
-        c.start(c.lastPeakRawRms, getSavedMicDeviceId());
+        c.start(
+          c.lastPeakRawRms,
+          getSavedMicDeviceId(),
+          transcriptionEnabledRef.current,
+        );
         return;
       }
       setCountdown((c) => (c ?? 1) - 1);
@@ -346,6 +353,23 @@ function PracticeRunner({ drill, isDaily }: { drill: Drill; isDaily: boolean }) 
             )}
 
             <MicPicker activeLabel={activeDeviceLabel} />
+
+            {state === "idle" && (
+              <label className="flex max-w-2xl items-start gap-2 text-sm">
+                <input
+                  type="checkbox"
+                  checked={transcriptionEnabled}
+                  onChange={(event) => setTranscriptionEnabled(event.target.checked)}
+                  className="mt-1"
+                />
+                <span>
+                  Enable speech-to-text for coaching (optional). The browser's
+                  speech service may process microphone audio. If you save the
+                  take, its transcript is stored with your account and may be
+                  sent to the AI coach when you request feedback.
+                </span>
+              </label>
+            )}
 
             {/* Controls */}
             <div className="flex items-center gap-3">

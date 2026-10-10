@@ -56,6 +56,7 @@ interface UseToneCapture {
   start: (
     lastPeakRawRms?: number | null,
     deviceId?: string | null,
+    transcribe?: boolean,
   ) => Promise<void>;
   stop: () => void;
   reset: () => void;
@@ -287,7 +288,11 @@ export function useToneCapture(): UseToneCapture {
   }, [cleanup]);
 
   const start = useCallback(
-    async (lastPeakRawRms?: number | null, deviceId?: string | null) => {
+    async (
+      lastPeakRawRms?: number | null,
+      deviceId?: string | null,
+      transcribe = false,
+    ) => {
       // Double-start guard: rAF covers the recording phase; startingRef covers
       // the async window before it (permission prompt, getUserMedia) where
       // state is still "idle" and the Start button is still clickable — a
@@ -463,7 +468,7 @@ export function useToneCapture(): UseToneCapture {
         recognitionRef.current = null;
 
         // Best-effort transcript for the coach — silence on any failure.
-        const Recognition = getSpeechRecognition();
+        const Recognition = transcribe ? getSpeechRecognition() : null;
         if (Recognition) {
           try {
             const recognition = new Recognition();
