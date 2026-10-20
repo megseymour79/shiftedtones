@@ -25,10 +25,10 @@ export const XP = {
 } as const;
 
 export const DAILY_ACTIONS: DailyActionDef[] = [
-  { id: "take", label: "One honest take", detail: "Any drill, mic on", xp: XP.take },
-  { id: "quiz", label: "Read the Room", detail: "One scenario judged", xp: XP.quiz },
-  { id: "reframe", label: "Reframe something", detail: "One trigger rewritten", xp: XP.reframe },
-  { id: "reset", label: "Take the reset", detail: "One 4-7-8 round set", xp: XP.reset },
+  { id: "take", label: "Practice a drill", detail: "Any drill, microphone on", xp: XP.take },
+  { id: "quiz", label: "Read the Room", detail: "Choose a response to one scenario", xp: XP.quiz },
+  { id: "reframe", label: "Reframe a response", detail: "Write a different response", xp: XP.reframe },
+  { id: "reset", label: "Take a moment to reset", detail: "Complete one 4-7-8 session", xp: XP.reset },
 ];
 
 /**
@@ -167,14 +167,14 @@ export const ACHIEVEMENTS: AchievementDef[] = [
   },
   {
     id: "ten-takes",
-    name: "Ten Takes Deep",
-    detail: "Log 10 practice takes",
+    name: "Ten practice takes",
+    detail: "Complete 10 practice takes",
     tier: "bronze",
     test: (s) => s.totalSessions >= 10,
   },
   {
     id: "sixty-minutes",
-    name: "The Sixty",
+    name: "An hour of practice",
     detail: "Sixty total minutes of practice",
     tier: "gold",
     test: (s) => s.totalMinutes >= 60,

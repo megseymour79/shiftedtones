@@ -32,7 +32,7 @@ export default function Progress() {
             Your progress
           </h1>
           <p className="mt-2 text-sm text-muted-foreground">
-            A simple view of your last takes.
+            See your recent practice and how your scores change over time.
           </p>
         </section>
 
@@ -42,7 +42,7 @@ export default function Progress() {
         {(!trendSessions || trendSessions.length < 2) && (
           <NBPanel className="bg-card/70 p-5">
             <p className="text-sm text-muted-foreground">
-              Record at least two takes to see trends.
+              Complete two practice takes to see your score trends.
             </p>
           </NBPanel>
         )}
@@ -57,16 +57,16 @@ export default function Progress() {
               to="/gym"
               className="text-xs font-bold uppercase tracking-widest text-muted-foreground hover:text-ink"
             >
-              Do another →
+              Practice again →
             </Link>
           </div>
           <div className="flex flex-col">
             {recentSessions === undefined && (
-              <p className="p-6 text-sm text-muted-foreground">Loading…</p>
+              <p className="p-6 text-sm text-muted-foreground">Loading recent takes…</p>
             )}
             {recentSessions?.length === 0 && (
               <p className="p-6 text-sm text-muted-foreground">
-                No takes yet. Start your first one in the gym.
+                No practice takes yet. Start with a drill.
               </p>
             )}
             {recentSessions?.map((s) => (
@@ -110,7 +110,7 @@ function ToneTrendsPanel({
         </div>
       </div>
       <p className="px-6 pt-4 text-sm text-muted-foreground">
-        Up arrow means that score has improved recently. Down means it dipped.
+        The arrows show how each score has changed across your recent takes.
       </p>
       <div className="grid gap-4 p-6 sm:grid-cols-2 lg:grid-cols-4">
         {rows.map((r) => {

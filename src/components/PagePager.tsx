@@ -30,7 +30,7 @@ export function PagePager() {
             <ArrowLeft className="size-5 shrink-0 transition-transform group-hover:-translate-x-1" />
             <span className="min-w-0">
               <span className="block text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-                Back — {prev.blurb}
+                Previous — {prev.blurb}
               </span>
               <span className="block truncate font-display text-lg leading-tight">
                 {prev.label}
@@ -61,10 +61,10 @@ export function PagePager() {
           <div className="nb nb-press flex h-full items-center justify-end gap-3 bg-coral p-4 text-right">
             <span className="min-w-0">
               <span className="block text-[10px] font-bold uppercase tracking-widest text-ink/70">
-                The tour ends where the training starts
+                Ready to practice?
               </span>
               <span className="block truncate font-display text-lg leading-tight">
-                Start free
+                Get started
               </span>
             </span>
             <ArrowRight className="size-5 shrink-0 transition-transform group-hover:translate-x-1" />

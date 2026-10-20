@@ -589,14 +589,14 @@ export function useToneCapture(): UseToneCapture {
         setError(
           name === "NotAllowedError" || name === "SecurityError"
             ? isEmbeddedFrame
-              ? "The preview frame is blocking microphone access — no permission prompt can even appear here. Click 'Open in a new tab' below and grant access there. It usually fixes this instant" +
+              ? "This preview can't use your microphone. Open the app in a new tab and allow microphone access there." +
                   OPEN_IN_TAB_HINT
-              : "Microphone access was blocked. Click the lock/camera icon in your browser's address bar, allow the microphone for this site, and try again."
+              : "Microphone access is off. Open this site's settings in your browser, allow microphone access, and try again."
             : name === "NotFoundError" || name === "DevicesNotFoundError"
-              ? "No microphone found. Connect one (or pick the right input in your browser's site settings) and try again."
+              ? "No microphone found. Connect one or choose a different input, then try again."
               : name === "NotReadableError" || name === "TrackStartError"
-                ? "Your microphone is busy — close other apps that might be using it and try again."
-                : "Could not access your microphone. Check that one is connected and try again.",
+                ? "Your microphone is in use by another app. Close that app and try again."
+                : "We couldn't access your microphone. Check that one is connected, then try again.",
         );
       }
     },

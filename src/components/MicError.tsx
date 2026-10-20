@@ -36,7 +36,7 @@ export function MicError({ message }: { message: string }) {
             <ExternalLink className="size-3.5" /> Open in a new tab
           </NBButton>
           <span className="text-[10px] font-bold uppercase tracking-widest text-ink/70">
-            Mic works there
+            Allow microphone access in the new tab
           </span>
         </div>
       )}

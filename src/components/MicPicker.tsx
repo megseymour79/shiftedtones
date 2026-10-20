@@ -87,7 +87,7 @@ export function MicPicker({
   return (
     <div className={cn("flex flex-wrap items-center gap-2", className)}>
       <NBBadge className="bg-paper">
-        <Mic className="size-3" /> Mic
+        <Mic className="size-3" /> Microphone
       </NBBadge>
       <select
         value={selected}
@@ -95,7 +95,7 @@ export function MicPicker({
         className="nb max-w-[220px] bg-card px-2 py-1.5 text-xs font-bold"
         aria-label="Microphone input"
       >
-        <option value="">Default input</option>
+        <option value="">Default microphone</option>
         {devices.map((d) => (
           <option key={d.deviceId} value={d.deviceId}>
             {d.label}
@@ -109,9 +109,9 @@ export function MicPicker({
       )}
       {activeLabel && looksLikeMiclessSpeaker(activeLabel) && (
         <p className="nb w-full bg-sun px-2.5 py-2 text-xs font-medium">
-          “{activeLabel}” looks like a Bluetooth speaker — most can't record.
-          If the next take comes back empty, power the speaker off or switch
-          your phone's audio output back to the phone, then record.
+          “{activeLabel}” looks like a Bluetooth speaker and may not have a
+          microphone. If a take has no sound, disconnect it or switch to your
+          device's built-in microphone.
         </p>
       )}
     </div>

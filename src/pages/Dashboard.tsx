@@ -78,7 +78,7 @@ export default function Dashboard() {
               {dailyLabel()} · your practice
             </p>
             <h1 className="mt-1 font-display text-3xl text-balance sm:text-4xl">
-              Keep your tone steady today
+              What would you like to practice today?
             </h1>
           </div>
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">

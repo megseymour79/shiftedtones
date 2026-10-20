@@ -1,8 +1,6 @@
 /**
- * Perspective lenses — the freedom tool in the Reframe Lab. A narrow
- * perception says "there is one obvious reading of what happened."
- * These lenses are five deliberate, legitimate ways the same moment
- * reads differently — none of them denial, all of them true.
+ * Perspective lenses for the Reframe Lab. Each one offers a different way
+ * to look at the same situation without dismissing what happened.
  */
 
 export interface Lens {
@@ -21,42 +19,42 @@ export interface Lens {
 export const LENSES: Lens[] = [
   {
     id: "author",
-    name: "The Author",
-    idea: "You're writing the story of this moment — with more confidence than the facts deserve.",
-    question: "What details am I adding that I don't actually know?",
-    seed: "Rewrite it with only what a camera would record. Notice how much drama was yours.",
+    name: "The Facts",
+    idea: "It's easy to fill in details when you're trying to make sense of a moment.",
+    question: "What do I know for sure, and what am I assuming?",
+    seed: "Describe only what someone else could have seen or heard.",
     color: "bg-sun",
   },
   {
     id: "their-day",
-    name: "Their Day",
-    idea: "You've been in their position — running late, embarrassed, scared, overwhelmed — and it leaked out sideways.",
-    question: "What might this have nothing to do with me?",
-    seed: "Name three other pressures that could produce the exact same words. They don't excuse it; they explain it.",
+    name: "Their perspective",
+    idea: "The other person's response may have been shaped by something beyond this moment.",
+    question: "What else might be affecting how they responded?",
+    seed: "Consider a few other things they might be dealing with. That doesn't excuse their behavior, but it may offer context.",
     color: "bg-mint",
   },
   {
     id: "next-year",
-    name: "Next Year",
-    idea: "Most spikes flatten with distance. The brain treats now like forever — it isn't.",
-    question: "How big is this from twelve months out?",
-    seed: "Write the one-line version of this you'd tell a friend next year. Usually one sentence, usually a shrug.",
+    name: "Some distance",
+    idea: "A little distance can make it easier to see what matters most.",
+    question: "How might I view this situation a year from now?",
+    seed: "Imagine describing this moment to a friend next year. What would you say?",
     color: "bg-coral",
   },
   {
     id: "ally",
-    name: "The Ally",
-    idea: "The kindest reader of your behavior isn't a pushover — they just refuse the uncharitable draft.",
-    question: "What would someone on my side say I was doing here?",
-    seed: "\"You were protecting ___\" is a legitimate sentence. Fierce and warm can be the same move.",
+    name: "A friend",
+    idea: "A trusted friend might see your intentions more generously than you do.",
+    question: "What might someone who cares about me say about this?",
+    seed: "Try finishing the sentence: “I was trying to…”",
     color: "bg-paper",
   },
   {
     id: "stake",
-    name: "The Stake",
-    idea: "Zoom out on what's actually being decided. Most conflicts are about status or care — name yours.",
-    question: "What do I actually want to be true after this?",
-    seed: "If the answer is \"respect,\" ask for it in a sentence that can be granted. If it's \"closeness,\" same rule.",
+    name: "What matters",
+    idea: "Look beyond the immediate disagreement to what you'd like to happen next.",
+    question: "What would I like to be different after this conversation?",
+    seed: "Name what matters to you, then think about how to ask for it clearly.",
     color: "bg-sun",
   },
 ];

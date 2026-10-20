@@ -1,7 +1,6 @@
 /**
- * The 21-Day Reprogramming Arc — a structured three-week challenge that
- * gives return visits a spine: week one builds the floor (calm), week two
- * builds range (warmth/firmness), week three integrates (translation).
+ * The 21-day practice plan: week one focuses on calm, week two on warmth
+ * and firmness, and week three on applying those skills to real sentences.
  * Pure data + helpers; the Dashboard shows the user's current day and stage.
  */
 
@@ -25,27 +24,27 @@ export const ARC_STAGES: ArcStage[] = [
     name: "The Floor",
     from: 1,
     to: 7,
-    promise: "Calm you can stand on",
-    move: "One Steady Ground take a day, plus the reset",
-    why: "You can't pick a tone under pressure if calm isn't your default. Week one makes it the default.",
+    promise: "Build a steady foundation",
+    move: "Try Steady Ground once a day, then take a moment to reset.",
+    why: "Start by practicing a steady tone so it's easier to find when a conversation feels difficult.",
   },
   {
     id: "range",
     name: "The Range",
     from: 8,
     to: 14,
-    promise: "Warmth and firmness on demand",
-    move: "Alternate Warm Open and Firm & Clear; keep the daily reset",
-    why: "With the floor under you, week two stretches the extremes — the two tones most people can't switch between.",
+    promise: "Practice warmth and clarity",
+    move: "Alternate Warm Open and Firm & Clear, and keep up your daily reset.",
+    why: "Practice expressing warmth and setting a clear boundary in different situations.",
   },
   {
     id: "translate",
     name: "The Translation",
     from: 15,
     to: 21,
-    promise: "Say it again the way you mean it",
-    move: "One Translation Drill a day, any second drill you like",
-    why: "The last week connects the training to real sentences — the ones you actually have to say.",
+    promise: "Match your tone to your words",
+    move: "Try one Translation Drill a day, plus another drill if you'd like.",
+    why: "Use the final week to practice saying everyday things in the way you intend.",
   },
 ];
 

@@ -108,10 +108,10 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
         </div>
         <div>
           <h2 className="font-display text-4xl leading-tight text-balance">
-            The voice is honest.
+            Notice how you sound.
             <br />
             <span className="text-sun">
-              <span className="italic">Train</span> it.
+              Practice how you want to respond.
             </span>
           </h2>
           <p className="mt-5 max-w-sm text-sm leading-relaxed text-paper/70">

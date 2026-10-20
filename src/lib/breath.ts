@@ -13,15 +13,15 @@ export const BREATH_SEQUENCE: { phase: BreathPhase; seconds: number }[] = [
 
 export const BREATH_LABELS: Record<BreathPhase, string> = {
   in: "Breathe in",
-  hold: "Hold it",
+  hold: "Pause",
   out: "Breathe out",
 };
 
 /** Coaching line per phase — short enough to read mid-breath. */
 export const BREATH_CUES: Record<BreathPhase, string> = {
-  in: "Through the nose. Shoulders down.",
-  hold: "Nothing to do. Just this.",
-  out: "Slow, through the mouth. Let the pace go with it.",
+  in: "Breathe in gently through your nose.",
+  hold: "Pause and stay comfortable.",
+  out: "Breathe out slowly through your mouth.",
 };
 
 export const BREATH_TOTAL_MS =

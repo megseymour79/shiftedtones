@@ -30,15 +30,15 @@ export default function Drills() {
     <PublicLayout>
       <section className="nb-grid-dots border-b-2 border-ink">
         <div className="mx-auto max-w-6xl px-4 py-14 lg:py-16">
-          <NBBadge className="bg-mint text-ink">The drill floor</NBBadge>
+          <NBBadge className="bg-mint text-ink">Practice drills</NBBadge>
           <h1 className="mt-4 font-display text-4xl leading-tight sm:text-5xl">
-            Drills for the moments that{" "}
-            <span className="italic text-coral">get to you</span>
+            Practice for the moments that{" "}
+            <span className="italic text-coral">matter</span>
           </h1>
           <p className="mt-4 max-w-xl text-lg leading-relaxed text-muted-foreground">
-            Calm when you're annoyed, warmth when you mean it, and a no that
-            doesn't wobble. Each one is 30–45 seconds out loud — the prompt is
-            given; you bring the honesty.
+            Practice staying calm, speaking warmly, and setting clear
+            boundaries. Each drill takes 30–45 seconds and gives you a prompt
+            to respond to.
           </p>
         </div>
       </section>
@@ -62,7 +62,7 @@ export default function Drills() {
             </div>
             <Link to="/auth">
               <NBButton variant="ink" className="text-xs">
-                <Mic className="size-3.5" /> Do today's take
+                <Mic className="size-3.5" /> Try today's drill
               </NBButton>
             </Link>
           </div>
@@ -74,7 +74,7 @@ export default function Drills() {
         <div className="mx-auto max-w-6xl px-4 py-14">
           <div className="mb-4 flex items-center justify-between gap-3">
             <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Page {page} of {totalPages}</p>
-            <p className="text-xs text-muted-foreground">Fewer cards per page to keep things focused.</p>
+            <p className="text-xs text-muted-foreground">Showing a few drills at a time.</p>
           </div>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-2">
             {visibleDrills.map((drill, i) => {
@@ -125,7 +125,7 @@ export default function Drills() {
                           variant={isToday ? "coral" : "paper"}
                           className="w-full py-2 text-xs"
                         >
-                          {isToday ? "Take today's challenge" : "Try this drill"}{" "}
+                          {isToday ? "Try today's drill" : "Start this drill"}{" "}
                           <ArrowRight className="size-3.5" />
                         </NBButton>
                       </Link>

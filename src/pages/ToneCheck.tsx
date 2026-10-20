@@ -31,15 +31,14 @@ export default function ToneCheck() {
     <PublicLayout>
       <section className="nb-grid-dots border-b-2 border-ink">
         <div className="mx-auto max-w-6xl px-4 py-14 lg:py-16">
-          <NBBadge className="bg-coral text-ink">60-second tone check</NBBadge>
+          <NBBadge className="bg-coral text-ink">One-minute tone check</NBBadge>
           <h1 className="mt-4 font-display text-4xl leading-tight sm:text-5xl">
-            Everyone has a default.{" "}
-            <span className="italic text-coral">What's yours?</span>
+            We all have habits under pressure.{" "}
+            <span className="italic text-coral">What are yours?</span>
           </h1>
           <p className="mt-4 max-w-xl text-lg leading-relaxed text-muted-foreground">
-            Under pressure, we all reach for the same moves. Three quick
-            questions and you'll see yours — plus the drill built specifically
-            for it. No mic, no account, no wrong answers.
+            Answer three quick questions to spot some of your usual reactions
+            and get a drill to practice. No microphone or account needed.
           </p>
         </div>
       </section>
@@ -98,7 +97,7 @@ export default function ToneCheck() {
                 <div className="mt-6 flex flex-wrap gap-3">
                   <Link to="/auth">
                     <NBButton variant="coral" className="text-sm">
-                      <Mic className="size-4" /> Train it now
+                      <Mic className="size-4" />                       Practice this
                     </NBButton>
                   </Link>
                   <NBButton variant="paper" onClick={restartTone} className="text-sm">
@@ -110,7 +109,7 @@ export default function ToneCheck() {
           </NBPanel>
 
           <p className="mt-6 flex items-center justify-center gap-2 text-center text-xs font-bold uppercase tracking-widest text-muted-foreground">
-            <Timer className="size-4" /> Takes less time than the coffee you're drinking
+            <Timer className="size-4" /> Takes about a minute
           </p>
         </div>
       </section>

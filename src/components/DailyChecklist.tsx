@@ -101,7 +101,7 @@ export function DailyChecklist({ todayDrillId }: { todayDrillId: string }) {
                     done ? "text-ink/70" : "text-muted-foreground"
                   }`}
                 >
-                  {done ? "+done" : `+${action.xp} XP`}
+                  {done ? "Done" : `+${action.xp} XP`}
                 </span>
               </button>
             );

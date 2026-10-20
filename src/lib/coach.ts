@@ -52,7 +52,8 @@ Hard rules:
 - Cite at least one of their real numbers ("your pace hit 186 wpm", "only 14 Hz of pitch movement").
 - If they gave context about the moment (who the take was aimed at, what it was responding to), tie the advice to that moment — the same pace reads as calm in an apology and as curt in a boundary.
 - Give exactly one actionable instruction. Never a list.
-- Coach voice: direct, warm, concrete — like someone who watched the tape. "Your pace spiked" not "Consider exploring pacing".
+- Use natural, conversational language. Be warm, clear, and specific without sounding overly casual or dramatic.
+- Avoid slang, jargon, and metaphors. "Your pace was quick" is better than "the tempo argued."
 - BANNED: praise openers, therapy-speak ("I hear you", "that's valid", "you're doing amazing"), hedging, exclamation marks, emoji.
 - If the take is strong, say so in five words or fewer and still give one refinement.
 
@@ -62,10 +63,10 @@ Reply with STRICT JSON only (no markdown fences), shaped exactly:
 Examples of the required voice:
 
 User numbers: pace 188 wpm, tone rushed, voiced 61%, overall 58.
-{"feedback": "Your pace hit 188 wpm — the words were calm but the tempo argued. At that speed listeners track the hurry, not the point. Take the final sentence at 150 and let it land.","oneThing": "Last sentence at 150 wpm"}
+{"feedback": "Your pace was 188 wpm, which may make it harder for listeners to follow. Try slowing the last sentence to about 150 wpm and see how it feels.","oneThing": "Try 150 wpm on the last sentence"}
 
 User numbers: pitch range 14 Hz, tone flat, stability 82, overall 71.
-{"feedback": "Only 14 Hz of pitch movement across the whole take — that flatness makes good words sound rehearsed. Stability was solid at 82, so the foundation is there. Lift the one word you most want remembered.","oneThing": "Lift one key word"}`;
+{"feedback": "Your pitch changed by 14 Hz across the take, so your delivery may have sounded quite even. Try letting your voice lift on the one word you want people to remember.","oneThing": "Lift one key word"}`;
 
 /** Compact, number-forward user message for the LLM. */
 export function buildCoachUserContent(t: CoachTakeInput): string {
@@ -157,28 +158,28 @@ export function fallbackCoachNote(t: CoachTakeInput): CoachReply {
   let oneThing: string;
   switch (signal) {
     case "pace":
-      feedback = `Your pace landed at ${t.wordsPerMinute} wpm — past the line where listeners start tracking the hurry instead of the point. The fix is one sentence long: take the last one slower. Speak it at about ${Math.max(Math.round(t.wordsPerMinute * 0.8), 110)} and let the final word arrive late.`;
-      oneThing = "Final sentence at 80% of that pace";
+      feedback = `Your pace was ${t.wordsPerMinute} wpm, which may make it harder for listeners to follow. Try slowing the last sentence to about ${Math.max(Math.round(t.wordsPerMinute * 0.8), 110)} wpm.`;
+      oneThing = "Slow down for the last sentence";
       break;
     case "pitch range":
-      feedback = `Only ${t.pitchRangeHz} Hz of pitch movement across ${Math.round(t.durationSec)} seconds — that's the flatness that makes true words sound rehearsed. Pick the one word that matters most in what you said and let it rise a step. Everything else can stay exactly where it was.`;
-      oneThing = "Let one key word rise";
+      feedback = `Your pitch changed by ${t.pitchRangeHz} Hz across the take, so your delivery may have sounded quite even. Try letting your voice lift on the word you most want people to remember.`;
+      oneThing = "Lift one key word";
       break;
     case "stability":
-      feedback = `Stability scored ${t.stabilityScore}/100 — your pitch wandered between points instead of choosing spots. Decide your ending pitch before you start, and land on it rather than trailing off. Trailing is the sound of asking permission.`;
-      oneThing = "Choose the ending pitch, land on it";
+      feedback = `Your stability score was ${t.stabilityScore}/100, and your pitch shifted between points. Decide how you'd like your last word to sound, then finish it clearly.`;
+      oneThing = "Finish the last word clearly";
       break;
     case "clarity":
-      feedback = `Clarity is your soft spot this take (${t.clarityScore}/100) — pressure wobbled more than the words did, with volume variability at ${t.volumeVariability}. Keep your last three words at the same force as your first three. Endings are what people repeat to themselves.`;
-      oneThing = "Hold volume even through the last three words";
+      feedback = `Your clarity score was ${t.clarityScore}/100, and your volume varied by ${t.volumeVariability}. Try keeping your volume steady through the last few words.`;
+      oneThing = "Keep your volume steady to the end";
       break;
     case "calm":
-      feedback = `Calm came in at ${t.calmScore}/100 — pace and pressure crept up together, and you were voiced only ${voiced}% of the take. Breathe in before the first sentence and speak on the exhale. The whole take inherits that first breath.`;
-      oneThing = "First sentence on the exhale";
+      feedback = `Your calm score was ${t.calmScore}/100, and your voice was active for ${voiced}% of the take. Take a breath before you start, then slow down as you speak.`;
+      oneThing = "Pause for a breath before you start";
       break;
     case "energy":
-      feedback = `Energy scored ${t.energyScore}/100 — the take is controlled but it's sitting in one gear. Let one genuine reaction reach your voice, not just your word choice. Presence is a sound before it's a fact.`;
-      oneThing = "Let one real reaction reach your voice";
+      feedback = `Your energy score was ${t.energyScore}/100, and your delivery stayed fairly consistent. Try bringing a little more energy to one word that matters to you.`;
+      oneThing = "Emphasize one important word";
       break;
   }
   return { feedback, oneThing };
