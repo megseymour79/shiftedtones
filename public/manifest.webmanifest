@@ -1,7 +1,7 @@
 {
   "name": "ShiftedTone",
   "short_name": "ShiftedTone",
-  "description": "Train the tone that carries what you mean.",
+  "description": "Build a steadier, more thoughtful speaking tone.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#f7f1e8",

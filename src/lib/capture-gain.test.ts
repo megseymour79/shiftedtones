@@ -240,7 +240,7 @@ describe("dead-take verdicts", () => {
     expect(msg).toContain("JBL Flip 5");
     expect(msg).toMatch(/no usable microphone/i);
     // …and gives the phone-specific fix, not the in-app-picker one.
-    expect(msg).toMatch(/audio-route|unpair/i);
+    expect(msg).toMatch(/audio[- ]route|unpair/i);
     expect(msg).not.toContain("switch it below");
   });
 });
