@@ -12,8 +12,8 @@ import { cn } from "@/lib/utils";
  * ready-made goal line (Reframe prefills its goal field with it).
  */
 export function ResponsePlanner({
-  title = "Think it through before take two",
-  intro = "Four questions, sixty seconds. The difference between reacting and responding is almost never the words — it's what you decided underneath them.",
+  title = "Think it through first",
+  intro = "Take a moment to consider what you want to say and how you want it to come across.",
   accent = "bg-paper",
   onGoalPick,
 }: {
@@ -71,11 +71,11 @@ export function ResponsePlanner({
                 <div className="flex flex-col gap-3 border-t-2 border-dashed border-ink/20 px-4 py-3 text-sm">
                   <p className="leading-relaxed text-muted-foreground">{step.why}</p>
                   <p className="leading-relaxed">
-                    <span className="font-bold">Work it out: </span>
+                    <span className="font-bold">Try this: </span>
                     {step.how}
                   </p>
                   <p className="nb bg-secondary p-3 text-xs leading-relaxed">
-                    <span className="font-bold uppercase tracking-widest">Gut-check: </span>
+                    <span className="font-bold uppercase tracking-widest">Check in: </span>
                     {step.check}
                   </p>
                 </div>
@@ -88,7 +88,7 @@ export function ResponsePlanner({
       {/* Message kinds — step four made concrete */}
       <div className="border-t-2 border-ink bg-secondary/60 px-5 py-5">
         <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-          What kind of message is this? Tap one:
+          What kind of message is this? Choose one:
         </p>
         <div className="mt-3 flex flex-wrap gap-2">
           {MESSAGE_KINDS.map((kind) => {
@@ -115,11 +115,11 @@ export function ResponsePlanner({
             {MESSAGE_KINDS.filter((k) => k.id === openKind).map((kind) => (
               <div key={kind.id} className="flex flex-col gap-3">
                 <p className="leading-relaxed text-muted-foreground">
-                  <span className="font-bold text-ink">You'll know it's this when: </span>
+                  <span className="font-bold text-ink">This may fit if: </span>
                   {kind.cue}
                 </p>
                 <p className="leading-relaxed">
-                  <span className="font-bold">Shape it like: </span>
+                  <span className="font-bold">You could: </span>
                   {kind.shape}
                 </p>
                 <p className="nb bg-mint/40 p-3 font-medium leading-snug">{kind.ending}</p>
@@ -129,7 +129,7 @@ export function ResponsePlanner({
                     onClick={() => onGoalPick(KIND_GOAL_HINTS[kind.id] ?? kind.label.toLowerCase())}
                     className="self-start text-[10px] font-bold uppercase tracking-widest text-coral hover:underline"
                   >
-                    Use as my goal →
+                    Use this as my goal →
                   </button>
                 )}
               </div>

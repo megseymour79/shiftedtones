@@ -143,8 +143,8 @@ function QuizCard({
             >
               <p className="max-w-md text-sm italic text-muted-foreground">
                 {picked === question.best
-                  ? "That's the one. Notice how it felt to choose warmth *and* a spine."
-                  : "No shame — the pull you felt toward your pick is exactly the reflex worth studying."}
+                  ? "That response is clear and considerate. Notice what felt natural about it."
+                  : "There's no wrong answer here. Notice what led you to choose that response."}
               </p>
               <NBButton variant="paper" onClick={reset} className="text-xs">
                 <ArrowRight className="size-3.5" /> Re-read it
@@ -174,14 +174,13 @@ export default function Quiz() {
 
         <div>
           <h1 className="font-display text-2xl">
-            No mic needed — just{" "}
-            <span className="italic text-coral">judgment</span>
+              Practice reading a situation,{" "}
+              <span className="italic text-coral">no mic needed</span>
           </h1>
           <p className="mt-2 max-w-lg text-sm text-muted-foreground">
-            Tone starts before you speak. Each scenario is a real moment — pick
-            the reply you'd actually send, then see what it would broadcast.
-            Today's is featured; the rest are there when you want them
-            ({DAILY_ANGLES.length * 4 + 2} total, new one daily).
+            Choose the reply you'd send in each scenario, then see how it might
+            come across. There's a featured scenario each day, with{" "}
+            {DAILY_ANGLES.length * 4 + 2} scenarios to explore.
           </p>
           <p className="mt-2 text-xs font-bold uppercase tracking-widest text-muted-foreground">
             {dailyLabel()}
@@ -237,10 +236,10 @@ function LeakCard({ scenario }: { scenario: LeakScenario }) {
       <div className="flex items-center justify-between border-b-2 border-ink bg-ink px-5 py-3 text-paper">
         <div className="flex items-center gap-2">
           <Ear className="size-4" />
-          <span className="font-display text-sm">Catch the Leak — ear training</span>
+          <span className="font-display text-sm">Listen for the tone</span>
         </div>
         <span className="hidden text-[10px] font-bold uppercase tracking-widest text-paper/60 sm:block">
-          What the voice says under the words
+          Notice how delivery changes the message
         </span>
       </div>
       <div className="p-6">
@@ -282,7 +281,7 @@ function LeakCard({ scenario }: { scenario: LeakScenario }) {
         </div>
         {picked !== null && picked !== scenario.answer && (
           <p className="mt-3 text-center text-xs font-bold uppercase tracking-widest text-muted-foreground">
-            Everyone misses this one. That's why it trains.
+            This detail can be easy to miss. That's why it's worth practicing.
           </p>
         )}
       </div>

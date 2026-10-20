@@ -130,13 +130,13 @@ export function deadTakeReason(
 /** The user-facing message for each dead-take verdict. */
 export const DEAD_TAKE_MESSAGES: Record<DeadTakeReason, string> = {
   muted:
-    "We heard nothing at all — check that the right mic is selected and that it isn't muted (browser permissions, system input volume, or a hardware mute switch).",
+    "We didn't pick up any sound. Check that the right microphone is selected and isn't muted, then try again.",
   "too-quiet":
-    "We could barely hear you. Move closer to the mic, raise your input volume in system settings, and try again.",
+    "We could barely hear you. Move closer to your microphone or raise its input volume, then try again.",
   soft:
-    "You're coming through, just faintly — get a little closer to the mic and speak up.",
+    "Your voice came through quietly. Move closer to your microphone and try again.",
   "no-speech":
-    "That take was too short to score — speak a few full sentences and stop when you're done.",
+    "There wasn't enough speech to score this take. Try speaking for a few full sentences.",
 };
 
 /**
@@ -157,8 +157,8 @@ export function looksLikeMiclessSpeaker(label: string): boolean {
 /** The message for a take recorded from an input that looks like a speaker. */
 function speakerTakeMessage(trackLabel: string): string {
   return (
-    `That take was recorded from “${trackLabel}” — a speaker, which has no usable microphone, so nothing you said reached the app. ` +
-    "Power the speaker off or unpair it (on iPhone: Control Center → tap the audio-route button → iPhone), then record again and your phone's built-in mic will be used."
+    `This take used “${trackLabel},” a speaker with no usable microphone, so we didn't receive any audio. ` +
+    "Turn off or disconnect the speaker. On iPhone, open Control Center and switch the audio route to iPhone, then try again."
   );
 }
 
@@ -181,7 +181,7 @@ export function deadTakeMessageFor(
 ): string {
   if (reason !== "muted") return DEAD_TAKE_MESSAGES[reason];
   if (trackMuted) {
-    return "Your microphone opened but reported itself muted the whole take. Check the OS microphone privacy setting for your browser, close apps that may hold the mic (Zoom, Teams, Discord), then try again.";
+    return "Your microphone stayed muted during the take. Check your device's microphone privacy settings and close other apps that may be using it, then try again.";
   }
   if (trackLabel && looksLikeMiclessSpeaker(trackLabel)) {
     return speakerTakeMessage(trackLabel);
@@ -189,7 +189,7 @@ export function deadTakeMessageFor(
   if (trackLabel) {
     return (
       DEAD_TAKE_MESSAGES.muted +
-      ` Active input: “${trackLabel}” — if that isn't your real microphone (e.g. a virtual cable or “Stereo Mix”), switch it below and try again.`
+      ` Active input: “${trackLabel}.” If that's not the microphone you want to use, choose another input below and try again.`
     );
   }
   return DEAD_TAKE_MESSAGES.muted;

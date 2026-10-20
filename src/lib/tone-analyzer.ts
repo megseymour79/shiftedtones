@@ -452,11 +452,11 @@ export interface FactorFeedback {
 }
 
 function paceVerdict(wpm: number): string {
-  if (wpm > 190) return `Very fast — ${wpm} wpm outruns most listeners`;
-  if (wpm > 165) return `Brisk at ${wpm} wpm`;
-  if (wpm >= 100) return `Comfortable conversational pace (${wpm} wpm)`;
-  if (wpm >= 70) return `Measured pace (${wpm} wpm)`;
-  return `Slow — ${wpm} wpm can read as uncertain`;
+  if (wpm > 190) return `A very fast pace (${wpm} wpm)`;
+  if (wpm > 165) return `A quick pace (${wpm} wpm)`;
+  if (wpm >= 100) return `A conversational pace (${wpm} wpm)`;
+  if (wpm >= 70) return `A slower pace (${wpm} wpm)`;
+  return `A slow pace (${wpm} wpm)`;
 }
 
 function statusFor(score: number): FactorFeedback["status"] {
@@ -474,8 +474,8 @@ export function buildFactorFeedback(a: ToneAnalysis): Record<FactorKey, FactorFe
   const trending =
     Math.abs(a.volumeTrend) >= 0.2
       ? a.volumeTrend < 0
-        ? " and your volume faded as you went"
-        : " and your volume climbed as you went"
+        ? " and your volume got quieter as you went"
+        : " and your volume got louder as you went"
       : "";
 
   const calm: FactorFeedback = {
@@ -484,23 +484,23 @@ export function buildFactorFeedback(a: ToneAnalysis): Record<FactorKey, FactorFe
     read:
       `${paceVerdict(a.wordsPerMinute)}` +
       (a.avgVolume > 0.28
-        ? ", and your level ran hot — that much pressure reads as intensity"
+        ? ", and your volume was high"
         : a.avgVolume > 0
-          ? ", at a controlled level"
+          ? ", at a comfortable volume"
           : "") +
       trending +
       ".",
     yourNumbers: `${a.wordsPerMinute} wpm · avg level ${Math.round(a.avgVolume * 100)}% · ${Math.round(a.voicedRatio * 100)}% voiced`,
     tip:
       a.wordsPerMinute > 165
-        ? `You were moving fast (${a.wordsPerMinute} wpm). Practice: end every sentence with a full stop — one silent beat before the next thought starts.`
+        ? `You spoke quickly (${a.wordsPerMinute} wpm). Try pausing briefly between sentences.`
         : a.wordsPerMinute < 90
-          ? `At ${a.wordsPerMinute} wpm, gaps between thoughts read as hesitation. Practice: rehearse the sentence once out loud, then say it without re-deciding mid-way.`
+          ? `Your pace was ${a.wordsPerMinute} wpm, with longer pauses between thoughts. Try saying the sentence once out loud before recording.`
           : a.avgVolume > 0.28
-            ? "Your level ran hot. Practice: speak at 80% of what feels natural — listeners hear calm at the level you think is too quiet."
+            ? "Your volume was high. Try lowering it slightly while keeping your voice clear."
             : trending
-              ? "Your pace drifted across the take. Practice: pick one tempo and hold it for the first two sentences before allowing any change."
-              : "Pace and pressure are in the pocket. Practice: keep this baseline and add deliberate pauses where the point lands.",
+              ? "Your volume changed during the take. Try keeping it steady for the first two sentences."
+              : "Your pace and volume were steady. Keep this approach and pause when you want to emphasize a point.",
   };
 
   const energy: FactorFeedback = {
@@ -508,19 +508,19 @@ export function buildFactorFeedback(a: ToneAnalysis): Record<FactorKey, FactorFe
     status: statusFor(a.energyScore),
     read:
       a.pitchRangeHz < 25
-        ? `Your pitch stayed inside a ${a.pitchRangeHz} Hz window — that's a near-monotone delivery, which reads as checked-out even when you're not.`
+        ? `Your pitch changed by ${a.pitchRangeHz} Hz, so your delivery may have sounded quite even.`
         : a.pitchRangeHz > 120
-          ? `Your pitch covered ${a.pitchRangeHz} Hz — a wide, expressive range that reads as lively.`
-          : `Your pitch moved ${a.pitchRangeHz} Hz across the take — some lift, but the big moments could travel further.` + trending,
+          ? `Your pitch varied by ${a.pitchRangeHz} Hz, adding expression to your delivery.`
+          : `Your pitch varied by ${a.pitchRangeHz} Hz during the take.` + trending,
     yourNumbers: `${a.pitchRangeHz} Hz range · avg ${a.avgPitchHz} Hz · level ${Math.round(a.avgVolume * 100)}%`,
     tip:
       a.pitchRangeHz < 25
-        ? "Practice: take one sentence and exaggerate — stress two nouns and one verb so hard it feels theatrical, then dial back 20%. That's your real range."
+        ? "Try letting your pitch rise on one or two important words."
         : a.avgVolume < 0.08
-          ? "Practice: record from a hand-span away. Presence comes from consistent closeness to the mic, not from pushing your voice."
+          ? "Move a little closer to the microphone so your voice comes through clearly."
           : a.pitchRangeHz < 60
-            ? "Practice: pick the single most important word in each sentence and let your pitch rise on it. One word per sentence is enough."
-            : "Your range is working. Practice: put the movement on your point words — first and last word of the key phrase — and let connective tissue stay level.",
+            ? "Choose one important word in each sentence and give it a little emphasis."
+            : "Your pitch varied throughout the take. Keep that natural movement on the words that matter.",
   };
 
   const clarity: FactorFeedback = {
@@ -528,20 +528,20 @@ export function buildFactorFeedback(a: ToneAnalysis): Record<FactorKey, FactorFe
     status: statusFor(a.clarityScore),
     read:
       a.volumeVariability > 0.09
-        ? `Your force wobbled — loudness swung ${Math.round(a.volumeVariability * 100)}% around its average, so some syllables arrive much harder than others.`
-        : `Your force stayed steady (loudness held within ${Math.round(a.volumeVariability * 100)}%), which is what makes words feel landed rather than thrown.` +
+        ? `Your volume changed by about ${Math.round(a.volumeVariability * 100)}% during the take, so some words may have sounded louder than others.`
+        : `Your volume stayed fairly steady (within ${Math.round(a.volumeVariability * 100)}%).` +
           (a.voicedRatio < 0.5
-            ? ` Only ${Math.round(a.voicedRatio * 100)}% of the take was clearly voiced — the rest sat in the noise between words.`
+            ? ` We detected speech during ${Math.round(a.voicedRatio * 100)}% of the take; the rest may have been too quiet.`
             : ""),
-    yourNumbers: `loudness wobble ±${Math.round(a.volumeVariability * 100)}% · ${Math.round(a.voicedRatio * 100)}% voiced`,
+    yourNumbers: `volume change ±${Math.round(a.volumeVariability * 100)}% · ${Math.round(a.voicedRatio * 100)}% speech detected`,
     tip:
       a.volumeVariability > 0.09
-        ? "Practice: read the same sentence three times, keeping your belly at the same tension. The variation usually comes from breath, not intent."
+        ? "Try reading the same sentence three times, keeping your volume steady."
         : a.voicedRatio < 0.5
-          ? "Practice: close the gaps — finish each word fully before the pause instead of letting endings dissolve into air."
+          ? "Finish each word clearly before pausing."
           : a.wordsPerMinute > 190 || a.wordsPerMinute < 70
-            ? `At ${a.wordsPerMinute} wpm you're outside the intelligible band. Practice: target 120–140 — roughly two words per second.`
-            : "Pressure control is solid. Practice: keep it while varying pitch — steady force + moving pitch is the whole 'confident' sound.",
+            ? `Your pace was ${a.wordsPerMinute} wpm. Try speaking at a more conversational pace, around 120–140 wpm.`
+            : "Your volume was steady. Keep it even while letting your pitch move naturally.",
   };
 
   const stability: FactorFeedback = {
@@ -549,20 +549,20 @@ export function buildFactorFeedback(a: ToneAnalysis): Record<FactorKey, FactorFe
     status: statusFor(a.stabilityScore),
     read:
       a.pitchTrend > 0.05
-        ? `Your pitch drifted upward across the take (${Math.round(a.pitchTrend * 100)}%) — the sound of tension accumulating rather than a choice.`
+        ? `Your pitch rose by ${Math.round(a.pitchTrend * 100)}% over the take. Try keeping your pitch steady if that's the tone you want.`
         : a.pitchTrend < -0.05
-          ? `Your pitch sank ${Math.round(-a.pitchTrend * 100)}% across the take — statements started sounding like doubts.`
-          : `Your pitch held its center (${Math.round(a.avgPitchHz)} Hz average, ${Math.round(a.pitchRangeHz)} Hz of movement) — you stayed on your chosen note.` +
-            (a.voicedRatio < 0.15 ? " With more voiced audio this measure gets far more reliable." : ""),
+          ? `Your pitch dropped by ${Math.round(-a.pitchTrend * 100)}% over the take. Try finishing your statements at a steady pitch.`
+          : `Your pitch stayed near ${Math.round(a.avgPitchHz)} Hz on average, with ${Math.round(a.pitchRangeHz)} Hz of movement.` +
+            (a.voicedRatio < 0.15 ? " This score may be less reliable because we detected little speech." : ""),
     yourNumbers: `drift ${a.pitchTrend > 0 ? "+" : ""}${Math.round(a.pitchTrend * 100)}% · center ${a.avgPitchHz} Hz`,
     tip:
       a.pitchTrend > 0.05
-        ? "Practice: start your take deliberately LOW — a full step below comfortable. Upward drift has nowhere to go, and low starts read as authority."
+        ? "Pause before you start, then try to keep your pitch steady."
         : a.pitchTrend < -0.05
-          ? "Practice: rehearse the final sentence separately and give its last three words a small upward step. Endings set how certain you sound."
+          ? "Practice the final sentence separately and finish it clearly."
           : a.pitchRangeHz < 25
-            ? "Holding steady is good — now add movement. Practice: keep the center, move the edges."
-            : "Pitch discipline is there. Practice: keep it under interruption — have someone cut you off mid-sentence and resume at the same note.",
+            ? "Your pitch stayed steady. Try adding a little movement to important words."
+            : "Your pitch stayed consistent. Practice keeping it steady when you pause or restart.",
   };
 
   return { calm, energy, clarity, stability };
@@ -602,26 +602,26 @@ export const TONE_FACTORS: Record<
   calm: {
     label: "Calm",
     color: "bg-mint text-ink",
-    how: "Rates your pace against a ~130 wpm conversational ideal, your average loudness, and how much of the take was actually voiced. Rushing, overpowering volume, or dropping into unvoiced gaps all cost points.",
-    goal: "Even conversational pace, moderate volume, and staying voiced — the sound of someone with nothing to prove.",
+    how: "Rates your pace against a conversational average of about 130 wpm, your average volume, and how much of the take contains speech (voiced time). Faster speech, high volume, or long gaps can lower the score.",
+    goal: "Aim for a conversational pace, comfortable volume, and steady speech without long gaps.",
   },
   energy: {
     label: "Energy",
     color: "bg-sun text-ink",
-    how: "Blends how far your pitch traveled across the take with how much presence your volume carried. A flat, faint delivery reads as low energy even when the words are good.",
-    goal: "Let pitch genuinely move on the words that matter, and keep your voice audible from the first word to the last.",
+    how: "Looks at how much your pitch changed during the take and how loud your voice was. More pitch movement can add expression; very little movement or low volume can make a take sound less expressive.",
+    goal: "Let your pitch move naturally on important words, and keep your voice clear from start to finish.",
   },
   clarity: {
     label: "Clarity",
     color: "bg-paper text-ink",
-    how: "Rewards steady force (volume that doesn't wobble), a healthy voiced ratio, pace inside the intelligible band, and a tonal — not hissy — spectrum. Wobbling pressure and noise-dominated frames cost the most.",
-    goal: "Hold the same force from your first three words to your last three — nothing swallowed, nothing rushed past the listener.",
+    how: "Uses volume consistency, voiced ratio, speaking pace, and spectral flatness (how tonal rather than hissy the audio sounds) to estimate how clearly speech comes through.",
+    goal: "Keep your volume steady, finish your words clearly, and leave enough time for listeners to follow.",
   },
   stability: {
     label: "Stability",
     color: "bg-secondary text-ink",
-    how: "Measures how consistently your pitch holds — the relative spread of your voiced frames plus frame-to-frame pitch jitter. If too little of the take is voiced, it scores low rather than guessing from noise.",
-    goal: "Choose an ending pitch before you start and land on it. Wander less, and never let the last word fall away.",
+    how: "Measures how much your pitch changes during the take, including small frame-to-frame shifts called jitter. If there isn't enough voiced speech, the score is lower rather than estimated from background noise.",
+    goal: "Aim for a steady pitch and finish your sentences clearly.",
   },
 };
 
@@ -632,62 +632,62 @@ export const TONE_LABELS: Record<
 > = {
   calm: {
     label: "CALM",
-    note: "Steady pressure and even pacing. This is the baseline to return to.",
+    note: "Your pace and volume stayed steady. Try building on that in your next take.",
     color: "bg-mint text-ink",
   },
   engaged: {
     label: "ENGAGED",
-    note: "Lively pitch movement and presence. Great for storytelling and buy-in.",
+    note: "Your pitch moved and your voice had presence. This can help keep listeners engaged.",
     color: "bg-sun text-ink",
   },
   tense: {
     label: "TENSE",
-    note: "High pressure with sharp pitch swings. Exhale first, then speak.",
+    note: "Your volume was high and your pitch varied. Pause and take a breath before your next take.",
     color: "bg-coral text-ink",
   },
   rushed: {
     label: "RUSHED",
-    note: "Fast pacing outruns your listener. Land the period. Then breathe.",
+    note: "You spoke quickly. Try slowing down to give listeners more time to follow.",
     color: "bg-coral text-ink",
   },
   irritated: {
     label: "IRRITATED",
-    note: "Pitch and pressure climbed together — the take escalated as it went. Exhale, then restart at half the heat.",
+    note: "Your pitch and volume increased during the take. Pause, then try speaking more slowly and evenly.",
     color: "bg-coral text-ink",
   },
   "passive-aggressive": {
     label: "PASSIVE-AGGRESSIVE",
-    note: "Pitch rose while volume faded — the classic \"fine, whatever.\" Say the true sentence at one even level.",
+    note: "Your pitch rose as your volume dropped. Try saying the sentence with an even volume.",
     color: "bg-sun text-ink",
   },
   "holding-back": {
     label: "HOLDING BACK",
-    note: "You trailed off — the end of the thought got swallowed. Finish sentences at the volume you started them.",
+    note: "Your volume faded toward the end. Try finishing at the same volume you started.",
     color: "bg-paper text-ink",
   },
   confused: {
     label: "CONFUSED",
-    note: "Quiet, wandering pitch that drifts upward. Pick your last word and land on it — certainty is mostly commitment.",
+    note: "Your voice was quiet and your pitch shifted upward. Try ending the sentence clearly.",
     color: "bg-secondary text-ink",
   },
   suspicious: {
     label: "SUSPICIOUS",
-    note: "Slow, measured, with pitch sinking — you sound like you're checking someone. Let the final phrase lift a little.",
+    note: "Your pace was slow and your pitch dropped. If you want to sound curious, let the final phrase lift a little.",
     color: "bg-secondary text-ink",
   },
   flat: {
     label: "FLAT",
-    note: "Narrow pitch range reads as disengaged. Let key words rise.",
+    note: "Your pitch stayed in a narrow range. Try letting it move on important words.",
     color: "bg-paper text-ink",
   },
   quiet: {
     label: "QUIET",
-    note: "Low signal — we could barely hear you. Speak into the mic directly.",
+    note: "We could barely hear your voice. Move closer to the microphone or raise its input volume.",
     color: "bg-paper text-ink",
   },
   mixed: {
     label: "MIXED",
-    note: "Shifting between modes. Pick one intention for the whole take.",
+    note: "Your delivery changed during the take. Choose one intention and practice speaking to it.",
     color: "bg-secondary text-ink",
   },
 };

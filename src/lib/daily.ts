@@ -22,13 +22,13 @@ export interface DailyChallenge {
  * DRILLS.length × 7 days.
  */
 const ANGLES = [
-  "Half volume, all meaning",
-  "Exhale first, then speak",
-  "Land the last word",
-  "Slow the middle sentence",
-  "Smile you can hear",
-  "One pause, held fully",
-  "Speak like it's already fine",
+  "Keep your volume steady",
+  "Pause and breathe before you speak",
+  "Finish each sentence clearly",
+  "Slow down in the middle",
+  "Speak with warmth",
+  "Take a full pause",
+  "Speak as calmly as you can",
 ];
 
 const TAGS = [

@@ -57,7 +57,7 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
       setError(
         error instanceof Error
           ? error.message
-          : "Failed to send verification code. Please try again.",
+          : "We couldn't send the sign-in code. Please try again.",
       );
       setIsLoading(false);
     }
@@ -74,7 +74,7 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
       navigate(redirect);
     } catch (error) {
       console.error("OTP verification error:", error);
-      setError("The verification code you entered is incorrect.");
+      setError("That code didn't work. Check it and try again.");
       setIsLoading(false);
       setOtp("");
     }
@@ -90,7 +90,7 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
     } catch (error) {
       console.error("Guest login error:", error);
       setError(
-        `Failed to sign in as guest: ${error instanceof Error ? error.message : "Unknown error"}`,
+        `We couldn't continue as a guest: ${error instanceof Error ? error.message : "Please try again."}`,
       );
       setIsLoading(false);
     }
@@ -108,10 +108,10 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
         </div>
         <div>
           <h2 className="font-display text-4xl leading-tight text-balance">
-            The voice is honest.
+            Notice how you sound.
             <br />
             <span className="text-sun">
-              <span className="italic">Train</span> it.
+              Practice how you want to respond.
             </span>
           </h2>
           <p className="mt-5 max-w-sm text-sm leading-relaxed text-paper/70">
@@ -136,7 +136,7 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
           </div>
         </div>
         <p className="text-[10px] font-bold uppercase tracking-widest text-paper/50">
-          Calm is a skill · Practice the pause
+          Calm takes practice · Start with a pause
         </p>
       </div>
 
@@ -167,10 +167,10 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
 </p>
                   <div>
                     <p className="font-display text-xl leading-none">
-                      Welcome in
+                      Welcome
                     </p>
                     <p className="mt-1 text-xs font-medium text-muted-foreground">
-                      Log in or make an account — it's free
+                      Sign in or create a free account
                     </p>
                   </div>
                 </div>
@@ -228,7 +228,7 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
                     onClick={handleGuestLogin}
                     disabled={isLoading}
                   >
-                    <UserX className="size-4" /> Just looking — continue as guest
+                    <UserX className="size-4" /> Continue as a guest
                   </NBButton>
                 </div>
               </form>
@@ -238,7 +238,7 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
               <div className="border-b-2 border-ink bg-mint px-6 py-4">
                 <p className="font-display text-xl leading-none">Check your email</p>
                 <p className="mt-1 text-xs font-medium text-muted-foreground">
-                  Just sent a 6-digit code to {step.email}
+                  We sent a 6-digit sign-in code to {step.email}.
                 </p>
               </div>
               <form onSubmit={handleOtpSubmit}>
@@ -286,7 +286,7 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
                       </>
                     ) : (
                       <>
-                        That's the one <ArrowRight className="size-4" />
+                        Verify and continue <ArrowRight className="size-4" />
                       </>
                     )}
                   </NBButton>
@@ -295,7 +295,7 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
                     onClick={() => setStep("signIn")}
                     className="text-xs font-bold uppercase tracking-widest text-muted-foreground hover:text-ink"
                   >
-                    ← Wrong email? Go back
+                    ← Use a different email
                   </button>
                 </div>
               </form>

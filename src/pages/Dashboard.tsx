@@ -37,7 +37,7 @@ export default function Dashboard() {
       <AppShell active="dashboard">
         <div className="mx-auto max-w-3xl px-4 py-10">
           <NBPanel className="p-8 text-center">
-            <p className="text-sm text-muted-foreground">Loading your day…</p>
+            <p className="text-sm text-muted-foreground">Loading your dashboard…</p>
           </NBPanel>
         </div>
       </AppShell>
@@ -78,7 +78,7 @@ export default function Dashboard() {
               {dailyLabel()} · your practice
             </p>
             <h1 className="mt-1 font-display text-3xl text-balance sm:text-4xl">
-              Keep your tone steady today
+              What would you like to practice today?
             </h1>
           </div>
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
@@ -94,13 +94,13 @@ export default function Dashboard() {
         </section>
 
         {/* Quick reps — every tool one tap away */}
-        <section aria-label="Quick reps">
+        <section aria-label="Quick practice">
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-5">
             {[
-              { to: "/gym", icon: Mic, label: "Quick take", sub: "45s", color: "bg-coral" },
-              { to: "/translate", icon: Languages, label: "Translate", sub: "2 passes", color: "bg-sun" },
+              { to: "/gym", icon: Mic, label: "Quick practice", sub: "45 sec", color: "bg-coral" },
+              { to: "/translate", icon: Languages, label: "Try a new tone", sub: "2 rounds", color: "bg-sun" },
               { to: "/quiz", icon: MessagesSquare, label: "Read the Room", sub: "1 scenario", color: "bg-mint" },
-              { to: "/reframe", icon: Shuffle, label: "Reframe", sub: "2 min", color: "bg-paper" },
+              { to: "/reframe", icon: Shuffle, label: "Reframe a response", sub: "2 min", color: "bg-paper" },
               { to: "/calm", icon: Wind, label: "Grounding", sub: `${GROUNDING_EXERCISES.length} exercises`, color: "bg-paper" },
             ].map((rep) => {
               const Icon = rep.icon;
@@ -143,8 +143,8 @@ export default function Dashboard() {
                 </div>
               </div>
               <p className="text-sm text-ink/70">
-                {daily.drill.seconds} seconds, mic on. The full catalog and
-                your bests live on the gym floor.
+                About {daily.drill.seconds} seconds with your microphone on.
+                Browse all drills and your best scores in the gym.
               </p>
               <div>
                 <Link to={`/practice/${daily.drill.id}`}>
@@ -179,9 +179,9 @@ function ArcPanel({ streakDays }: { streakDays: number }) {
   return (
     <NBPanel className="overflow-hidden">
       <div className="flex items-center justify-between border-b-2 border-ink bg-mint px-5 py-3">
-        <div className="font-display">The 21-day reprogramming arc</div>
+        <div className="font-display">Your 21-day practice plan</div>
         <span className="nb inline-flex items-center bg-ink px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-paper">
-          {left > 0 ? `${left} day${left === 1 ? "" : "s"} to go` : "Arc complete — keep the streak"}
+          {left > 0 ? `${left} day${left === 1 ? "" : "s"} left` : "Plan complete — keep practicing"}
         </span>
       </div>
       <div className="p-5">
@@ -196,7 +196,7 @@ function ArcPanel({ streakDays }: { streakDays: number }) {
               <span className="text-xs text-muted-foreground">· {stage.promise}</span>
             </div>
             <p className="mt-1 text-sm text-muted-foreground">
-              <span className="font-bold text-ink">Today's move:</span> {stage.move}
+              <span className="font-bold text-ink">Today's practice:</span> {stage.move}
             </p>
           </div>
         </div>

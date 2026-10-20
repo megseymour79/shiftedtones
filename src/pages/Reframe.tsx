@@ -46,7 +46,7 @@ export default function Reframe() {
 
   const coach = async () => {
     if (!trigger.trim() || !reaction.trim()) {
-      setError("Fill in both the trigger and your automatic reaction.");
+      setError("Add what happened and how you first reacted.");
       return;
     }
     setLoading(true);
@@ -64,7 +64,7 @@ export default function Reframe() {
       setError(
         e instanceof Error
           ? e.message
-          : "The coach couldn't respond. Try again.",
+          : "We couldn't come up with a response. Please try again.",
       );
     } finally {
       setLoading(false);
@@ -83,12 +83,12 @@ export default function Reframe() {
         toneNote: result.toneNote,
       });
       trackEvent("reframe_saved");
-      toast.success("Kept. It's in your log.");
+      toast.success("Saved to your log.");
       setSaved(true);
       // Keeping a reframe credits today's checklist (idempotent server-side).
       markReframe({ action: "reframe" }).catch(() => {});
     } catch {
-      toast.error("That didn't save. One more try?");
+      toast.error("We couldn't save that. Please try again.");
     } finally {
       setSaving(false);
     }
@@ -103,19 +103,19 @@ export default function Reframe() {
 
         <NBPanel className="p-6">
           <h1 className="font-display text-2xl text-balance">
-            Say it <span className="italic text-coral">better</span> this time
+            Try a different <span className="italic text-coral">response</span>
           </h1>
           <p className="mt-2 max-w-lg text-sm text-muted-foreground">
-            The trigger fires. The old reply comes out. This is where you slow
-            it down and write the version you actually want to say.
+            Think about what happened and how you first reacted. Then take a
+            moment to write what you'd like to say instead.
           </p>
 
           {/* The think-through: frame the response before writing it.
               Tapping a message kind prefills the goal field below. */}
           <div className="mt-6">
             <ResponsePlanner
-              title="Frame it before you write it"
-              intro="Answer these four and the response almost writes itself — you'll know what their move was, what the real message is, and what you want them to feel afterward."
+              title="Think it through first"
+              intro="Use these questions to clarify what happened, what matters to you, and how you'd like the other person to feel."
               accent="bg-secondary"
               onGoalPick={(g) => setGoal(g)}
             />
@@ -131,7 +131,7 @@ export default function Reframe() {
                   onClick={randomScenario}
                   className="flex items-center gap-1 text-xs font-bold uppercase tracking-widest text-muted-foreground hover:text-ink"
                 >
-                  <Dices className="size-3.5" /> Surprise me
+                  <Dices className="size-3.5" /> Choose a scenario
                 </button>
               </div>
               <textarea
@@ -150,7 +150,7 @@ export default function Reframe() {
               <textarea
                 value={reaction}
                 onChange={(e) => setReaction(e.target.value)}
-                placeholder="What would you blurt out — or swallow? Be honest, this stays between us."
+                placeholder="What was your first reaction? Write it as plainly as you can."
                 className="nb w-full bg-card p-3 text-sm outline-none placeholder:text-muted-foreground"
                 rows={3}
               />
@@ -163,7 +163,7 @@ export default function Reframe() {
               <input
                 value={goal}
                 onChange={(e) => setGoal(e.target.value)}
-                placeholder="like: stay calm, hold my ground, fix it without groveling"
+                placeholder="For example: stay calm, be clear, or repair the relationship"
                 className="nb w-full bg-card px-3 py-2.5 text-sm outline-none placeholder:text-muted-foreground"
               />
             </div>
@@ -176,7 +176,7 @@ export default function Reframe() {
               <NBButton onClick={coach} disabled={loading} variant="sun">
                 {loading ? (
                   <>
-                    <Loader2 className="size-4 animate-spin" /> Thinking…
+                    <Loader2 className="size-4 animate-spin" /> Working on it…
                   </>
                 ) : (
                   <>
@@ -192,19 +192,18 @@ export default function Reframe() {
         <NBPanel className="overflow-hidden">
           <div className="flex items-center justify-between border-b-2 border-ink bg-paper px-5 py-3">
             <div className="flex items-center gap-2 font-display text-xl">
-              <Eye className="size-5" /> Change the lens, change the moment
+              <Eye className="size-5" /> Look at it another way
             </div>
             <span className="hidden text-[10px] font-bold uppercase tracking-widest text-muted-foreground sm:block">
-              Not spin — other true things
+              Other possibilities
             </span>
           </div>
 
           <div className="p-6">
             <p className="max-w-xl text-sm leading-relaxed text-muted-foreground">
-              A narrow perception says there's one obvious reading of what
-              happened. There isn't — and practicing the other readings is
-              where the freedom is. Flip through the lenses; keep whatever
-              makes your shoulders drop.
+              There may be more than one way to understand what happened.
+              Explore a few perspectives and see if any help you decide what
+              to do next.
             </p>
 
             {/* Lens tabs */}
@@ -234,7 +233,7 @@ export default function Reframe() {
                 className="mt-5"
               >
                 <div className={`nb inline-block px-3 py-1 text-[10px] font-bold uppercase tracking-widest ${lens.color}`}>
-                  Through {lens.name}
+                  From {lens.name}
                 </div>
                 <p className="mt-3 text-base leading-relaxed">{lens.idea}</p>
                 <p className="nb mt-3 bg-secondary p-3 font-display text-lg leading-snug">
@@ -255,7 +254,7 @@ export default function Reframe() {
                 className="text-xs"
                 onClick={() => setLensIdx((i) => (i + 1) % LENSES.length)}
               >
-                <Shuffle className="size-3.5" /> Next lens
+                <Shuffle className="size-3.5" /> Next perspective
               </NBButton>
               <NBButton
                 variant="paper"
@@ -287,7 +286,7 @@ export default function Reframe() {
             </div>
             <div className="mt-5 flex flex-wrap gap-3">
               <NBButton variant="mint" disabled={saving || saved} onClick={handleSave}>
-                {saved ? "Saved" : saving ? "Saving…" : "Keep this one"}
+                {saved ? "Saved" : saving ? "Saving…" : "Save response"}
               </NBButton>
               <NBButton
                 variant="paper"
@@ -297,7 +296,7 @@ export default function Reframe() {
                   setSaved(false);
                 }}
               >
-                Another one
+                Try another
               </NBButton>
             </div>
           </NBPanel>
@@ -314,7 +313,7 @@ function LensScratchpad({ lensId }: { lensId: string }) {
     <textarea
       value={notes[lensId] ?? ""}
       onChange={(e) => setNotes((n) => ({ ...n, [lensId]: e.target.value }))}
-      placeholder="What surfaced through this lens? (Stays on this screen)"
+      placeholder="What stands out from this perspective? (Notes stay on this screen)"
       rows={2}
       className="nb mt-4 w-full bg-card p-3 text-sm outline-none placeholder:text-muted-foreground"
     />

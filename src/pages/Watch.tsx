@@ -16,23 +16,21 @@ export default function Watch() {
     <PublicLayout>
       <section className="nb-grid-dots border-b-2 border-ink">
         <div className="mx-auto max-w-6xl px-4 py-14 lg:py-16">
-          <NBBadge className="bg-coral text-ink">Watch & learn</NBBadge>
+          <NBBadge className="bg-coral text-ink">Watch and learn</NBBadge>
           <h1 className="mt-4 font-display text-4xl leading-tight sm:text-5xl">
-            The people who <span className="italic text-sun">study this</span>{" "}
-            for a living.
+            Learn more about <span className="italic text-sun">communication</span>
           </h1>
           <p className="mt-4 max-w-xl text-lg leading-relaxed text-muted-foreground">
-            Seven curated videos on tone, delivery, and regulated responses —
-            from Jefferson Fisher to Vanessa Van Edwards. Every one ends the
-            same way: with a drill underneath it, so the idea becomes a rep.
+            Browse videos about tone and communication from coaches and
+            researchers. Each one includes a related practice drill.
           </p>
         </div>
       </section>
 
       <WatchLearnSection
         videos={WATCH_LIST}
-        heading="All the videos"
-        subheading="Coaches, interrogators, and researchers on what your voice broadcasts before your words land."
+        heading="Videos on tone and communication"
+        subheading="Coaches and researchers share ideas about how we communicate."
       />
 
       {/* Cross-link: the research shelf lives in the library */}
@@ -44,11 +42,11 @@ export default function Watch() {
             </span>
             <div>
               <p className="font-display text-lg leading-tight">
-                Prefer reading? The research shelf has the books and studies.
+                Prefer reading? Explore the books and research.
               </p>
               <p className="text-sm text-muted-foreground">
-                The long-form ideas behind these videos — every link goes to
-                the author.
+                Read more about the ideas behind these videos. Links go to
+                their original sources.
               </p>
             </div>
           </div>

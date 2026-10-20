@@ -1,5 +1,5 @@
 /**
- * Progressive unlocking — the reason to come back tomorrow.
+ * Progressive unlocking for continued practice.
  *
  * Three core drills start free; everything else is earned with real
  * practice: takes logged, variety across drills, level-ups, and a
@@ -41,31 +41,31 @@ export const UNLOCKABLE_DRILLS: Unlockable[] = [
   {
     id: "nice-no",
     name: "The Kind No",
-    blurb: "Say no warmly — and let the pause be the answer.",
+    blurb: "Practice saying no warmly and clearly.",
     req: { takes: 3 },
   },
   {
     id: "unruffled",
     name: "Un-Ruffled",
-    blurb: "Take a jab without matching its energy.",
+    blurb: "Respond to a sharp comment without matching its tone.",
     req: { drillsTried: 2 },
   },
   {
     id: "de-escalate",
     name: "Bring It Down",
-    blurb: "Lower and slower when the room gets loud.",
+    blurb: "Slow down and lower your voice when a conversation gets tense.",
     req: { takes: 5, level: 2 },
   },
   {
     id: "praise-clear",
     name: "Name the Good",
-    blurb: "Praise that lands fully instead of dying in a mumble.",
+    blurb: "Give specific praise clearly and at a comfortable pace.",
     req: { bestScore: 60 },
   },
   {
     id: "recovery",
     name: "The Clean Recovery",
-    blurb: "Snap, reset, and model the tone you meant.",
+    blurb: "Acknowledge a sharp response, then try again in the tone you intended.",
     req: { takes: 8, level: 3 },
   },
 ];
@@ -79,7 +79,7 @@ export const UNLOCKABLE_DRILLS: Unlockable[] = [
 export const TRENDS_UNLOCK: Unlockable = {
   id: "tone-trends",
   name: "Tone trends",
-  blurb: "Your calm, energy, clarity and stability over time — see which way each is moving.",
+  blurb: "See how your calm, energy, clarity, and stability scores change over time.",
   req: { takes: 5 },
 };
 

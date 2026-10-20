@@ -122,15 +122,15 @@ export default function Translate() {
         {/* Header */}
         <div>
           <NBBadge className="bg-sun text-ink">
-            <Languages className="size-3" /> The Translation Drill
+            <Languages className="size-3" /> Practice the same sentence
           </NBBadge>
           <h1 className="mt-3 font-display text-3xl sm:text-4xl">
-            Say it again. This time, mean it.
+            Try the same words with a different tone.
           </h1>
           <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
-            Same words, two takes. First the way it usually comes out under
-            pressure — then the way you actually intend it. The score delta is
-            pure delivery: it's the only variable.
+            Say the same sentence twice: once as it usually comes out, then
+            again in the tone you intend. Compare your scores to see how your
+            delivery changed.
           </p>
         </div>
 
@@ -138,13 +138,13 @@ export default function Translate() {
         <NBPanel className="p-6">
           <div className="flex items-center justify-between">
             <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-              {done ? "Translated" : "The sentence"}
+              {done ? "Complete" : "Your sentence"}
             </span>
             <button
               onClick={nextLine}
               className="nb nb-press flex items-center gap-1.5 bg-card px-2.5 py-1.5 text-[10px] font-bold uppercase tracking-widest"
             >
-              <RefreshCw className="size-3" /> Different sentence
+              <RefreshCw className="size-3" /> Choose another sentence
             </button>
           </div>
           <p className="mt-3 font-display text-2xl leading-snug">“{line.text}”</p>
@@ -169,8 +169,8 @@ export default function Translate() {
             moment has already passed. */}
         {!done && (
           <ResponsePlanner
-            title={reflexAnalysis ? "Before the intended take — think it through" : "Before you speak — think it through"}
-            intro="Four questions, sixty seconds. The difference between reacting and responding is almost never the words — it's what you decided underneath them."
+            title={reflexAnalysis ? "Before your second take" : "Before you speak"}
+            intro="Take a moment to consider what you want to say and how you want it to come across."
             accent="bg-card"
           />
         )}
@@ -182,7 +182,7 @@ export default function Translate() {
                 visible so you know where you are and what's left */}
             <div className="flex items-stretch gap-2" aria-hidden>
               {order.map((passKey, i) => {
-                const label = passKey === "reflex" ? "Reflex take" : "Intended take";
+                const label = passKey === "reflex" ? "Usual tone" : "Intended tone";
                 const isCurrent = pass === passKey;
                 const isDone =
                   (passKey === "reflex" ? reflexAnalysis : intendedAnalysis) !== null;
@@ -207,8 +207,8 @@ export default function Translate() {
 
             <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
               <NBBadge className={pass === "reflex" ? "bg-coral text-ink" : "bg-mint text-ink"}>
-                Pass {passNum} of 2 —{" "}
-                {pass === "reflex" ? "as it usually comes out" : "as you mean it"}
+                Take {passNum} of 2 —{" "}
+                {pass === "reflex" ? "your usual tone" : "your intended tone"}
               </NBBadge>
               <span className="text-xs text-muted-foreground">{line.targetHint}</span>
             </div>
@@ -216,7 +216,7 @@ export default function Translate() {
             {capture.state === "idle" && (
               <div className="mt-5 flex justify-center">
                 <NBButton onClick={startPass} variant={pass === "reflex" ? "coral" : "mint"}>
-                  Say it — {pass === "reflex" ? "reflex take" : "intended take"}
+                  {pass === "reflex" ? "Say it as usual" : "Say it as intended"}
                 </NBButton>
               </div>
             )}
@@ -226,7 +226,7 @@ export default function Translate() {
                   {Math.floor(capture.elapsedMs / 1000)}s
                 </div>
                 <NBButton onClick={finishPass} variant="ink">
-                  Done — score this take
+                  Finish this take
                 </NBButton>
               </div>
             )}
@@ -236,9 +236,8 @@ export default function Translate() {
             {capture.error && <MicError message={capture.error} />}
             {capture.state === "recording" && capture.micMuted && (
               <p className="nb mt-5 bg-sun px-3 py-2 text-sm font-medium">
-                The mic reports itself muted — check your system's mic privacy
-                setting or close the app holding it; this take will come back
-                empty otherwise.
+                Your microphone is muted. Check your device's microphone
+                privacy settings or close other apps using it, then try again.
               </p>
             )}
             <MicPicker activeLabel={capture.activeDeviceLabel} className="mt-5" />
@@ -249,7 +248,7 @@ export default function Translate() {
         {done && delta && (
           <NBPanel className="p-6">
             <div className="flex flex-wrap items-center justify-between gap-2">
-              <NBBadge className="bg-sun text-ink">The translation</NBBadge>
+              <NBBadge className="bg-sun text-ink">Compare your takes</NBBadge>
               <span className="text-xs text-muted-foreground">{line.payoff}</span>
             </div>
 
@@ -263,7 +262,7 @@ export default function Translate() {
             <div className="mt-5 grid gap-3 sm:grid-cols-2">
               <div className="nb bg-card p-4">
                 <p className="text-[10px] font-bold uppercase tracking-widest text-coral">
-                  Reflex take
+                  Usual tone
                 </p>
                 <p className="mt-1 font-display text-lg">
                   {TONE_LABELS[reflexAnalysis!.dominantTone]?.label ??
@@ -275,7 +274,7 @@ export default function Translate() {
               </div>
               <div className="nb bg-card p-4">
                 <p className="text-[10px] font-bold uppercase tracking-widest text-mint">
-                  Intended take
+                  Intended tone
                 </p>
                 <p className="mt-1 font-display text-lg">
                   {TONE_LABELS[intendedAnalysis!.dominantTone]?.label ??

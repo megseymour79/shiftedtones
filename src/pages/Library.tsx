@@ -17,32 +17,29 @@ export default function Library() {
         <div className="mx-auto max-w-6xl px-4 py-14 lg:py-16">
           <NBBadge className="bg-sun text-ink">The library</NBBadge>
           <h1 className="mt-4 font-display text-4xl leading-tight sm:text-5xl">
-            Ideas from the <span className="italic text-sun">pros</span>.
-            Reps from you.
+            Explore the <span className="italic text-sun">research</span>.
           </h1>
           <p className="mt-4 max-w-xl text-lg leading-relaxed text-muted-foreground">
-            The free web shelf — websites, talks, and studies from the people
-            whose work this app stands on. Every link opens free content:
-            no books to buy, no paywalls, no sign-up. For the videos, the
-            tour's next stop back is Watch.
+            Browse free articles, talks, and studies about communication.
+            Each link opens the original source, so you can explore at your
+            own pace.
           </p>
         </div>
       </section>
 
-      {/* Go deeper — the research shelf */}
+      {/* Reading list */}
       <section className="border-b-2 border-ink bg-paper">
         <div className="mx-auto max-w-6xl px-4 py-14">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
-              <NBBadge className="bg-mint text-ink">Go deeper</NBBadge>
+              <NBBadge className="bg-mint text-ink">Reading list</NBBadge>
               <h2 className="mt-4 flex items-center gap-2 font-display text-3xl sm:text-4xl">
-                <Globe className="size-6 text-coral" /> The free web shelf
+                <Globe className="size-6 text-coral" /> Articles and research
               </h2>
             </div>
             <p className="max-w-md text-sm text-muted-foreground">
-              Guides, talks, and studies from the people whose work this app
-              stands on. Every link is a free website — no books to buy, no
-              paywalls, no sign-up.
+              Explore guides, talks, and studies from the original publishers.
+              All links open free online resources.
             </p>
           </div>
           <div className="mt-8 grid gap-4 md:grid-cols-2">
@@ -85,12 +82,12 @@ export default function Library() {
         />
         <div className="relative mx-auto flex max-w-6xl flex-col items-center gap-5 px-4 py-14 text-center">
           <h2 className="max-w-2xl font-display text-3xl text-balance sm:text-4xl">
-            Ideas are the warm-up. <span className="italic">Reps</span> are the
-            workout.
+            Reading can give you new ideas. <span className="italic">Practice</span>
+            helps you put them to use.
           </h2>
           <Link to="/auth">
             <NBButton variant="ink" className="px-8 py-4 text-lg">
-              Start practicing free <ArrowRight className="size-5" />
+              Start practicing <ArrowRight className="size-5" />
             </NBButton>
           </Link>
         </div>

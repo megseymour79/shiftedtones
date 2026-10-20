@@ -5,7 +5,7 @@ import { v } from "convex/values";
 import { action } from "./_generated/server";
 import { vly } from "../lib/vly-integrations";
 
-const SYSTEM_PROMPT = `You are TONE, a communication coach inside the Tone Re:Align app.
+const SYSTEM_PROMPT = `You are a communication coach inside ShiftedTone.
 The user was triggered by a situation and reacted with their automatic response.
 Produce a REFRAME: how they could respond instead, in alignment with their goal.
 Reply with STRICT JSON only (no markdown fences), shaped exactly:
@@ -13,7 +13,7 @@ Reply with STRICT JSON only (no markdown fences), shaped exactly:
   "reframe": "the suggested response, written in first person as the user would say it, 1-3 sentences",
   "toneNote": "one short sentence on HOW to deliver it (pace, warmth, firmness, breathing)"
 }
-Keep the reframe grounded, kind, and assertive. Never shame the user's automatic reaction.`;
+Keep the reframe grounded, kind, and assertive. Use clear, conversational language without slang, jargon, or dramatic phrasing. Never shame the user's automatic reaction.`;
 
 /** AI reframe coach: turns trigger + automatic reaction into a grounded alternative response. */
 export const reframe = action({
@@ -40,26 +40,26 @@ export const reframe = action({
     });
 
     if (!result.success || !result.data) {
-      throw new Error(result.error ?? "AI coach is unavailable right now");
+      throw new Error(result.error ?? "We couldn't create a response just now. Please try again.");
     }
 
     const content = result.data.choices?.[0]?.message?.content ?? "";
     // Extract the first JSON object from the response
     const match = content.match(/\{[\s\S]*\}/);
     if (!match) {
-      throw new Error("Coach gave an unreadable response. Try again.");
+      throw new Error("We couldn't create a response just now. Please try again.");
     }
     const parsed = JSON.parse(match[0]) as {
       reframe?: string;
       toneNote?: string;
     };
     if (!parsed.reframe) {
-      throw new Error("Coach gave an unreadable response. Try again.");
+      throw new Error("We couldn't create a response just now. Please try again.");
     }
 
     return {
       reframe: parsed.reframe,
-      toneNote: parsed.toneNote ?? "Say it slowly, on the exhale.",
+      toneNote: parsed.toneNote ?? "Try slowing down and speaking as you breathe out.",
     };
   },
 });

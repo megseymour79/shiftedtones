@@ -76,7 +76,7 @@ export function VideoThumb({
           {video.title}
         </span>
         <span className="text-[10px] font-bold uppercase tracking-widest text-sun">
-          {mode === "inline" ? "Click to play" : "Watch on YouTube"}
+          {mode === "inline" ? "Play video" : "Watch on YouTube"}
         </span>
       </div>
     );
@@ -160,7 +160,7 @@ export function VideoCard({
           <span className="flex items-center gap-2">
             <Mic className="size-4 shrink-0" />
             <span className="text-left text-[10px] font-bold uppercase tracking-widest">
-              Train it: {drill.name}
+              Practice: {drill.name}
             </span>
           </span>
           <ArrowRight className="size-3.5 shrink-0 transition-transform duration-300 group-hover/link:translate-x-1" />
@@ -210,8 +210,8 @@ function CardBody({ video, linkOut = false }: { video: WatchVideo; linkOut?: boo
  */
 export function WatchLearnSection({
   videos,
-  heading = "Watch & learn",
-  subheading = "Real techniques from the people who coach this for a living — and the drill that lets you practice each one out loud.",
+  heading = "Watch and learn",
+  subheading = "Coaches and researchers share ideas about communication, with a drill to help you practice.",
   seeAll,
 }: {
   videos: WatchVideo[];

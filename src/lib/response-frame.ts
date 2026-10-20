@@ -11,11 +11,11 @@ export interface FrameStep {
   id: string;
   /** The question, as you'd ask yourself in the moment. */
   question: string;
-  /** Why this question changes what comes out of your mouth. */
+  /** Why this question can help. */
   why: string;
-  /** How to actually work the answer out. */
+  /** A way to think through the answer. */
   how: string;
-  /** A fast gut-check that the answer is honest, not rehearsed. */
+  /** A quick check-in to help clarify the answer. */
   check: string;
   /** Accent color (tailwind bg utility). */
   color: string;
@@ -24,34 +24,34 @@ export interface FrameStep {
 export const FRAME_STEPS: FrameStep[] = [
   {
     id: "their-move",
-    question: "What do they want me to feel or do?",
-    why: "Most reactions aren't yours — they're the move working. A jab wants you hot; a guilt trip wants you apologizing; silence wants you filling it. Naming the intended effect puts the choice back with you.",
-    how: "Finish this sentence honestly: \"If I react the obvious way, the winner is ___.\" If the answer is their play — the provocation, the deadline, the sigh engineered to redirect blame — you've found the trapdoor.",
-    check: "If your answer is \"nothing, they're just like that,\" look again at what you feel the urge to do. The urge is the tell.",
+    question: "What might the other person be feeling or asking for?",
+    why: "Considering what may be behind someone's words can help you choose a response instead of reacting right away.",
+    how: "Ask yourself what the other person might want you to understand or do. If you're not sure, you can ask them.",
+    check: "Can you describe what they might be feeling without assuming you know for certain?",
     color: "bg-coral",
   },
   {
     id: "underneath",
-    question: "What's the message underneath the message?",
-    why: "Words ride on a subtext: the complaint about the dishes is often \"I feel unsupported\"; the \"fine, whatever\" is often \"I don't believe this changes anything.\" Answering the subtext instead of the words is what makes people feel heard.",
-    how: "Ask what fear or need is doing the talking: fear of being invisible, unheard, controlled, unappreciated? Then try one level down: \"If I take the words at face value and fix exactly that, will this come back?\" If yes, you haven't reached the layer that matters.",
-    check: "Could you state their underlying message in one sentence, without arguing whether it's fair? If you can't yet, you're still negotiating with the surface.",
+    question: "What might they be trying to tell me?",
+    why: "Sometimes a complaint or short reply points to a concern that hasn't been said directly.",
+    how: "Think about what they may need or be worried about. If you're unsure, ask a calm, open question.",
+    check: "Can you describe their concern in one sentence without judging it?",
     color: "bg-sun",
   },
   {
     id: "aftertaste",
     question: "How do I want them to feel after hearing it?",
-    why: "This is the finish line, and it's chosen before the first word. \"Cornered\" gets you compliance that resentment revokes later. \"Heard and clear\" gets you a partner in the fix. You can't control their reaction — but you pick what you're aiming at.",
-    how: "Pick two words, not a speech: steady. respected. unthreatened. taken seriously. Then test your draft against them — if the words are right but the feeling is wrong, the problem is pace, volume, or pitch, not content.",
-    check: "Say the goal out loud. If it's \"make them see they're wrong,\" that's a verdict, not a feeling — pick what you want them to feel once they've seen it.",
+    why: "You can't control how someone responds, but you can decide what you'd like them to understand.",
+    how: "Choose a simple goal, such as being clear, showing care, or setting a limit. Think about whether your words and tone support it.",
+    check: "Can you describe what you'd like the other person to understand after hearing you?",
     color: "bg-mint",
   },
   {
     id: "ask",
     question: "What kind of message is this — and what's the ask?",
-    why: "A message that wants agreement, acknowledgment, or just to be heard needs different shape. Information wants clarity. A boundary wants calm repetition, not a debate. If you don't know the kind, you'll use the wrong tone for a message that was fine.",
-    how: "Pick one: Are we agreeing on something (end with a clear proposal)? Am I acknowledging them (end by reflecting what they said)? Am I setting a limit (end with what you will do, repeated as needed)? Am I repairing (own your part first, then the fix)?",
-    check: "Could the other person say back to you what you're asking for? If not, the ask is still fog — sharpen it before you speak.",
+    why: "Different conversations call for different responses. Knowing what you want from the conversation can help you be clear.",
+    how: "Decide whether you want to reach an agreement, acknowledge their feelings, set a boundary, repair a misunderstanding, or share information.",
+    check: "Would the other person understand what you're asking for?",
     color: "bg-paper",
   },
 ];
@@ -76,48 +76,48 @@ export const MESSAGE_KINDS: MessageKind[] = [
   {
     id: "agree",
     label: "Come to an agreement",
-    cue: "There's a decision to make and you both have a stake in it — schedules, money, plans, who does what.",
-    shape: "Name the shared goal first, then your position, then invite theirs. Keep it one issue; scope is what keeps disagreement survivable.",
+    cue: "You need to make a decision together about plans, schedules, money, or responsibilities.",
+    shape: "Start with what you agree on, share your view, and ask what they think. Stay focused on one issue at a time.",
     ending: "\"Does that work for you, or what would you change?\"",
     color: "bg-mint",
   },
   {
     id: "acknowledge",
     label: "Acknowledge / validate",
-    cue: "They're hurting, frustrated, or proud — and the moment calls for them to feel it landed before anything gets fixed.",
-    shape: "Reflect the feeling and the reason it makes sense. Resist the fix; an early solution reads as \"stop feeling this.\"",
+    cue: "The other person is sharing a feeling and may want you to listen before offering advice.",
+    shape: "Acknowledge what they said and why it matters. Ask before offering a solution.",
     ending: "\"That makes sense. I'm glad you told me.\"",
     color: "bg-sun",
   },
   {
     id: "boundary",
     label: "Set a boundary",
-    cue: "You're not asking them to change — you're saying what you'll do. Late-night texts, tone, recurring favors.",
-    shape: "Warm, brief, and unapologetic. One sentence of care, one of the limit, one of what you'll do. No jury needed.",
+    cue: "You want to be clear about what you can or can't do.",
+    shape: "Be brief and kind. State the limit and, if helpful, explain what you'll do instead.",
     ending: "\"I'm not discussing this again tonight — I'll pick this up tomorrow.\"",
     color: "bg-coral",
   },
   {
     id: "repair",
     label: "Repair after a miss",
-    cue: "You snapped, missed, or dropped something and the relationship now has a splinter in it.",
-    shape: "Own the specific impact (not \"if I upset you\"), say what you'll do differently, and let them respond without managing their reaction.",
+    cue: "You said or did something that you'd like to repair.",
+    shape: "Acknowledge what happened, say what you'll try to do differently, and give the other person room to respond.",
     ending: "\"That came out sharper than I meant. Here's what I'll do differently.\"",
     color: "bg-paper",
   },
   {
     id: "inform",
     label: "Deliver information",
-    cue: "News, a decision already made, a status. The goal is accuracy and composure — not buy-in you haven't got.",
-    shape: "Lead with the point, then the reason, then what changes for them. Steady volume; don't soften the news with your tone and force them to excavate it.",
+    cue: "You need to share an update, decision, or piece of news.",
+    shape: "Start with the main point, then explain why it matters and what happens next. Keep your tone steady.",
     ending: "\"I wanted you to hear it from me first. What questions do you have?\"",
     color: "bg-secondary",
   },
   {
     id: "de-escalate",
     label: "Bring the temperature down",
-    cue: "Voices are up, pace is fast, and the room is one sentence from saying something that can't be unsaid.",
-    shape: "Drop your volume and speed below theirs — the gap resets the room. Name the process, not the content: slow, low, one voice at a time.",
+    cue: "The conversation is getting tense or people are talking over each other.",
+    shape: "Slow down, lower your voice, and suggest taking turns. Focus on how you can continue the conversation calmly.",
     ending: "\"I want to hear this — and I can only hear it one voice at a time.\"",
     color: "bg-sun",
   },
@@ -125,10 +125,10 @@ export const MESSAGE_KINDS: MessageKind[] = [
 
 /** Suggested goal-line copy for Reframe's "your goal" field, per kind. */
 export const KIND_GOAL_HINTS: Record<string, string> = {
-  agree: "get to a clear yes we both accept",
-  acknowledge: "make them feel heard before anything else",
-  boundary: "state the limit once, calmly, and hold it",
-  repair: "own my part cleanly and name the fix",
-  inform: "deliver the news steady and unsoftened",
-  "de-escalate": "lower the temperature without matching theirs",
+  agree: "find a solution we can both accept",
+  acknowledge: "show them I've heard what they're saying",
+  boundary: "state my limit clearly and calmly",
+  repair: "acknowledge my part and say what I'll do differently",
+  inform: "share the update clearly and calmly",
+  "de-escalate": "slow the conversation down without matching their tone",
 };

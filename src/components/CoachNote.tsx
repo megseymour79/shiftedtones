@@ -78,9 +78,9 @@ export function CoachNote({ sessionId }: { sessionId: Id<"practiceSessions"> }) 
   const handleUnlock = async () => {
     try {
       await unlock({});
-      toast.success("Coach unlocked — every take gets its note now.");
+      toast.success("Coach unlocked. You'll now get a note with each take.");
     } catch {
-      toast.error("Couldn't unlock right now. Try again in a moment.");
+      toast.error("We couldn't unlock the coach. Please try again.");
     }
   };
 
@@ -91,13 +91,12 @@ export function CoachNote({ sessionId }: { sessionId: Id<"practiceSessions"> }) 
           <Sparkles className="size-3" /> The Coach
         </NBBadge>
         <p className="mt-3 font-display text-xl leading-snug">
-          Your three free notes are in.
+          You've used your three free notes.
         </p>
         <p className="mt-2 max-w-md text-sm leading-relaxed text-paper/80">
-          This is the part worth paying for: a coach that read{" "}
-          <span className="font-bold text-sun">your</span> pace, your pitch movement,
-          your stability — and tells you the one thing to change. Not a tip bank.
-          Your numbers.
+          Get feedback based on{" "}
+          <span className="font-bold text-sun">your</span> pace, pitch, and
+          stability, with one suggestion to try next.
         </p>
         <div className="mt-4">
           <NBButton onClick={handleUnlock} variant="sun">
@@ -112,7 +111,7 @@ export function CoachNote({ sessionId }: { sessionId: Id<"practiceSessions"> }) 
     <div className="mt-5">
       {!access.hasAnyNotes && (
         <p className="mb-2 text-xs text-muted-foreground">
-          Three notes on the house — this one's anchored to your actual numbers.
+          Your first three coach notes are free. Each one uses your practice scores.
         </p>
       )}
       {access.entitlement.freeRemaining > 0 && access.hasAnyNotes && (

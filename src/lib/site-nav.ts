@@ -2,6 +2,7 @@
  * Public-site navigation, shared by the header, mobile menu, and footer.
  * Every path here must be registered in main.tsx — site-nav.test.ts guards
  * the list so a new link without a route can't ship silently.
+ * Copy style: conversational, concise, and warm; keep labels clear and direct.
  */
 
 export interface NavItem {
@@ -30,11 +31,11 @@ export const PUBLIC_ROUTES = ["/", ...NAV_ITEMS.map((n) => n.to)];
  */
 export const PAGE_ORDER: { to: string; label: string; blurb: string; dot: string }[] = [
   { to: "/", label: "Home", blurb: "What ShiftedTone is", dot: "bg-coral" },
-  { to: "/how", label: "How it works", blurb: "The three-step method", dot: "bg-sun" },
-  { to: "/tone-check", label: "Tone check", blurb: "Find your default under pressure", dot: "bg-coral" },
-  { to: "/drills", label: "Drills", blurb: "Pick a drill, train the tone", dot: "bg-mint" },
-  { to: "/watch", label: "Watch", blurb: "Videos from the pros", dot: "bg-coral" },
-  { to: "/library", label: "Library", blurb: "Research shelf + all videos", dot: "bg-paper" },
+  { to: "/how", label: "How it works", blurb: "A simple way to practice", dot: "bg-sun" },
+  { to: "/tone-check", label: "Tone check", blurb: "See how you respond under pressure", dot: "bg-coral" },
+  { to: "/drills", label: "Drills", blurb: "Practice with real-life situations", dot: "bg-mint" },
+  { to: "/watch", label: "Watch", blurb: "Videos on tone and communication", dot: "bg-coral" },
+  { to: "/library", label: "Library", blurb: "Books, research, and videos", dot: "bg-paper" },
 ];
 
 /** Prev/next stops of the tour for a given path (nulls at the ends). */
@@ -56,11 +57,11 @@ export function tourStops(
  */
 export const APP_ORDER: { to: string; label: string; blurb: string }[] = [
   { to: "/dashboard", label: "Dashboard", blurb: "Your day at a glance" },
-  { to: "/gym", label: "Gym", blurb: "Pick a drill, do the take" },
+  { to: "/gym", label: "Gym", blurb: "Choose a drill and practice" },
   { to: "/calm", label: "Calm", blurb: "Ground, then speak" },
-  { to: "/translate", label: "Translate", blurb: "Say it again, mean it" },
-  { to: "/quiz", label: "Read the Room", blurb: "Train the judgment" },
-  { to: "/reframe", label: "Reframe Lab", blurb: "Rewrite the reaction" },
+  { to: "/translate", label: "Translate", blurb: "Try the same words with a different tone" },
+  { to: "/quiz", label: "Read the Room", blurb: "Practice reading a situation" },
+  { to: "/reframe", label: "Reframe Lab", blurb: "Find another way to respond" },
   { to: "/progress", label: "Progress", blurb: "Recent takes and trends" },
 ];
 

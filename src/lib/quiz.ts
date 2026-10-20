@@ -6,15 +6,15 @@
 
 export interface QuizOption {
   text: string;
-  /** What this choice broadcasts, explained warmly. */
+  /** How this response might come across. */
   note: string;
 }
 
 export interface QuizQuestion {
   id: string;
-  /** The situation, written like a text from someone you know. */
+  /** The situation for the user to respond to. */
   scene: string;
-  /** Who's talking, for flavor. */
+  /** Who is speaking in the scenario. */
   from: string;
   options: QuizOption[];
   /** Index of the option that best balances honesty and warmth. */
@@ -28,16 +28,16 @@ export const QUIZ: QuizQuestion[] = [
     scene: "“Got a minute? Need to ask you something before you head out.”",
     options: [
       {
-        text: "“Sure — one minute!” (chipper, fast)",
-        note: "Cheerful and quick, but the speed leaks anxiety. And you may not actually have a minute.",
+        text: "“Sure — one minute!” (cheerful, quick)",
+        note: "It's friendly, but the quick yes may promise more time than you have.",
       },
       {
-        text: "“Give me ten and I'm fully yours.” (calm, unhurried)",
-        note: "Best of both: warm, honest about time, and it buys you a breath. Nobody resents a specific ten.",
+        text: "“I can talk in ten minutes.” (calm, unhurried)",
+        note: "This is warm and clear about when you'll be available.",
       },
       {
         text: "“Can this wait till tomorrow?” (flat)",
-        note: "Defensible — but the flatness reads as “don't want to,” even when that's not true.",
+        note: "This sets a boundary, but a warmer tone can make it clear you're not dismissing the question.",
       },
     ],
     best: 1,
@@ -48,16 +48,16 @@ export const QUIZ: QuizQuestion[] = [
     scene: "“Fine. Do whatever you want.”",
     options: [
       {
-        text: "“I'm not doing anything you want!” (matching energy)",
-        note: "Escalation guaranteed. Her words came out flat; yours would come out pointed. Different weapons.",
+        text: "“I'm not doing whatever you want!” (matching her tone)",
+        note: "Matching her tone could turn this into an argument.",
       },
       {
         text: "(no reply)",
-        note: "Silence is a tone too. It reads as agreement or stonewalling — rarely what you mean.",
+        note: "No reply can leave the other person unsure how you feel.",
       },
       {
-        text: "“That didn't land how I meant it. Call me tonight?” (level, warm)",
-        note: "The move: name the miss without re-litigating, and offer the channel where tone can actually be heard.",
+        text: "“I don't think I said that well. Can we talk tonight?” (calm, warm)",
+        note: "This acknowledges the misunderstanding and suggests a way to talk it through.",
       },
     ],
     best: 2,
@@ -68,16 +68,16 @@ export const QUIZ: QuizQuestion[] = [
     scene: "“Yeah, I put together the proposal last week, and I think it's strong.”",
     options: [
       {
-        text: "“Actually, I wrote most of it.” (corrective, loud)",
-        note: "You're right on facts — and the volume turns the room's sympathy into discomfort. Correction can be quiet.",
+        text: "“I wrote most of that proposal.” (corrective, loud)",
+        note: "It clarifies your contribution, but a raised voice may distract from your point.",
       },
       {
-        text: "“So glad it landed! Building on that — the data I pulled shows…” (warm, firm)",
-        note: "The claim lands without a fight: your work is now visible and attached to you, and you look generous doing it.",
+        text: "“I'm glad the proposal is useful. The data I pulled shows…” (warm, firm)",
+        note: "This adds your contribution clearly and keeps the conversation moving.",
       },
       {
-        text: "(say nothing, seethe)",
-        note: "The seethe is real, and so is the resentment you'll carry into tomorrow's meeting. Cheap now, expensive later.",
+        text: "(say nothing, but feel frustrated)",
+        note: "Staying quiet may feel easier now, but it leaves your contribution unrecognized.",
       },
     ],
     best: 1,
@@ -88,16 +88,16 @@ export const QUIZ: QuizQuestion[] = [
     scene: "“Where are you?? I've been sitting here 20 minutes.”",
     options: [
       {
-        text: "“OMG so sorry!!! Be there in 5!!!” (breathless)",
-        note: "The exclamation points are doing apology labor your voice would do better. It also invites “it's fine!!” theater.",
+        text: "“I'm so sorry! I'll be there in five!” (rushed)",
+        note: "The apology is clear, but a specific and realistic arrival time matters most.",
       },
       {
         text: "“Traffic's bad. Order without me.” (clipped)",
-        note: "True but cold. The brevity reads as annoyance at them, when the annoyance is at you.",
+        note: "This shares what happened, but may sound abrupt when your friend has been waiting.",
       },
       {
-        text: "“I'm sorry — 20 minutes was my fault. 6 more, order the garlic bread.” (owning it, warm)",
-        note: "Clean apology, real ETA, and the garlic bread turns a flake into a plan. Warmth costs one extra clause.",
+        text: "“I'm sorry I'm late. I'll be there in six minutes. Go ahead and order.” (clear, warm)",
+        note: "This takes responsibility, gives a time estimate, and lets your friend know what to do.",
       },
     ],
     best: 2,
@@ -108,16 +108,16 @@ export const QUIZ: QuizQuestion[] = [
     scene: "“You don't mind watching Ringo this weekend again, right? You're so good with him.”",
     options: [
       {
-        text: "“I mean… I guess, again.” (resigned)",
-        note: "The sigh does the heavy lifting — and resentment is now scheduled for Saturday. Compliance isn't kindness.",
+        text: "“I guess I can, but this is getting hard to manage.” (reluctant)",
+        note: "This hints that you don't want to say yes, but leaves the answer unclear.",
       },
       {
-        text: "“No can do this weekend.” (cheerful, no reasons)",
-        note: "Strong move: the cheerfulness signals there's no wound to soothe, and no reasons means nothing to argue with.",
+        text: "“I can't watch Ringo this weekend.” (warm, direct)",
+        note: "This gives a clear answer without overexplaining.",
       },
       {
-        text: "“We're SO busy, sorry sorry — maybe next month?” (apologetic spiral)",
-        note: "The spiral teaches them the pressure works. Next month is also not a yes.",
+        text: "“I'm so sorry, we're really busy. Maybe next month?” (over-apologetic)",
+        note: "This leaves the door open even if you don't want to commit to next month.",
       },
     ],
     best: 1,
@@ -128,16 +128,16 @@ export const QUIZ: QuizQuestion[] = [
     scene: "“You know, in my day people your age had houses by 30. Just saying.”",
     options: [
       {
-        text: "“It's complicated, you wouldn't get it.” (sharp)",
-        note: "Satisfying for two seconds. Then someone's explaining your tone to the whole table.",
+        text: "“It's complicated, and I don't want to discuss it.” (sharp)",
+        note: "This sets a boundary, but the sharp tone may make dinner more tense.",
       },
       {
-        text: "“Ha — and in my day people your age didn't give financial advice at dinner.” (playful jab)",
-        note: "Witty, and it escalates: now it's a duel. You'd better want the whole fight, because this opens it.",
+        text: "“And people your age didn't give financial advice at dinner.” (playful jab)",
+        note: "This may get a laugh, but it also turns the comment into a back-and-forth.",
       },
       {
-        text: "“Houses were 3x salary then and 8x now — crazy, right?” (easy, factual)",
-        note: "The data does the pushing back so your tone never has to. Almost impossible to start a fight with.",
+        text: "“Homes cost a lot more compared with salaries now.” (calm, factual)",
+        note: "This responds to the comparison without making it personal.",
       },
     ],
     best: 2,
