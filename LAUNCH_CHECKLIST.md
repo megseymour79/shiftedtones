@@ -29,17 +29,11 @@ A dotenvx private key was previously committed in `.env.keys`. Treat it as compr
 
 ## 1. Production environment variables
 
-Set these only in the deployment secrets manager:
-
-- `VITE_CONVEX_URL` — production Convex URL
-- `VITE_PLAUSIBLE_DOMAIN` and optional `VITE_PLAUSIBLE_API_HOST`
-- `VLY_INTEGRATION_KEY`
-- `JWKS`, `JWT_PRIVATE_KEY`
-- `SITE_URL`, `CONVEX_SITE_URL`
+Use the complete variable table in [§1 of the launch runbook](./docs/LAUNCH_RUNBOOK.md#1-environment-variables) as the source of truth. `VITE_*` values are public build-time configuration, not secrets; set them in the Vercel production environment. Set server-side auth, email, and integration values only in the production Convex environment. `CONVEX_DEPLOYMENT` is a CLI deployment selector, not an app secret.
 
 ## 2. Hosting, domain, and analytics
 
-Choose one hosting target: Vercel (`vercel.json`) or Deno Deploy (`main.ts`). Deploy Convex production, configure `shiftedtone.com` and `www.shiftedtone.com`, configure DNS/TLS, create the Plausible site, set environment variables, and redeploy.
+Use Vercel (`vercel.json`) as the launch hosting target documented in the runbook; `main.ts` is not the configured launch path. Deploy Convex production, configure `shiftedtone.com` and `www.shiftedtone.com`, configure DNS/TLS, create the Plausible site, set environment variables, and redeploy.
 
 ## 3. Pre-launch smoke test
 

@@ -18,11 +18,11 @@ The dotenvx private key formerly committed as `.env.keys` is compromised. The fi
 
 ### Rewrite Git history (destructive; coordinate before running)
 
-Run as a repository administrator from a new mirror clone, after telling all collaborators to stop pushing. `git-filter-repo` must be installed separately and available in `PATH`.
+Run as a repository administrator from a new mirror clone, after telling all collaborators to stop pushing. First verify that `https://github.com/megseymour79/shiftedtones` is the intended repository and that the mirror's `origin` is that repository; do not proceed if either check fails. `git-filter-repo` must be installed separately and available in `PATH`.
 
 ```sh
-git clone --mirror https://github.com/megseymour79/tone-realign.git tone-realign-purge.git
-cd tone-realign-purge.git
+git clone --mirror https://github.com/megseymour79/shiftedtones.git shiftedtones-purge.git
+cd shiftedtones-purge.git
 git filter-repo --path .env.keys --invert-paths
 ```
 
