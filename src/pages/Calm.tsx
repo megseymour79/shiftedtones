@@ -25,15 +25,15 @@ export default function Calm() {
         {/* Heading */}
         <section>
           <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
-            Calm is a skill too
+            A little space to reset
           </p>
           <h1 className="mt-1 font-display text-3xl text-balance sm:text-4xl">
-            The <span className="italic text-mint">calm</span> side of the gym
+            Take a moment to <span className="italic text-mint">reset</span>
           </h1>
           <p className="mt-2 max-w-xl text-sm leading-relaxed text-muted-foreground">
-            {GROUNDING_EXERCISES.length} grounding exercises — breath pacers
-            and attention guides — plus the no-mic practices. Come here
-            before a hard conversation, or after one.
+            Choose from {GROUNDING_EXERCISES.length} guided breathing and
+            attention exercises, or try a practice that doesn't need a mic.
+            Use this page before or after a difficult conversation.
           </p>
         </section>
 
@@ -50,8 +50,8 @@ export default function Calm() {
             </div>
             <div className="p-6">
               <p className="text-sm leading-relaxed text-paper/80">
-                No mic needed. Pick the reply you'd actually send and see what
-                it would broadcast — new scenario every day.
+                No microphone needed. Choose a reply and see how it might come
+                across. There's a new scenario each day.
               </p>
               <Link to="/quiz" className="mt-6 inline-block">
                 <NBButton variant="sun" className="text-xs">
@@ -69,8 +69,8 @@ export default function Calm() {
             </div>
             <div className="p-6">
               <p className="text-sm leading-relaxed text-paper/80">
-                Something get under your skin? Look at what you almost said,
-                then write the version you'd rather have said.
+                Think about a moment that bothered you. Notice your first
+                reaction, then write what you'd rather say.
               </p>
               <ul className="mt-4 flex flex-col gap-2 text-xs uppercase tracking-widest text-paper/60">
                 {(reframeLogs ?? []).map((log) => (

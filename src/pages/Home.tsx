@@ -39,35 +39,35 @@ const READS: {
     toneColor: "bg-mint",
     pace: "128 wpm",
     pitch: "Steady",
-    note: "That's the voice people lean in to. Bottle this one.",
+    note: "This sounds steady and clear. Try to keep that pace.",
   },
   {
     tone: "Rushed",
     toneColor: "bg-coral",
     pace: "186 wpm",
     pitch: "Climbing",
-    note: "You're finishing sentences like they're chasing you. Slow the exhale.",
+    note: "Your pace is quick. Try slowing down and breathing out.",
   },
   {
     tone: "Tense",
     toneColor: "bg-sun",
     pace: "141 wpm",
     pitch: "High",
-    note: "Jaw tight, pitch up. Drop your shoulders and say it again — slower.",
+    note: "Your pitch is high and your jaw may be tense. Relax your shoulders and try again, a little slower.",
   },
   {
     tone: "Flat",
     toneColor: "bg-paper",
     pace: "112 wpm",
     pitch: "Low",
-    note: "The words are fine — the energy isn't landing. Lift the ends of your sentences.",
+    note: "Your words are clear, but your delivery sounds flat. Let the ends of your sentences lift a little.",
   },
   {
     tone: "Warm",
     toneColor: "bg-mint",
     pace: "135 wpm",
     pitch: "Steady",
-    note: "Warmth with a spine. Remember how this felt — that's the rep.",
+    note: "Your voice sounds warm and confident. Notice what feels comfortable about it.",
   },
 ];
 
@@ -122,7 +122,7 @@ export default function Home() {
                 className="size-2 bg-coral nb"
               />
               <AudioWaveform className="size-4" />
-              The voice tone gym · live
+              A live look at your tone
             </motion.div>
             <h1 className="mt-6 font-display text-5xl leading-[1.02] sm:text-6xl lg:text-7xl">
               What you{" "}
@@ -146,10 +146,9 @@ export default function Home() {
               .
             </h1>
             <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground">
-              Most arguments aren't about the words. They're about the tone
-              underneath. ShiftedTone hears yours, shows you what it's giving
-              away, and trains the gap out — before the next conversation
-              needs it.
+              Sometimes the way something sounds matters as much as the words.
+              ShiftedTone helps you notice your tone and practice responding
+              the way you intend.
             </p>
 
             {/* Rotating real moments */}
@@ -177,12 +176,12 @@ export default function Home() {
             >
               <Link to="/auth">
                 <NBButton variant="sun" className="px-6 py-3 text-base">
-                  Try your first read <ArrowRight className="size-4" />
+                  Try a tone check <ArrowRight className="size-4" />
                 </NBButton>
               </Link>
               <Link to="/how">
                 <NBButton variant="paper" className="px-6 py-3 text-base">
-                  Show me how it works
+                  See how it works
                 </NBButton>
               </Link>
             </motion.div>
@@ -191,7 +190,7 @@ export default function Home() {
                 <ShieldCheck className="size-4" /> Your audio stays with you
               </span>
               <span className="flex items-center gap-2">
-                <Timer className="size-4" /> 45 seconds, that's it
+                <Timer className="size-4" /> About 45 seconds
               </span>
             </div>
           </motion.div>
@@ -340,8 +339,8 @@ export default function Home() {
           {[
             {
               to: "/tone-check",
-              title: "Find your default",
-              body: "Three questions. One archetype. The drill built for it.",
+              title: "Check your tone",
+              body: "Answer three quick questions and get a practice suggestion.",
               color: "bg-coral",
             },
             {
@@ -352,14 +351,14 @@ export default function Home() {
             },
             {
               to: "/watch",
-              title: "Learn from the pros",
-              body: "Seven curated videos on tone, delivery, and staying regulated.",
+              title: "Learn from experts",
+              body: "Videos on tone, delivery, and staying composed.",
               color: "bg-sun",
             },
             {
               to: "/library",
-              title: "Go deeper",
-              body: "The research shelf — books and studies behind the method.",
+              title: "Explore the library",
+              body: "Books and research behind the approach.",
               color: "bg-paper",
             },
           ].map((card, i) => (
@@ -401,16 +400,14 @@ export default function Home() {
         />
         <div className="relative mx-auto flex max-w-6xl flex-col items-center gap-6 px-4 py-16 text-center lg:py-20">
           <h2 className="max-w-2xl font-display text-3xl text-balance sm:text-4xl">
-            The next hard conversation is already on your calendar. What{" "}
-            <span className="italic">version of you</span> shows up?
+            Ready for your next conversation? Practice a response that feels like you.
           </h2>
           <p className="max-w-xl text-ink/70">
-            It's free to start. The only equipment is the microphone you
-            already own.
+            It's free to get started. All you need is a microphone.
           </p>
           <Link to={isAuthenticated ? "/dashboard" : "/auth"}>
             <NBButton variant="ink" className="nb-shadow-lg px-8 py-4 text-lg">
-              Start practicing free <ArrowRight className="size-5" />
+              Start practicing <ArrowRight className="size-5" />
             </NBButton>
           </Link>
         </div>
@@ -440,12 +437,12 @@ function FeaturedWatchTeaser() {
               <PlaySquare className="size-3.5" /> Watch & learn
             </span>
             <h2 className="mt-4 font-display text-3xl leading-tight sm:text-4xl">
-              Learn from the <span className="italic text-sun">pros</span>.
+              Learn from <span className="italic text-sun">experts</span>.
             </h2>
           </div>
           <p className="max-w-md text-sm leading-relaxed text-paper/60">
-            Coaches and researchers on what your voice broadcasts — every
-            video paired with the drill that turns it into a rep.
+            Coaches and researchers explain how tone affects communication.
+            Each video includes a related practice drill.
           </p>
         </div>
 
@@ -453,9 +450,8 @@ function FeaturedWatchTeaser() {
           <VideoCard video={featured} playInline />
           <div className="flex flex-col justify-center gap-5">
             <p className="text-base leading-relaxed text-paper/80">
-              Press play right here — no leaving the page. When it clicks,
-              the "Train it" card underneath hands the idea to a 45-second
-              drill so it becomes a rep, not just a takeaway.
+              Play a video here, then put what you learned into practice with
+              a short drill.
             </p>
             <div className="grid grid-cols-3 gap-3">
               {others.map((v) => (
@@ -487,7 +483,7 @@ function FeaturedWatchTeaser() {
             <div>
               <Link to="/watch">
                 <NBButton variant="paper" className="px-6 py-3 text-base">
-                  See all seven videos <ArrowRight className="size-4" />
+                  Browse all seven videos <ArrowRight className="size-4" />
                 </NBButton>
               </Link>
             </div>

@@ -16,19 +16,19 @@ const STEPS = [
   {
     icon: Mic,
     title: "01 · Speak",
-    body: "Pick a drill and talk like you would to a real person. We hand you the prompt; you bring the honesty.",
+    body: "Choose a drill and respond as you would in a real conversation. We'll give you a prompt to get started.",
     color: "bg-sun",
   },
   {
     icon: Activity,
     title: "02 · See",
-    body: "While you talk, we listen for pitch, pace, and pressure — then show you the numbers and what they mean.",
+    body: "As you speak, we look at your pitch, pace, and volume, then explain what the results mean.",
     color: "bg-mint",
   },
   {
     icon: Brain,
     title: "03 · Rewire",
-    body: "You get a straight read on how you sounded and one thing to try next time. Small reps change the default.",
+    body: "You'll see how your voice came across and get one suggestion to try next time. Regular practice can help you build new habits.",
     color: "bg-coral",
   },
 ];
@@ -44,11 +44,11 @@ export default function HowItWorks() {
         <div className="mx-auto max-w-6xl px-4 py-14 lg:py-16">
           <NBBadge className="bg-sun text-ink">The method</NBBadge>
           <h1 className="mt-4 font-display text-4xl leading-tight sm:text-5xl">
-            How it <span className="italic text-coral">actually</span> works
+            How it <span className="italic text-coral">works</span>
           </h1>
           <p className="mt-4 max-w-xl text-lg leading-relaxed text-muted-foreground">
-            Self-awareness doesn't change anything on its own. Reps do. Every
-            take is one.
+            Noticing your habits is a start. Practicing a different response
+            can help you build new ones.
           </p>
         </div>
       </section>
@@ -89,12 +89,11 @@ export default function HowItWorks() {
 
           <div className="mt-10 flex flex-wrap items-center justify-between gap-4">
             <p className="max-w-md text-sm text-muted-foreground">
-              That's the whole loop. No lectures, no modules — just honest
-              takes and straight scores until the calmer voice is the default.
+              That's the process: practice, review your results, and try again.
             </p>
             <Link to="/auth">
               <NBButton variant="coral" className="px-6 py-3">
-                Start the loop <ArrowRight className="size-4" />
+                Get started <ArrowRight className="size-4" />
               </NBButton>
             </Link>
           </div>
@@ -111,7 +110,7 @@ export default function HowItWorks() {
               </span>
               <div>
                 <p className="text-[10px] font-bold uppercase tracking-widest">
-                  Today's challenge is live
+                  Today's challenge
                 </p>
                 <p className="font-display text-lg leading-tight sm:text-xl">
                   {daily.drill.name} — {daily.angle.toLowerCase()}
@@ -120,7 +119,7 @@ export default function HowItWorks() {
             </div>
             <Link to="/drills">
               <NBButton variant="ink" className="text-xs">
-                Meet the drills <ArrowRight className="size-3.5" />
+                Browse the drills <ArrowRight className="size-3.5" />
               </NBButton>
             </Link>
           </div>

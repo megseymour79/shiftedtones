@@ -72,7 +72,7 @@ export default function Practice() {
       <AppShell>
         <div className="mx-auto max-w-3xl px-4 py-10">
           <NBPanel className="p-8 text-center">
-            <p className="font-display text-xl">We couldn't find that drill</p>
+            <p className="font-display text-xl">We couldn't find that drill.</p>
             <Link to="/gym" className="mt-4 inline-block">
               <NBButton variant="paper">Back to the gym</NBButton>
             </Link>
@@ -87,7 +87,7 @@ export default function Practice() {
       <AppShell>
         <div className="mx-auto max-w-3xl px-4 py-10">
           <NBPanel className="p-8 text-center">
-            <p className="text-sm text-muted-foreground">Loading your gym…</p>
+            <p className="text-sm text-muted-foreground">Loading drill…</p>
           </NBPanel>
         </div>
       </AppShell>
@@ -100,17 +100,16 @@ export default function Practice() {
         <div className="mx-auto max-w-3xl px-4 py-10">
           <NBPanel className="p-8 text-center">
             <Lock className="mx-auto size-8" />
-            <p className="mt-3 font-display text-xl">{drill.name} is still locked</p>
+            <p className="mt-3 font-display text-xl">{drill.name} isn't available yet</p>
             <p className="mx-auto mt-2 max-w-sm text-sm text-muted-foreground">
-              {gate?.blurb} Unlock it with {gate ? unlockGoalLine(gate, stats) : "practice"} —
-              every honest take counts.
+              {gate?.blurb}               Your next step: {gate ? unlockGoalLine(gate, stats) : "keep practicing"}.
             </p>
             <div className="mt-5 flex justify-center gap-3">
               <Link to="/gym">
                 <NBButton variant="paper">Back to the gym</NBButton>
               </Link>
               <Link to="/practice/steady-ground">
-                <NBButton variant="coral">Do an open drill</NBButton>
+                <NBButton variant="coral">Try an available drill</NBButton>
               </Link>
             </div>
           </NBPanel>
@@ -221,7 +220,7 @@ function PracticeRunner({ drill, isDaily }: { drill: Drill; isDaily: boolean }) 
             </NBButton>
           </Link>
           <div className="flex items-center gap-2">
-            {isDaily && <NBBadge className="bg-coral">★ Today's challenge</NBBadge>}
+            {isDaily && <NBBadge className="bg-coral">Today's challenge</NBBadge>}
             <NBBadge className="bg-sun">{drill.tag}</NBBadge>
           </div>
         </div>
@@ -384,7 +383,7 @@ function PracticeRunner({ drill, isDaily }: { drill: Drill; isDaily: boolean }) 
         <NBPanel className="bg-secondary p-6">
           <div className="flex items-center gap-2">
             <MessageSquareText className="size-5" />
-            <p className="font-display text-xl">Your context</p>
+            <p className="font-display text-xl">Add context</p>
           </div>
           <p className="mt-2 max-w-xl text-sm text-muted-foreground">
             Add a quick note about this take (who it is for or what happened).
@@ -574,7 +573,7 @@ function PracticeRunner({ drill, isDaily }: { drill: Drill; isDaily: boolean }) 
                                   Your numbers: {fb.yourNumbers}
                                 </p>
                                 <p>
-                                  <span className="font-bold">Practice this: </span>
+                                  <span className="font-bold">Try this: </span>
                                   <span className="text-muted-foreground">{fb.tip}</span>
                                 </p>
                               </>
@@ -712,10 +711,10 @@ function SaveRow({
         score: analysis.overallScore,
       });
       setSavedId(sessionId);
-      toast.success("Saved. It's in your log.");
+      toast.success("Saved to your log.");
       onSaved();
     } catch {
-      toast.error("Couldn't save that one. Give it another go.");
+      toast.error("We couldn't save that. Please try again.");
     } finally {
       setSaving(false);
     }
@@ -726,7 +725,7 @@ function SaveRow({
       <div className="mt-5 flex flex-wrap items-center gap-3">
         {!saved ? (
           <NBButton onClick={handleSave} disabled={saving} variant="mint">
-            {saving ? "Saving…" : "Add to my log"}
+            {saving ? "Saving…" : "Save to my log"}
           </NBButton>
         ) : (
           <span className="nb inline-flex items-center gap-1 bg-mint px-3 py-2 text-sm font-bold">

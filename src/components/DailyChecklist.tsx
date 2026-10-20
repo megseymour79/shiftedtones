@@ -41,7 +41,7 @@ export function DailyChecklist({ todayDrillId }: { todayDrillId: string }) {
     <NBPanel className="overflow-hidden">
       <div className="flex items-center justify-between border-b-2 border-ink bg-sun px-5 py-3">
         <div className="flex items-center gap-2 font-display text-xl">
-          <Flame className="size-5" /> Today's four
+          <Flame className="size-5" /> Today's checklist
         </div>
         <NBBadge className="bg-card">
           {completed.size}/4 done
@@ -52,7 +52,7 @@ export function DailyChecklist({ todayDrillId }: { todayDrillId: string }) {
         {/* Sweep bonus meter */}
         <div className="nb flex items-center justify-between gap-3 bg-secondary px-3 py-2">
           <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-            All four → +40 XP bonus
+            Complete all four for +40 XP
           </span>
           <div className="flex gap-1" aria-hidden>
             {DAILY_ACTIONS.map((a) => (
@@ -136,8 +136,7 @@ export function DailyChecklist({ todayDrillId }: { todayDrillId: string }) {
         </div>
 
         <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
-          Four small reps beat one heroic session. Miss nothing and the sweep
-          bonus lands on top.
+          A little practice each day can add up. Complete all four for a bonus.
         </p>
       </div>
     </NBPanel>

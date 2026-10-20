@@ -40,7 +40,7 @@ export default function Gym() {
       <AppShell active="gym">
         <div className="mx-auto max-w-3xl px-4 py-10">
           <NBPanel className="p-8 text-center">
-            <p className="text-sm text-muted-foreground">Loading your gym…</p>
+            <p className="text-sm text-muted-foreground">Loading drills…</p>
           </NBPanel>
         </div>
       </AppShell>
@@ -134,11 +134,11 @@ export default function Gym() {
                         <span className="flex items-center gap-1.5">
                           <Timer className="size-3.5" /> {drill.seconds}s
                         </span>
-                        <span>{s ? `Best score ${s.bestScore}` : "First try"}</span>
+                        <span>{s ? `Best score: ${s.bestScore}` : "Not tried yet"}</span>
                       </div>
                       <Link to={`/practice/${drill.id}`} className="border-t-2 border-ink">
                         <NBButton variant="paper" className="w-full rounded-none py-2.5 text-xs">
-                          Start drill <ArrowRight className="size-3.5" />
+                          Start practice <ArrowRight className="size-3.5" />
                         </NBButton>
                       </Link>
                     </>
@@ -149,7 +149,7 @@ export default function Gym() {
                       </p>
                       <div className="border-t-2 border-ink px-5 py-3">
                         <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-                          Unlocks with
+                          To unlock
                         </p>
                         <p className="mt-0.5 text-sm font-bold">{unlockGoalLine(gate!, unlockStats)}</p>
                       </div>
@@ -188,9 +188,9 @@ export default function Gym() {
                 <MessagesSquare className="size-5 text-sun" />
               </span>
               <div>
-                <h2 className="font-display text-lg leading-tight">No mic handy?</h2>
+                <h2 className="font-display text-lg leading-tight">No microphone?</h2>
                 <p className="text-sm text-paper/70">
-                  Read the Room trains the same judgment without recording.
+                  Try Read the Room to practice without recording.
                 </p>
               </div>
             </div>

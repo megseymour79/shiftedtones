@@ -39,7 +39,7 @@ export function PublicLayout({ children }: { children: ReactNode }) {
       {/* Announcement strip */}
       <div className="border-b-2 border-ink bg-ink py-2 text-paper">
         <p className="text-center text-xs font-bold uppercase tracking-widest">
-          Your voice reacts before you do. Here's where you catch it.
+          Notice your usual reactions and practice a different response.
         </p>
       </div>
 
@@ -70,7 +70,7 @@ export function PublicLayout({ children }: { children: ReactNode }) {
           <div className="flex items-center gap-3">
             <Link to={isAuthenticated ? "/dashboard" : "/auth"} className="hidden sm:block">
               <NBButton variant="ink" className="px-4 py-2 text-xs">
-                {isAuthenticated ? "Open app" : "Start free"}
+                {isAuthenticated ? "Open app" : "Get started"}
               </NBButton>
             </Link>
             <button
@@ -105,7 +105,7 @@ export function PublicLayout({ children }: { children: ReactNode }) {
                 className="px-4 py-3"
               >
                 <NBButton variant="ink" className="w-full text-xs">
-                  {isAuthenticated ? "Open app" : "Start free"}
+                  {isAuthenticated ? "Open app" : "Get started"}
                 </NBButton>
               </Link>
             </div>
@@ -138,7 +138,7 @@ export function PublicLayout({ children }: { children: ReactNode }) {
             ))}
           </nav>
           <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
-            Train the tone. Keep what you mean.
+            Practice your tone. Say what you mean.
           </p>
         </div>
       </footer>
