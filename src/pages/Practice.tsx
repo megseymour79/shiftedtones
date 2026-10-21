@@ -1,6 +1,6 @@
 import { NBBadge, NBButton, NBPanel, NBMeter } from "@/components/nb";
 import { MicError } from "@/components/MicError";
-import { MicPicker, getSavedMicDeviceId } from "@/components/MicPicker";
+import { getSavedMicDeviceId } from "@/components/MicPicker";
 import { CoachNote } from "@/components/CoachNote";
 import { getDrill, type Drill } from "@/lib/drills";
 import { UNLOCKABLE_DRILLS, isUnlocked, unlockGoalLine } from "@/lib/unlocks";
@@ -100,9 +100,12 @@ export default function Practice() {
         <div className="mx-auto max-w-3xl px-4 py-10">
           <NBPanel className="p-8 text-center">
             <Lock className="mx-auto size-8" />
-            <p className="mt-3 font-display text-xl">{drill.name} isn't available yet</p>
+            <p className="mt-3 font-display text-xl">
+              {drill.name} isn't available yet
+            </p>
             <p className="mx-auto mt-2 max-w-sm text-sm text-muted-foreground">
-              {gate?.blurb}               Your next step: {gate ? unlockGoalLine(gate, stats) : "keep practicing"}.
+              {gate?.blurb} Your next step:{" "}
+              {gate ? unlockGoalLine(gate, stats) : "keep practicing"}.
             </p>
             <div className="mt-5 flex justify-center gap-3">
               <Link to="/gym">
@@ -120,14 +123,21 @@ export default function Practice() {
 
   // Keyed by drillId: switching drills remounts the runner, which resets
   // capture and saved state cleanly instead of via setState-in-effect.
-  const isDaily = getAccessibleDailyChallenge((id) => {
-    const g = UNLOCKABLE_DRILLS.find((u) => u.id === id);
-    return !g || isUnlocked(g, stats);
-  }).drill.id === drillId;
+  const isDaily =
+    getAccessibleDailyChallenge((id) => {
+      const g = UNLOCKABLE_DRILLS.find((u) => u.id === id);
+      return !g || isUnlocked(g, stats);
+    }).drill.id === drillId;
   return <PracticeRunner key={drillId} drill={drill} isDaily={isDaily} />;
 }
 
-function PracticeRunner({ drill, isDaily }: { drill: Drill; isDaily: boolean }) {
+function PracticeRunner({
+  drill,
+  isDaily,
+}: {
+  drill: Drill;
+  isDaily: boolean;
+}) {
   const capture = useToneCapture();
   const [saved, setSaved] = useState(false);
   // The user's own context: what this take is responding to or opening.
@@ -170,7 +180,8 @@ function PracticeRunner({ drill, isDaily }: { drill: Drill; isDaily: boolean }) 
     const onKey = (e: KeyboardEvent) => {
       if (e.code !== "Space") return;
       const el = e.target as HTMLElement | null;
-      if (el && ["INPUT", "TEXTAREA", "SELECT", "BUTTON"].includes(el.tagName)) return;
+      if (el && ["INPUT", "TEXTAREA", "SELECT", "BUTTON"].includes(el.tagName))
+        return;
       e.preventDefault();
       const c = captureRef.current;
       if (c.state === "idle" && countdown === null) beginCountdown();
@@ -185,7 +196,10 @@ function PracticeRunner({ drill, isDaily }: { drill: Drill; isDaily: boolean }) 
   const prevAnalysis = useRef(capture.analysis);
   useEffect(() => {
     if (capture.analysis && capture.analysis !== prevAnalysis.current) {
-      resultsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      resultsRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
     }
     prevAnalysis.current = capture.analysis;
   }, [capture.analysis]);
@@ -203,7 +217,6 @@ function PracticeRunner({ drill, isDaily }: { drill: Drill; isDaily: boolean }) 
     elapsedMs,
     analysis,
     transcript,
-    activeDeviceLabel,
     micMuted,
     audioUrl,
     reset,
@@ -220,7 +233,9 @@ function PracticeRunner({ drill, isDaily }: { drill: Drill; isDaily: boolean }) 
             </NBButton>
           </Link>
           <div className="flex items-center gap-2">
-            {isDaily && <NBBadge className="bg-coral">Today's challenge</NBBadge>}
+            {isDaily && (
+              <NBBadge className="bg-coral">Today's challenge</NBBadge>
+            )}
             <NBBadge className="bg-sun">{drill.tag}</NBBadge>
           </div>
         </div>
@@ -287,9 +302,7 @@ function PracticeRunner({ drill, isDaily }: { drill: Drill; isDaily: boolean }) 
                           level *
                             (0.4 +
                               0.6 *
-                                Math.abs(
-                                  Math.sin(i * 0.9 + elapsedMs / 180),
-                                )),
+                                Math.abs(Math.sin(i * 0.9 + elapsedMs / 180))),
                           0.06,
                         )
                       : 0.06;
@@ -312,7 +325,10 @@ function PracticeRunner({ drill, isDaily }: { drill: Drill; isDaily: boolean }) 
               <div className="w-full">
                 <div className="h-3 w-full nb bg-card overflow-hidden">
                   <div
-                    className={cn("h-full transition-[width] duration-300", PACE_BAR_CLASS[pace])}
+                    className={cn(
+                      "h-full transition-[width] duration-300",
+                      PACE_BAR_CLASS[pace],
+                    )}
                     style={{ width: `${pct}%` }}
                   />
                 </div>
@@ -329,8 +345,13 @@ function PracticeRunner({ drill, isDaily }: { drill: Drill; isDaily: boolean }) 
 
             {state === "recording" && (
               <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
-                Live pitch · {livePitchHz ? `${Math.round(livePitchHz)} Hz` : "listening for you…"}
-                {level < 0.06 && elapsedMs > 3000 && " · we can barely hear you — move closer"}
+                Live pitch ·{" "}
+                {livePitchHz
+                  ? `${Math.round(livePitchHz)} Hz`
+                  : "listening for you…"}
+                {level < 0.06 &&
+                  elapsedMs > 3000 &&
+                  " · we can barely hear you — move closer"}
               </p>
             )}
 
@@ -343,8 +364,6 @@ function PracticeRunner({ drill, isDaily }: { drill: Drill; isDaily: boolean }) 
                 empty otherwise.
               </p>
             )}
-
-            <MicPicker activeLabel={activeDeviceLabel} />
 
             {/* Controls */}
             <div className="flex items-center gap-3">
@@ -404,7 +423,11 @@ function PracticeRunner({ drill, isDaily }: { drill: Drill; isDaily: boolean }) 
                 )}
               >
                 {p}
-                {context === p && <span aria-hidden className="ml-1.5">×</span>}
+                {context === p && (
+                  <span aria-hidden className="ml-1.5">
+                    ×
+                  </span>
+                )}
               </button>
             ))}
           </div>
@@ -415,9 +438,7 @@ function PracticeRunner({ drill, isDaily }: { drill: Drill; isDaily: boolean }) 
             rows={3}
             className="nb mt-4 w-full bg-card p-3 text-sm outline-none placeholder:text-muted-foreground"
           />
-          <p className="mt-2 text-xs text-muted-foreground">
-            Optional.
-          </p>
+          <p className="mt-2 text-xs text-muted-foreground">Optional.</p>
         </NBPanel>
 
         {/* Results */}
@@ -455,7 +476,8 @@ function PracticeRunner({ drill, isDaily }: { drill: Drill; isDaily: boolean }) 
                 <div className="flex items-center gap-3">
                   <NBBadge
                     className={
-                      TONE_LABELS[analysis.dominantTone]?.color ?? "bg-secondary"
+                      TONE_LABELS[analysis.dominantTone]?.color ??
+                      "bg-secondary"
                     }
                   >
                     {TONE_LABELS[analysis.dominantTone]?.label ??
@@ -472,7 +494,12 @@ function PracticeRunner({ drill, isDaily }: { drill: Drill; isDaily: boolean }) 
                   <motion.div
                     initial={{ scale: 0.5, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
-                    transition={{ type: "spring", stiffness: 260, damping: 16, delay: 0.15 }}
+                    transition={{
+                      type: "spring",
+                      stiffness: 260,
+                      damping: 16,
+                      delay: 0.15,
+                    }}
                     className="font-display text-5xl"
                   >
                     {analysis.overallScore}
@@ -489,7 +516,12 @@ function PracticeRunner({ drill, isDaily }: { drill: Drill; isDaily: boolean }) 
                     {TONE_LABELS[analysis.dominantTone]?.note}
                   </p>
                   <p className="mt-3 text-sm leading-relaxed">
-                    This take reads as <span className="font-bold">{TONE_LABELS[analysis.dominantTone]?.label ?? analysis.dominantTone}</span>. For the next take, focus on your lowest factor below.
+                    This take reads as{" "}
+                    <span className="font-bold">
+                      {TONE_LABELS[analysis.dominantTone]?.label ??
+                        analysis.dominantTone}
+                    </span>
+                    . For the next take, focus on your lowest factor below.
                   </p>
                 </div>
                 <div className="nb bg-secondary p-4">
@@ -574,7 +606,9 @@ function PracticeRunner({ drill, isDaily }: { drill: Drill; isDaily: boolean }) 
                                 </p>
                                 <p>
                                   <span className="font-bold">Try this: </span>
-                                  <span className="text-muted-foreground">{fb.tip}</span>
+                                  <span className="text-muted-foreground">
+                                    {fb.tip}
+                                  </span>
                                 </p>
                               </>
                             );
@@ -591,19 +625,25 @@ function PracticeRunner({ drill, isDaily }: { drill: Drill; isDaily: boolean }) 
                   <div className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
                     Pitch
                   </div>
-                  <div className="font-display text-lg">{analysis.avgPitchHz} Hz</div>
+                  <div className="font-display text-lg">
+                    {analysis.avgPitchHz} Hz
+                  </div>
                 </div>
                 <div className="nb bg-secondary p-3">
                   <div className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
                     Range
                   </div>
-                  <div className="font-display text-lg">{analysis.pitchRangeHz} Hz</div>
+                  <div className="font-display text-lg">
+                    {analysis.pitchRangeHz} Hz
+                  </div>
                 </div>
                 <div className="nb bg-secondary p-3">
                   <div className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
                     Pace
                   </div>
-                  <div className="font-display text-lg">{analysis.wordsPerMinute} wpm</div>
+                  <div className="font-display text-lg">
+                    {analysis.wordsPerMinute} wpm
+                  </div>
                 </div>
                 <div className="nb bg-secondary p-3">
                   <div className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
@@ -684,7 +724,9 @@ function SaveRow({
       // Credit the daily checklist + a personal-best bonus when earned.
       try {
         await markTake({ action: "take" });
-      } catch { /* checklist credit is best-effort */ }
+      } catch {
+        /* checklist credit is best-effort */
+      }
       if (analysis.overallScore >= (drillStats?.bestScore ?? 0)) {
         addBonus({ amount: 25 }).catch(() => {});
       }

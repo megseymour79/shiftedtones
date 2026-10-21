@@ -31,10 +31,12 @@ interface MicDeviceInfo {
 export function MicPicker({
   activeLabel,
   className,
+  alwaysShow = false,
 }: {
   /** Label of the device the last take actually used ("" if none yet). */
   activeLabel: string;
   className?: string;
+  alwaysShow?: boolean;
 }) {
   const [devices, setDevices] = useState<MicDeviceInfo[]>([]);
   const [selected, setSelected] = useState<string>(
@@ -82,7 +84,7 @@ export function MicPicker({
     };
   }, [enumerate]);
 
-  if (devices.length === 0 && !activeLabel) return null;
+  if (devices.length === 0 && !activeLabel && !alwaysShow) return null;
 
   return (
     <div className={cn("flex flex-wrap items-center gap-2", className)}>
@@ -102,6 +104,11 @@ export function MicPicker({
           </option>
         ))}
       </select>
+      {alwaysShow && devices.length === 0 && (
+        <span className="text-xs text-muted-foreground">
+          Allow microphone access during a take to see named inputs.
+        </span>
+      )}
       {activeLabel && (
         <span className="max-w-[220px] truncate text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
           Last used: {activeLabel}
