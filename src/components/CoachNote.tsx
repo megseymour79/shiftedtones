@@ -51,7 +51,7 @@ export function CoachNote({ sessionId }: { sessionId: Id<"practiceSessions"> }) 
         {shown.oneThing && (
           <div className="nb mt-4 bg-sun p-3">
             <span className="text-[10px] font-bold uppercase tracking-widest">
-              Next take · one thing
+              For next time
             </span>
             <p className="mt-0.5 font-display text-sm">{shown.oneThing}</p>
           </div>
@@ -68,7 +68,7 @@ export function CoachNote({ sessionId }: { sessionId: Id<"practiceSessions"> }) 
       setNote(result);
     } catch (e) {
       setError(
-        e instanceof Error ? e.message : "The coach couldn't read that take. Try again.",
+        e instanceof Error ? e.message : "We couldn't review that take. Try again in a moment.",
       );
     } finally {
       setLoading(false);
@@ -78,9 +78,9 @@ export function CoachNote({ sessionId }: { sessionId: Id<"practiceSessions"> }) 
   const handleUnlock = async () => {
     try {
       await unlock({});
-      toast.success("Coach unlocked. You'll now get a note with each take.");
+      toast.success("Coach unlocked. You'll get a note after each take.");
     } catch {
-      toast.error("We couldn't unlock the coach. Please try again.");
+      toast.error("We couldn't unlock the coach. Try again in a moment.");
     }
   };
 
@@ -91,12 +91,11 @@ export function CoachNote({ sessionId }: { sessionId: Id<"practiceSessions"> }) 
           <Sparkles className="size-3" /> The Coach
         </NBBadge>
         <p className="mt-3 font-display text-xl leading-snug">
-          You've used your three free notes.
+          You've used all three free notes.
         </p>
         <p className="mt-2 max-w-md text-sm leading-relaxed text-paper/80">
-          Get feedback based on{" "}
-          <span className="font-bold text-sun">your</span> pace, pitch, and
-          stability, with one suggestion to try next.
+          Get feedback on your pace, pitch, and stability, plus one idea to
+          try next time.
         </p>
         <div className="mt-4">
           <NBButton onClick={handleUnlock} variant="sun">
@@ -111,7 +110,7 @@ export function CoachNote({ sessionId }: { sessionId: Id<"practiceSessions"> }) 
     <div className="mt-5">
       {!access.hasAnyNotes && (
         <p className="mb-2 text-xs text-muted-foreground">
-          Your first three coach notes are free. Each one uses your practice scores.
+          Your first three notes are free. Each one is based on your practice scores.
         </p>
       )}
       {access.entitlement.freeRemaining > 0 && access.hasAnyNotes && (
@@ -123,11 +122,11 @@ export function CoachNote({ sessionId }: { sessionId: Id<"practiceSessions"> }) 
       <NBButton onClick={run} disabled={loading} variant="coral">
         {loading ? (
           <>
-            <Loader2 className="size-4 animate-spin" /> Reading your numbers…
+            <Loader2 className="size-4 animate-spin" /> Taking a look…
           </>
         ) : (
           <>
-            <Sparkles className="size-4" /> Coach this take
+            <Sparkles className="size-4" /> Get a note on this take
           </>
         )}
       </NBButton>

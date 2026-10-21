@@ -3,7 +3,6 @@ import { AppShell } from "@/components/AppShell";
 import { DailyChecklist } from "@/components/DailyChecklist";
 import { dailyLabel, getAccessibleDailyChallenge } from "@/lib/daily";
 import { GROUNDING_EXERCISES } from "@/lib/grounding";
-import { arcDaysLeft, arcStageFor } from "@/lib/arc";
 import { levelInfo } from "@/lib/gamify";
 import {
   UNLOCKABLE_DRILLS,
@@ -80,10 +79,16 @@ export default function Dashboard() {
             <h1 className="mt-1 font-display text-3xl text-balance sm:text-4xl">
               What would you like to practice today?
             </h1>
+            <Link
+              to="/plan"
+              className="mt-2 inline-block text-xs font-bold uppercase tracking-widest text-coral hover:underline"
+            >
+              See your 21-day plan →
+            </Link>
           </div>
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-            <NBStat label="Takes" value={stats.totalSessions} />
-            <NBStat label="Streak" value={stats.streakDays} suffix="d" className="bg-mint" />
+            <NBStat label="Practice takes" value={stats.totalSessions} />
+            <NBStat label="Days in a row" value={stats.streakDays} className="bg-mint" />
             <NBStat label="Drills tried" value={stats.drillsTried} className="bg-sun" />
             <NBStat
               label="Best score"
@@ -97,11 +102,11 @@ export default function Dashboard() {
         <section aria-label="Quick practice">
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-5">
             {[
-              { to: "/gym", icon: Mic, label: "Quick practice", sub: "45 sec", color: "bg-coral" },
-              { to: "/translate", icon: Languages, label: "Try a new tone", sub: "2 rounds", color: "bg-sun" },
-              { to: "/quiz", icon: MessagesSquare, label: "Read the Room", sub: "1 scenario", color: "bg-mint" },
-              { to: "/reframe", icon: Shuffle, label: "Reframe a response", sub: "2 min", color: "bg-paper" },
-              { to: "/calm", icon: Wind, label: "Grounding", sub: `${GROUNDING_EXERCISES.length} exercises`, color: "bg-paper" },
+              { to: "/gym", icon: Mic, label: "Try a drill", sub: "About 45 sec", color: "bg-coral" },
+              { to: "/translate", icon: Languages, label: "Try another tone", sub: "Two short takes", color: "bg-sun" },
+              { to: "/quiz", icon: MessagesSquare, label: "Read the Room", sub: "One scenario", color: "bg-mint" },
+              { to: "/reframe", icon: Shuffle, label: "Try another response", sub: "About 2 min", color: "bg-paper" },
+              { to: "/calm", icon: Wind, label: "Take a breather", sub: `${GROUNDING_EXERCISES.length} exercises`, color: "bg-paper" },
             ].map((rep) => {
               const Icon = rep.icon;
               return (
@@ -143,13 +148,13 @@ export default function Dashboard() {
                 </div>
               </div>
               <p className="text-sm text-ink/70">
-                About {daily.drill.seconds} seconds with your microphone on.
-                Browse all drills and your best scores in the gym.
+                About {daily.drill.seconds} seconds with your mic on. You can
+                find this drill and your other practice options in the gym.
               </p>
               <div>
                 <Link to={`/practice/${daily.drill.id}`}>
                   <NBButton variant="ink" className="text-xs">
-                    <Mic className="size-3.5" /> Do today's take
+                    <Mic className="size-3.5" /> Try today's drill
                   </NBButton>
                 </Link>
               </div>
@@ -158,72 +163,7 @@ export default function Dashboard() {
           <DailyChecklist todayDrillId={daily.drill.id} />
         </section>
 
-        {/* 21-day arc — where you are in the reprogramming program */}
-        <ArcPanel streakDays={stats.streakDays} />
       </div>
     </AppShell>
-  );
-}
-
-/**
- * The 21-day reprogramming arc: your streak maps onto a three-week
- * program (floor → range → translation), so coming back isn't just a
- * checklist — it's a curriculum with a finish line.
- */
-function ArcPanel({ streakDays }: { streakDays: number }) {
-  const day = Math.max(1, streakDays);
-  const stage = arcStageFor(day);
-  const left = arcDaysLeft(day);
-  const dayPct = Math.min(100, Math.round((day / 21) * 100));
-
-  return (
-    <NBPanel className="overflow-hidden">
-      <div className="flex items-center justify-between border-b-2 border-ink bg-mint px-5 py-3">
-        <div className="font-display">Your 21-day practice plan</div>
-        <span className="nb inline-flex items-center bg-ink px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-paper">
-          {left > 0 ? `${left} day${left === 1 ? "" : "s"} left` : "Plan complete — keep practicing"}
-        </span>
-      </div>
-      <div className="p-5">
-        <div className="flex flex-wrap items-center gap-5">
-          <div className="nb flex size-14 shrink-0 flex-col items-center justify-center bg-card">
-            <span className="font-display text-xl leading-none">{day}</span>
-            <span className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground">day</span>
-          </div>
-          <div className="min-w-0 flex-1">
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="font-display text-lg">{stage.name}</span>
-              <span className="text-xs text-muted-foreground">· {stage.promise}</span>
-            </div>
-            <p className="mt-1 text-sm text-muted-foreground">
-              <span className="font-bold text-ink">Today's practice:</span> {stage.move}
-            </p>
-          </div>
-        </div>
-
-        {/* Stage track: three blocks across 21 days */}
-        <div className="mt-4 flex gap-1" aria-hidden>
-          {Array.from({ length: 21 }).map((_, i) => {
-            const d = i + 1;
-            const s = arcStageFor(d);
-            const isStage = s.id === stage.id;
-            const isDone = d <= day;
-            return (
-              <span
-                key={i}
-                title={`Day ${d} — ${s.name}`}
-                className={`h-3 flex-1 border border-ink ${
-                  isDone ? (isStage ? "bg-ink" : "bg-muted") : "bg-card"
-                }`}
-              />
-            );
-          })}
-        </div>
-        <p className="mt-3 text-xs text-muted-foreground">{stage.why}</p>
-        <div className="mt-3 h-1.5 bg-muted">
-          <div className="h-full bg-ink" style={{ width: `${dayPct}%` }} />
-        </div>
-      </div>
-    </NBPanel>
   );
 }

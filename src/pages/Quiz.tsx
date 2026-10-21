@@ -61,7 +61,7 @@ function QuizCard({
           {question.scene}
         </p>
         <p className="mt-2 text-xs font-bold uppercase tracking-widest text-muted-foreground">
-          What do you send?
+          What would you say?
         </p>
 
         <div className="mt-5 flex flex-col gap-3">
@@ -143,11 +143,11 @@ function QuizCard({
             >
               <p className="max-w-md text-sm italic text-muted-foreground">
                 {picked === question.best
-                  ? "That response is clear and considerate. Notice what felt natural about it."
-                  : "There's no wrong answer here. Notice what led you to choose that response."}
+                  ? "That response is clear and considerate. What felt natural about it?"
+                  : "There's no one right answer. What led you to choose that response?"}
               </p>
               <NBButton variant="paper" onClick={reset} className="text-xs">
-                <ArrowRight className="size-3.5" /> Re-read it
+                <ArrowRight className="size-3.5" /> Try another
               </NBButton>
             </motion.div>
           )}
@@ -174,12 +174,12 @@ export default function Quiz() {
 
         <div>
           <h1 className="font-display text-2xl">
-              Practice reading a situation,{" "}
+              Get a feel for a situation,{" "}
               <span className="italic text-coral">no mic needed</span>
           </h1>
           <p className="mt-2 max-w-lg text-sm text-muted-foreground">
-            Choose the reply you'd send in each scenario, then see how it might
-            come across. There's a featured scenario each day, with{" "}
+            Choose the reply you'd send, then see how it might land. There's a
+            new scenario each day, with{" "}
             {DAILY_ANGLES.length * 4 + 2} scenarios to explore.
           </p>
           <p className="mt-2 text-xs font-bold uppercase tracking-widest text-muted-foreground">
@@ -217,7 +217,7 @@ export default function Quiz() {
 
         <div className="flex justify-center">
           <NBButton variant="sun" onClick={next} className="px-6 py-3">
-            Next scenario <ArrowRight className="size-4" />
+            Try another scenario <ArrowRight className="size-4" />
           </NBButton>
         </div>
 

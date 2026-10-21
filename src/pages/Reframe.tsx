@@ -46,7 +46,7 @@ export default function Reframe() {
 
   const coach = async () => {
     if (!trigger.trim() || !reaction.trim()) {
-      setError("Add what happened and how you first reacted.");
+      setError("Add what happened and how you reacted.");
       return;
     }
     setLoading(true);
@@ -64,7 +64,7 @@ export default function Reframe() {
       setError(
         e instanceof Error
           ? e.message
-          : "We couldn't come up with a response. Please try again.",
+          : "We couldn't come up with a response. Try again in a moment.",
       );
     } finally {
       setLoading(false);
@@ -83,12 +83,12 @@ export default function Reframe() {
         toneNote: result.toneNote,
       });
       trackEvent("reframe_saved");
-      toast.success("Saved to your log.");
+      toast.success("Saved to your practice log.");
       setSaved(true);
       // Keeping a reframe credits today's checklist (idempotent server-side).
       markReframe({ action: "reframe" }).catch(() => {});
     } catch {
-      toast.error("We couldn't save that. Please try again.");
+      toast.error("We couldn't save that. Try again in a moment.");
     } finally {
       setSaving(false);
     }
@@ -98,7 +98,7 @@ export default function Reframe() {
     <AppShell active="reframe">
       <div className="mx-auto flex max-w-3xl flex-col gap-6 px-4 pb-16 pt-6">
         <div className="flex items-center justify-end">
-          <NBBadge className="bg-mint">REFRAME LAB</NBBadge>
+          <NBBadge className="bg-mint">TRY ANOTHER RESPONSE</NBBadge>
         </div>
 
         <NBPanel className="p-6">
@@ -106,16 +106,16 @@ export default function Reframe() {
             Try a different <span className="italic text-coral">response</span>
           </h1>
           <p className="mt-2 max-w-lg text-sm text-muted-foreground">
-            Think about what happened and how you first reacted. Then take a
-            moment to write what you'd like to say instead.
+            Think about what happened and how you reacted. Then take a moment
+            to write what you'd rather say.
           </p>
 
           {/* The think-through: frame the response before writing it.
               Tapping a message kind prefills the goal field below. */}
           <div className="mt-6">
             <ResponsePlanner
-              title="Think it through first"
-              intro="Use these questions to clarify what happened, what matters to you, and how you'd like the other person to feel."
+              title="Take a moment to think it through"
+              intro="A few questions to help you sort out what happened and what you'd like to say."
               accent="bg-secondary"
               onGoalPick={(g) => setGoal(g)}
             />
@@ -125,7 +125,7 @@ export default function Reframe() {
             <div>
               <div className="mb-1.5 flex items-center justify-between">
                 <label className="text-xs font-bold uppercase tracking-widest">
-                  The trigger
+                  What happened
                 </label>
                 <button
                   onClick={randomScenario}
@@ -145,7 +145,7 @@ export default function Reframe() {
 
             <div>
               <label className="mb-1.5 block text-xs font-bold uppercase tracking-widest">
-                Your automatic reaction
+                Your first reaction
               </label>
               <textarea
                 value={reaction}
@@ -180,7 +180,7 @@ export default function Reframe() {
                   </>
                 ) : (
                   <>
-                    <Shuffle className="size-4" /> Help me reframe it
+                    <Shuffle className="size-4" /> Help me find another way to say it
                   </>
                 )}
               </NBButton>
@@ -195,15 +195,14 @@ export default function Reframe() {
               <Eye className="size-5" /> Look at it another way
             </div>
             <span className="hidden text-[10px] font-bold uppercase tracking-widest text-muted-foreground sm:block">
-              Other possibilities
+              A few other possibilities
             </span>
           </div>
 
           <div className="p-6">
             <p className="max-w-xl text-sm leading-relaxed text-muted-foreground">
-              There may be more than one way to understand what happened.
-              Explore a few perspectives and see if any help you decide what
-              to do next.
+              There may be more than one way to read the situation. See if a
+              different perspective helps you decide what to do next.
             </p>
 
             {/* Lens tabs */}

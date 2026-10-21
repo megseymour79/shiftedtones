@@ -25,15 +25,15 @@ export default function Calm() {
         {/* Heading */}
         <section>
           <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
-            A little space to reset
+            When you need a moment
           </p>
           <h1 className="mt-1 font-display text-3xl text-balance sm:text-4xl">
-            Take a moment to <span className="italic text-mint">reset</span>
+            Take a moment to <span className="italic text-mint">pause</span>
           </h1>
           <p className="mt-2 max-w-xl text-sm leading-relaxed text-muted-foreground">
-            Choose from {GROUNDING_EXERCISES.length} guided breathing and
-            attention exercises, or try a practice that doesn't need a mic.
-            Use this page before or after a difficult conversation.
+            Try one of {GROUNDING_EXERCISES.length} short breathing and
+            grounding exercises, or choose a practice that doesn't need a mic.
+            Come back whenever you need a little space.
           </p>
         </section>
 
@@ -50,12 +50,12 @@ export default function Calm() {
             </div>
             <div className="p-6">
               <p className="text-sm leading-relaxed text-paper/80">
-                No microphone needed. Choose a reply and see how it might come
-                across. There's a new scenario each day.
+                No mic needed. Choose a reply and see how it might land. There's
+                a new scenario each day.
               </p>
               <Link to="/quiz" className="mt-6 inline-block">
                 <NBButton variant="sun" className="text-xs">
-                  Today's scenario <ArrowRight className="size-3.5" />
+                  Try a scenario <ArrowRight className="size-3.5" />
                 </NBButton>
               </Link>
             </div>
@@ -69,8 +69,8 @@ export default function Calm() {
             </div>
             <div className="p-6">
               <p className="text-sm leading-relaxed text-paper/80">
-                Think about a moment that bothered you. Notice your first
-                reaction, then write what you'd rather say.
+                Think about something that's been on your mind. Notice your
+                first reaction, then write what you'd rather say.
               </p>
               <ul className="mt-4 flex flex-col gap-2 text-xs uppercase tracking-widest text-paper/60">
                 {(reframeLogs ?? []).map((log) => (
@@ -79,7 +79,7 @@ export default function Calm() {
               </ul>
               <Link to="/reframe" className="mt-6 inline-block">
                 <NBButton variant="sun" className="text-xs">
-                  Open reframe lab <ArrowRight className="size-3.5" />
+                  Try a reframe <ArrowRight className="size-3.5" />
                 </NBButton>
               </Link>
             </div>

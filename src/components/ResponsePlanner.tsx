@@ -12,8 +12,8 @@ import { cn } from "@/lib/utils";
  * ready-made goal line (Reframe prefills its goal field with it).
  */
 export function ResponsePlanner({
-  title = "Think it through first",
-  intro = "Take a moment to consider what you want to say and how you want it to come across.",
+  title = "Take a moment to think it through",
+  intro = "What do you want to say, and how would you like it to come across?",
   accent = "bg-paper",
   onGoalPick,
 }: {
@@ -71,7 +71,7 @@ export function ResponsePlanner({
                 <div className="flex flex-col gap-3 border-t-2 border-dashed border-ink/20 px-4 py-3 text-sm">
                   <p className="leading-relaxed text-muted-foreground">{step.why}</p>
                   <p className="leading-relaxed">
-                    <span className="font-bold">Try this: </span>
+                    <span className="font-bold">You could try: </span>
                     {step.how}
                   </p>
                   <p className="nb bg-secondary p-3 text-xs leading-relaxed">
@@ -88,7 +88,7 @@ export function ResponsePlanner({
       {/* Message kinds — step four made concrete */}
       <div className="border-t-2 border-ink bg-secondary/60 px-5 py-5">
         <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-          What kind of message is this? Choose one:
+          What do you want this message to do?
         </p>
         <div className="mt-3 flex flex-wrap gap-2">
           {MESSAGE_KINDS.map((kind) => {
@@ -115,11 +115,11 @@ export function ResponsePlanner({
             {MESSAGE_KINDS.filter((k) => k.id === openKind).map((kind) => (
               <div key={kind.id} className="flex flex-col gap-3">
                 <p className="leading-relaxed text-muted-foreground">
-                  <span className="font-bold text-ink">This may fit if: </span>
+                  <span className="font-bold text-ink">This might fit if: </span>
                   {kind.cue}
                 </p>
                 <p className="leading-relaxed">
-                  <span className="font-bold">You could: </span>
+                  <span className="font-bold">You could say: </span>
                   {kind.shape}
                 </p>
                 <p className="nb bg-mint/40 p-3 font-medium leading-snug">{kind.ending}</p>

@@ -23,6 +23,7 @@ const Terms = lazy(() => import("./pages/Terms.tsx"));
 const Privacy = lazy(() => import("./pages/Privacy.tsx"));
 const AuthPage = lazy(() => import("./pages/Auth.tsx"));
 const Dashboard = lazy(() => import("./pages/Dashboard.tsx"));
+const Plan = lazy(() => import("./pages/Plan.tsx"));
 const Gym = lazy(() => import("./pages/Gym.tsx"));
 const Calm = lazy(() => import("./pages/Calm.tsx"));
 const Progress = lazy(() => import("./pages/Progress.tsx"));
@@ -105,6 +106,14 @@ createRoot(document.getElementById("root")!).render(
                 element={
                   <RequireAuth>
                     <Dashboard />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/plan"
+                element={
+                  <RequireAuth>
+                    <Plan />
                   </RequireAuth>
                 }
               />

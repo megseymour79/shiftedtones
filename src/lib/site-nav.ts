@@ -57,6 +57,7 @@ export function tourStops(
  */
 export const APP_ORDER: { to: string; label: string; blurb: string }[] = [
   { to: "/dashboard", label: "Dashboard", blurb: "Your day at a glance" },
+  { to: "/plan", label: "Practice plan", blurb: "A simple plan for your next few weeks" },
   { to: "/gym", label: "Gym", blurb: "Choose a drill and practice" },
   { to: "/calm", label: "Calm", blurb: "Ground, then speak" },
   { to: "/translate", label: "Translate", blurb: "Try the same words with a different tone" },
@@ -71,7 +72,7 @@ export const APP_ORDER: { to: string; label: string; blurb: string }[] = [
  * without being a stable route in APP_ORDER.
  */
 const APP_VIRTUAL: { prefix: string; prev: number; next: number }[] = [
-  { prefix: "/practice/", prev: 0, next: 1 },
+  { prefix: "/practice/", prev: 0, next: 2 },
 ];
 
 /**

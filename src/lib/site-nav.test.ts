@@ -88,11 +88,12 @@ describe("page tour (back/forward pager)", () => {
 });
 
 describe("app tour (signed-in pager)", () => {
-  test("app tour covers the seven nav destinations exactly once", () => {
+  test("app tour covers every nav destination exactly once", () => {
     const paths = APP_ORDER.map((p) => p.to);
     expect(new Set(paths).size).toBe(paths.length);
     expect(paths).toEqual([
       "/dashboard",
+      "/plan",
       "/gym",
       "/calm",
       "/translate",
@@ -110,7 +111,9 @@ describe("app tour (signed-in pager)", () => {
   });
 
   test("appTourStops: middle pages get their neighbors", () => {
-    expect(appTourStops("/gym").prev?.to).toBe("/dashboard");
+    expect(appTourStops("/plan").prev?.to).toBe("/dashboard");
+    expect(appTourStops("/plan").next?.to).toBe("/gym");
+    expect(appTourStops("/gym").prev?.to).toBe("/plan");
     expect(appTourStops("/gym").next?.to).toBe("/calm");
     expect(appTourStops("/translate").prev?.to).toBe("/calm");
     expect(appTourStops("/translate").next?.to).toBe("/quiz");
@@ -139,6 +142,7 @@ describe("app tour (signed-in pager)", () => {
   test("AppShell renders the pager on every signed-in page", () => {
     for (const page of [
       "Dashboard",
+      "Plan",
       "Gym",
       "Calm",
       "Practice",
@@ -170,6 +174,7 @@ describe("nav ↔ router parity", () => {
     for (const path of [
       "/auth",
       "/dashboard",
+      "/plan",
       "/gym",
       "/calm",
       "/progress",
@@ -239,12 +244,12 @@ describe("page split contracts", () => {
     expect(shell).toContain('to="/"');
   });
 
-  test("the in-app logo returns to the public home page, not the dashboard", () => {
+  test("the in-app logo returns to the dashboard", () => {
     const shell = readFileSync(
       new URL("../components/AppShell.tsx", import.meta.url),
       "utf8",
     );
-    expect(shell).toMatch(/<Link\s+to="\/"/);
+    expect(shell).toMatch(/<Link\s+to="\/dashboard"/);
   });
 
   test("every navigation lands at the top of the page (global scroll reset)", () => {
@@ -264,14 +269,17 @@ describe("page split contracts", () => {
     expect(tabs).toBe(4);
   });
 
-  test("progress navigation opens the progress page and dashboard renders the streak arc", () => {
+  test("the practice plan has its own page linked from the dashboard", () => {
     const shell = readFileSync(
       new URL("../components/AppShell.tsx", import.meta.url),
       "utf8",
     );
     const dashboard = src("Dashboard");
-    expect(shell).toContain('id: "progress", to: "/progress"');
-    expect(dashboard).toContain("<ArcPanel streakDays={stats.streakDays} />");
+    const plan = src("Plan");
+    expect(shell).toContain('id: "plan", to: "/plan"');
+    expect(dashboard).toContain('to="/plan"');
+    expect(plan).toContain('active="plan"');
+    expect(plan).toContain("arcStageFor(day)");
   });
 });
 

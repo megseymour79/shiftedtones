@@ -17,7 +17,7 @@ export default function Library() {
         <div className="mx-auto max-w-6xl px-4 py-14 lg:py-16">
           <NBBadge className="bg-sun text-ink">The library</NBBadge>
           <h1 className="mt-4 font-display text-4xl leading-tight sm:text-5xl">
-            Explore the <span className="italic text-sun">research</span>.
+            Explore the <span className="italic text-sun">ideas</span>.
           </h1>
           <p className="mt-4 max-w-xl text-lg leading-relaxed text-muted-foreground">
             Browse free articles, talks, and studies about communication.
@@ -38,8 +38,8 @@ export default function Library() {
               </h2>
             </div>
             <p className="max-w-md text-sm text-muted-foreground">
-              Explore guides, talks, and studies from the original publishers.
-              All links open free online resources.
+              Find guides, talks, and studies from their original publishers.
+              All links open free resources online.
             </p>
           </div>
           <div className="mt-8 grid gap-4 md:grid-cols-2">
@@ -82,12 +82,11 @@ export default function Library() {
         />
         <div className="relative mx-auto flex max-w-6xl flex-col items-center gap-5 px-4 py-14 text-center">
           <h2 className="max-w-2xl font-display text-3xl text-balance sm:text-4xl">
-            Reading can give you new ideas. <span className="italic">Practice</span>
-            helps you put them to use.
+            Find an idea that feels useful, then <span className="italic">try it out</span>.
           </h2>
           <Link to="/auth">
             <NBButton variant="ink" className="px-8 py-4 text-lg">
-              Start practicing <ArrowRight className="size-5" />
+              Try a practice drill <ArrowRight className="size-5" />
             </NBButton>
           </Link>
         </div>

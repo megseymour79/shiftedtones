@@ -14,6 +14,7 @@ import {
   Dumbbell,
   Languages,
   LayoutDashboard,
+  CalendarDays,
   LogOut,
   MessagesSquare,
   Shuffle,
@@ -25,7 +26,7 @@ import { type ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 interface NavItem {
-  id: "dashboard" | "gym" | "calm" | "translate" | "quiz" | "reframe" | "progress";
+  id: "dashboard" | "plan" | "gym" | "calm" | "translate" | "quiz" | "reframe" | "progress";
   to: string;
   label: string;
   short: string;
@@ -34,7 +35,8 @@ interface NavItem {
 }
 
 const NAV: NavItem[] = [
-  { id: "dashboard", to: "/dashboard", label: "Dashboard", short: "Home", icon: LayoutDashboard, tab: true },
+  { id: "dashboard", to: "/dashboard", label: "Home", short: "Home", icon: LayoutDashboard, tab: true },
+  { id: "plan", to: "/plan", label: "Practice plan", short: "Plan", icon: CalendarDays },
   { id: "gym", to: "/gym", label: "Gym", short: "Gym", icon: Dumbbell, tab: true },
   { id: "calm", to: "/calm", label: "Calm", short: "Calm", icon: Wind },
   { id: "translate", to: "/translate", label: "Translate", short: "Translate", icon: Languages, tab: true },
@@ -58,11 +60,11 @@ export function AppShell({
 
   return (
     <div className="nb-dots flex min-h-screen flex-col bg-paper">
-      <header className="sticky top-0 z-40 border-b-2 border-ink bg-ink text-paper">
+      <header className="sticky top-0 z-40 border-b-2 border-ink bg-paper text-ink">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3">
-          <Link to="/" title="Back to the ShiftedTone home page" className="group flex items-center gap-3">
+          <Link to="/dashboard" title="Back to your home" className="group flex items-center gap-3">
             <img src={logo} alt="ShiftedTone" width={34} height={34} className="nb size-8 bg-ink transition-transform duration-200 group-hover:-rotate-6" />
-            <span className="font-display text-lg leading-none">Shifted<span className="text-sun">Tone</span></span>
+            <span className="font-display text-lg leading-none">Shifted<span className="text-coral">Tone</span></span>
           </Link>
 
           <nav className="hidden items-center gap-1 md:flex" aria-label="Primary">
@@ -76,7 +78,7 @@ export function AppShell({
                   aria-current={isActive ? "page" : undefined}
                   className={cn(
                     "nb nb-press flex items-center gap-1.5 px-2.5 py-1.5 text-[11px] font-bold uppercase tracking-widest transition-colors",
-                    isActive ? "bg-sun text-white" : "bg-transparent text-paper/75 hover:text-paper",
+                    isActive ? "bg-coral text-ink" : "bg-transparent text-ink/70 hover:text-ink",
                   )}
                 >
                   <Icon className="size-3.5" />
@@ -88,7 +90,7 @@ export function AppShell({
 
           <div className="flex items-center gap-3">
             <EverythingMenu />
-            <button onClick={handleSignOut} className="nb nb-press flex items-center gap-2 bg-coral px-3 py-1.5 text-xs font-bold uppercase tracking-widest text-white">
+            <button onClick={handleSignOut} className="nb nb-press flex items-center gap-2 bg-coral px-3 py-1.5 text-xs font-bold uppercase tracking-widest text-ink">
               <LogOut className="size-3.5" />
               <span className="hidden sm:inline">Sign out</span>
             </button>
@@ -115,14 +117,14 @@ function EverythingMenu() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <button type="button" className="nb nb-press flex items-center gap-1.5 bg-paper px-2.5 py-1.5 text-[11px] font-bold uppercase tracking-widest text-ink" aria-label="All pages menu">
-          Pages <ChevronDown className="size-3.5" />
+        <button type="button" className="nb nb-press flex items-center gap-1.5 bg-card px-2.5 py-1.5 text-[11px] font-bold uppercase tracking-widest text-ink" aria-label="Explore all pages">
+          Explore <ChevronDown className="size-3.5" />
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" sideOffset={10} className="w-64 rounded-none border-2 border-ink bg-card p-0 nb-shadow-sm">
         <div className="grid grid-cols-2">
           <div>
-            <DropdownMenuLabel className="border-b-2 border-ink px-3 py-2 text-[10px] font-bold uppercase tracking-widest text-ink/60">Training</DropdownMenuLabel>
+            <DropdownMenuLabel className="border-b-2 border-ink px-3 py-2 text-[10px] font-bold uppercase tracking-widest text-ink/60">Practice</DropdownMenuLabel>
             <div className="flex flex-col p-1">
               {APP_ORDER.map((item) => {
                 const Icon = NAV.find((n) => n.to === item.to)?.icon;
@@ -138,7 +140,7 @@ function EverythingMenu() {
             </div>
           </div>
           <div>
-            <DropdownMenuLabel className="border-b-2 border-l-2 border-ink px-3 py-2 text-[10px] font-bold uppercase tracking-widest text-ink/60">Learn</DropdownMenuLabel>
+            <DropdownMenuLabel className="border-b-2 border-l-2 border-ink px-3 py-2 text-[10px] font-bold uppercase tracking-widest text-ink/60">Explore</DropdownMenuLabel>
             <div className="flex flex-col p-1">
               {PAGE_ORDER.map((item) => (
                 <DropdownMenuItem asChild key={item.to}>

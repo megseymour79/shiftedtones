@@ -25,10 +25,10 @@ export const XP = {
 } as const;
 
 export const DAILY_ACTIONS: DailyActionDef[] = [
-  { id: "take", label: "Practice a drill", detail: "Any drill, microphone on", xp: XP.take },
-  { id: "quiz", label: "Read the Room", detail: "Choose a response to one scenario", xp: XP.quiz },
-  { id: "reframe", label: "Reframe a response", detail: "Write a different response", xp: XP.reframe },
-  { id: "reset", label: "Take a moment to reset", detail: "Complete one 4-7-8 session", xp: XP.reset },
+  { id: "take", label: "Try a drill", detail: "Pick one and speak into your mic", xp: XP.take },
+  { id: "quiz", label: "Read the Room", detail: "Choose how you'd respond", xp: XP.quiz },
+  { id: "reframe", label: "Try another response", detail: "Write what you'd rather say", xp: XP.reframe },
+  { id: "reset", label: "Take a breather", detail: "Try one 4-7-8 breathing session", xp: XP.reset },
 ];
 
 /**
@@ -119,21 +119,21 @@ export const ACHIEVEMENTS: AchievementDef[] = [
   {
     id: "first-word",
     name: "First Word",
-    detail: "Record your very first take",
+    detail: "Record your first practice take",
     tier: "bronze",
     test: (s) => s.totalSessions >= 1,
   },
   {
     id: "full-circuit",
     name: "Full Circuit",
-    detail: "Try every drill in the gym",
+    detail: "Give every drill a try",
     tier: "gold",
     test: (s) => s.drills > 0 && s.drillsTried >= s.drills,
   },
   {
     id: "week-streak",
-    name: "Seven Straight",
-    detail: "Practice 7 days in a row",
+    name: "A week of practice",
+    detail: "Practice seven days in a row",
     tier: "silver",
     test: (s) => s.streakDays >= 7,
   },
@@ -153,21 +153,21 @@ export const ACHIEVEMENTS: AchievementDef[] = [
   },
   {
     id: "reframer",
-    name: "The Reframer",
-    detail: "Reframe 5 triggers with the lab",
+    name: "A different approach",
+    detail: "Reframe five moments in the lab",
     tier: "silver",
     test: (s) => s.totalReframes >= 5,
   },
   {
     id: "deep-breaths",
-    name: "Deep Breaths",
-    detail: "Complete 10 full resets",
+    name: "Take a breather",
+    detail: "Complete ten breathing sessions",
     tier: "bronze",
     test: (s) => s.totalResets >= 10,
   },
   {
     id: "ten-takes",
-    name: "Ten practice takes",
+    name: "Ten takes",
     detail: "Complete 10 practice takes",
     tier: "bronze",
     test: (s) => s.totalSessions >= 10,

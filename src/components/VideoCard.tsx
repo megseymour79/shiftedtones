@@ -211,7 +211,7 @@ function CardBody({ video, linkOut = false }: { video: WatchVideo; linkOut?: boo
 export function WatchLearnSection({
   videos,
   heading = "Watch and learn",
-  subheading = "Coaches and researchers share ideas about communication, with a drill to help you practice.",
+  subheading = "Coaches and researchers share what they've learned about communication. Each video comes with a short drill.",
   seeAll,
 }: {
   videos: WatchVideo[];

@@ -14,6 +14,7 @@ import { useQuery } from "convex/react";
 import { Link } from "react-router";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import { ArrowRight } from "lucide-react";
 
 /**
  * /progress — your record. See your tone trends and recent takes.
@@ -32,8 +33,14 @@ export default function Progress() {
             Your progress
           </h1>
           <p className="mt-2 text-sm text-muted-foreground">
-            See your recent practice and how your scores change over time.
+            A look back at your recent practice and how things are changing.
           </p>
+          <Link
+            to="/plan"
+            className="mt-3 inline-flex items-center gap-1 text-xs font-bold uppercase tracking-widest text-coral hover:underline"
+          >
+            View your practice plan <ArrowRight className="size-3.5" />
+          </Link>
         </section>
 
         {trendSessions && trendSessions.length >= 2 && (
@@ -42,7 +49,7 @@ export default function Progress() {
         {(!trendSessions || trendSessions.length < 2) && (
           <NBPanel className="bg-card/70 p-5">
             <p className="text-sm text-muted-foreground">
-              Complete two practice takes to see your score trends.
+              Complete two practice takes and your score trends will show up here.
             </p>
           </NBPanel>
         )}
@@ -57,7 +64,7 @@ export default function Progress() {
               to="/gym"
               className="text-xs font-bold uppercase tracking-widest text-muted-foreground hover:text-ink"
             >
-              Practice again →
+              Try another drill →
             </Link>
           </div>
           <div className="flex flex-col">
@@ -66,7 +73,7 @@ export default function Progress() {
             )}
             {recentSessions?.length === 0 && (
               <p className="p-6 text-sm text-muted-foreground">
-                No practice takes yet. Start with a drill.
+                No practice takes yet. Try a drill to get started.
               </p>
             )}
             {recentSessions?.map((s) => (
@@ -110,7 +117,7 @@ function ToneTrendsPanel({
         </div>
       </div>
       <p className="px-6 pt-4 text-sm text-muted-foreground">
-        The arrows show how each score has changed across your recent takes.
+        Each arrow shows how that score has shifted across your recent takes.
       </p>
       <div className="grid gap-4 p-6 sm:grid-cols-2 lg:grid-cols-4">
         {rows.map((r) => {

@@ -95,7 +95,7 @@ export default function Gym() {
             </div>
             <Link to={`/practice/${daily.drill.id}`}>
               <NBButton variant="ink" className="text-xs">
-                <Mic className="size-3.5" /> Do today's take
+                <Mic className="size-3.5" /> Try today's drill
               </NBButton>
             </Link>
           </div>
@@ -105,7 +105,7 @@ export default function Gym() {
         <section>
           <div className="flex items-center justify-between">
             <h2 className="font-display text-2xl">
-              The <span className="italic text-coral">gym</span>
+              Pick a <span className="italic text-coral">drill</span>
             </h2>
             <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Page {page} of {totalPages}</p>
           </div>
@@ -134,11 +134,11 @@ export default function Gym() {
                         <span className="flex items-center gap-1.5">
                           <Timer className="size-3.5" /> {drill.seconds}s
                         </span>
-                        <span>{s ? `Best score: ${s.bestScore}` : "Not tried yet"}</span>
+                        <span>{s ? `Best so far: ${s.bestScore}` : "Haven't tried this one"}</span>
                       </div>
                       <Link to={`/practice/${drill.id}`} className="border-t-2 border-ink">
                         <NBButton variant="paper" className="w-full rounded-none py-2.5 text-xs">
-                          Start practice <ArrowRight className="size-3.5" />
+                          Try this drill <ArrowRight className="size-3.5" />
                         </NBButton>
                       </Link>
                     </>
@@ -149,7 +149,7 @@ export default function Gym() {
                       </p>
                       <div className="border-t-2 border-ink px-5 py-3">
                         <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-                          To unlock
+                          To open this drill
                         </p>
                         <p className="mt-0.5 text-sm font-bold">{unlockGoalLine(gate!, unlockStats)}</p>
                       </div>
@@ -190,13 +190,13 @@ export default function Gym() {
               <div>
                 <h2 className="font-display text-lg leading-tight">No microphone?</h2>
                 <p className="text-sm text-paper/70">
-                  Try Read the Room to practice without recording.
+                  Read the Room lets you practice without recording.
                 </p>
               </div>
             </div>
             <Link to="/quiz">
               <NBButton variant="sun" className="text-xs">
-                Today's scenario <ArrowRight className="size-3.5" />
+                Try a scenario <ArrowRight className="size-3.5" />
               </NBButton>
             </Link>
           </div>
