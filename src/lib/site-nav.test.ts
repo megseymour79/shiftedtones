@@ -232,7 +232,7 @@ describe("page split contracts", () => {
     expect(s).toContain('to="/reframe"');
   });
 
-  test("the app header's Pages menu reaches every training page and the whole public site", () => {
+  test("the app header's Explore menu links to the public site and training pages", () => {
     const shell = readFileSync(
       new URL("../components/AppShell.tsx", import.meta.url),
       "utf8",
@@ -240,8 +240,9 @@ describe("page split contracts", () => {
     expect(shell).toContain("EverythingMenu");
     expect(shell).toContain("APP_ORDER");
     expect(shell).toContain("PAGE_ORDER");
-    // The two destinations the training tabs never link: home + videos.
-    expect(shell).toContain('to="/"');
+    expect(shell).toContain("PAGE_ORDER.map");
+    expect(PAGE_ORDER.some((page) => page.to === "/")).toBe(true);
+    expect(PAGE_ORDER.some((page) => page.to === "/watch")).toBe(true);
   });
 
   test("the in-app logo returns to the dashboard", () => {

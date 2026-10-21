@@ -122,15 +122,15 @@ export default function Translate() {
         {/* Header */}
         <div>
           <NBBadge className="bg-sun text-ink">
-            <Languages className="size-3" /> Practice the same sentence
+            <Languages className="size-3" /> Try the same sentence
           </NBBadge>
           <h1 className="mt-3 font-display text-3xl sm:text-4xl">
-            Try the same words with a different tone.
+            Say the same words two ways.
           </h1>
           <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
-            Say the same sentence twice: once as it usually comes out, then
-            again in the tone you intend. Compare your scores to see how your
-            delivery changed.
+            First, say the sentence as you normally would. Then try it again
+            with the tone you're aiming for. Compare the takes and see what
+            changes.
           </p>
         </div>
 
@@ -138,13 +138,13 @@ export default function Translate() {
         <NBPanel className="p-6">
           <div className="flex items-center justify-between">
             <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-              {done ? "Complete" : "Your sentence"}
+              {done ? "Done" : "Your sentence"}
             </span>
             <button
               onClick={nextLine}
               className="nb nb-press flex items-center gap-1.5 bg-card px-2.5 py-1.5 text-[10px] font-bold uppercase tracking-widest"
             >
-              <RefreshCw className="size-3" /> Choose another sentence
+              <RefreshCw className="size-3" /> Try a different sentence
             </button>
           </div>
           <p className="mt-3 font-display text-2xl leading-snug">“{line.text}”</p>
@@ -169,8 +169,8 @@ export default function Translate() {
             moment has already passed. */}
         {!done && (
           <ResponsePlanner
-            title={reflexAnalysis ? "Before your second take" : "Before you speak"}
-            intro="Take a moment to consider what you want to say and how you want it to come across."
+            title={reflexAnalysis ? "Before your second take" : "Before you start"}
+            intro="What do you want to say, and how would you like it to sound?"
             accent="bg-card"
           />
         )}
@@ -182,7 +182,7 @@ export default function Translate() {
                 visible so you know where you are and what's left */}
             <div className="flex items-stretch gap-2" aria-hidden>
               {order.map((passKey, i) => {
-                const label = passKey === "reflex" ? "Usual tone" : "Intended tone";
+                const label = passKey === "reflex" ? "Your usual tone" : "The tone you're aiming for";
                 const isCurrent = pass === passKey;
                 const isDone =
                   (passKey === "reflex" ? reflexAnalysis : intendedAnalysis) !== null;
@@ -208,7 +208,7 @@ export default function Translate() {
             <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
               <NBBadge className={pass === "reflex" ? "bg-coral text-ink" : "bg-mint text-ink"}>
                 Take {passNum} of 2 —{" "}
-                {pass === "reflex" ? "your usual tone" : "your intended tone"}
+                {pass === "reflex" ? "your usual tone" : "the tone you're aiming for"}
               </NBBadge>
               <span className="text-xs text-muted-foreground">{line.targetHint}</span>
             </div>
@@ -216,7 +216,7 @@ export default function Translate() {
             {capture.state === "idle" && (
               <div className="mt-5 flex justify-center">
                 <NBButton onClick={startPass} variant={pass === "reflex" ? "coral" : "mint"}>
-                  {pass === "reflex" ? "Say it as usual" : "Say it as intended"}
+                  {pass === "reflex" ? "Say it as usual" : "Try the tone you're aiming for"}
                 </NBButton>
               </div>
             )}
@@ -248,7 +248,7 @@ export default function Translate() {
         {done && delta && (
           <NBPanel className="p-6">
             <div className="flex flex-wrap items-center justify-between gap-2">
-              <NBBadge className="bg-sun text-ink">Compare your takes</NBBadge>
+              <NBBadge className="bg-sun text-ink">How did it change?</NBBadge>
               <span className="text-xs text-muted-foreground">{line.payoff}</span>
             </div>
 
@@ -291,7 +291,7 @@ export default function Translate() {
                 Redo this sentence
               </NBButton>
               <NBButton onClick={nextLine} variant="sun">
-                Next sentence <ArrowRight className="size-4" />
+                Try another sentence <ArrowRight className="size-4" />
               </NBButton>
             </div>
           </NBPanel>

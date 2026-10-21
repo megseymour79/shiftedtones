@@ -132,16 +132,16 @@ export default function Home() {
                 transition={{ type: "spring", stiffness: 240, damping: 13, delay: 0.35 }}
                 className="nb bg-sun px-2 italic inline-block -rotate-1"
               >
-                meant
+                mean
               </motion.span>
-              {" "}and sound the way you{" "}
+              . Sound like{" "}
               <motion.span
                 initial={{ scale: 0.4, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ type: "spring", stiffness: 240, damping: 13, delay: 0.5 }}
                 className="nb bg-mint px-2 italic inline-block rotate-1"
               >
-                mean
+                yourself
               </motion.span>
               .
             </h1>

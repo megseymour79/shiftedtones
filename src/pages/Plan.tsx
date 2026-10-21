@@ -12,7 +12,7 @@ export default function Plan() {
   const day = Math.max(1, streakDays);
   const stage = arcStageFor(day);
   const daysLeft = arcDaysLeft(day);
-  const progress = Math.min(100, Math.round((day / 21) * 100));
+  const progress = Math.min(100, Math.round((streakDays / 21) * 100));
 
   return (
     <AppShell active="plan">
@@ -61,7 +61,7 @@ export default function Plan() {
               aria-label="21-day practice plan progress"
               aria-valuemin={0}
               aria-valuemax={21}
-              aria-valuenow={Math.min(day, 21)}
+              aria-valuenow={Math.min(streakDays, 21)}
             >
               {Array.from({ length: 21 }).map((_, index) => {
                 const barDay = index + 1;

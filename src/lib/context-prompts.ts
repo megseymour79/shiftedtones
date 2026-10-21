@@ -5,16 +5,16 @@
  */
 
 export const CONTEXT_PROMPTS: string[] = [
-  "Responding to a message from my boss",
+  "Responding to a message from my manager",
   "Apologizing to my partner",
   "Asking for a raise",
   "Setting a boundary with family",
   "Opening a difficult conversation",
   "Presenting to the team",
-  "De-escalating an argument",
+  "Trying to cool down an argument",
   "Preparing for a job interview",
-  "Answering a hard question from my kid",
-  "Saying no without over-explaining",
-  "First date",
-  "Networking intro",
+  "Answering a tough question from my child",
+  "Saying no without a long explanation",
+  "Meeting someone for a first date",
+  "Meeting someone new at work",
 ];

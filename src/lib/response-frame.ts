@@ -24,7 +24,7 @@ export interface FrameStep {
 export const FRAME_STEPS: FrameStep[] = [
   {
     id: "their-move",
-    question: "What might the other person be feeling or asking for?",
+    question: "What might the other person feel or do?",
     why: "Considering what may be behind someone's words can help you choose a response instead of reacting right away.",
     how: "Ask yourself what the other person might want you to understand or do. If you're not sure, you can ask them.",
     check: "Can you describe what they might be feeling without assuming you know for certain?",
@@ -32,7 +32,7 @@ export const FRAME_STEPS: FrameStep[] = [
   },
   {
     id: "underneath",
-    question: "What might they be trying to tell me?",
+    question: "What might be underneath what they're saying?",
     why: "Sometimes a complaint or short reply points to a concern that hasn't been said directly.",
     how: "Think about what they may need or be worried about. If you're unsure, ask a calm, open question.",
     check: "Can you describe their concern in one sentence without judging it?",

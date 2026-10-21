@@ -40,7 +40,7 @@ export default function Gym() {
       <AppShell active="gym">
         <div className="mx-auto max-w-3xl px-4 py-10">
           <NBPanel className="p-8 text-center">
-            <p className="text-sm text-muted-foreground">Loading drills…</p>
+            <p className="text-sm text-muted-foreground">Loading your drills…</p>
           </NBPanel>
         </div>
       </AppShell>

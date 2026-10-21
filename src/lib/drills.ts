@@ -18,10 +18,10 @@ export const DRILLS: Drill[] = [
     tag: "STAYING CALM",
     color: "bg-sun",
     prompt:
-      "Describe what happened this morning — factually, without complaint. Then say: \"I'd like to fix one thing about it.\"",
+      "Tell someone what happened this morning, sticking to the facts. Then say: \"I'd like to fix one thing about it.\"",
     focus: "Keep your volume even and give each sentence time to land.",
     tips: [
-      "Speak as you breathe out.",
+      "Let the sentence come out as you breathe out.",
       "Pause before \"I'd like to fix one thing.\"",
       "If you speed up, pause and try the sentence again.",
     ],
@@ -33,10 +33,10 @@ export const DRILLS: Drill[] = [
     tag: "WARMTH AND PRESENCE",
     color: "bg-mint",
     prompt:
-      "Greet someone you haven't seen in months. Tell them one thing you genuinely appreciate about them.",
+      "Greet someone you haven't seen in a while. Tell them one thing you appreciate about them.",
     focus: "Let your pitch rise and fall naturally. Slow down when you say their name.",
     tips: [
-      "Let your pitch rise a little when you sound genuinely warm.",
+      "Let your voice lift a little when you say something kind.",
       "Say their name slowly.",
       "Let your statements end clearly.",
     ],
@@ -48,10 +48,10 @@ export const DRILLS: Drill[] = [
     tag: "SAYING NO CLEARLY",
     color: "bg-sun",
     prompt:
-      "A friend asks you to help them move on your only day off. Say no, offer something small you can actually do, and don't apologize more than once.",
+      "A friend asks you to help them move on your only day off. Say no, offer a small way you can help, and try not to over-apologize.",
     focus: "Keep your voice steady and your ending clear. Let the pause after your no stand.",
     tips: [
-      "You can say no warmly and clearly.",
+      "You can be kind and still say no.",
       "Apologize once, then move to your offer.",
       "Keep your explanation brief.",
     ],
@@ -63,7 +63,7 @@ export const DRILLS: Drill[] = [
     tag: "STAYING STEADY",
     color: "bg-mint",
     prompt:
-      "Someone makes a light jab at you in front of others. Respond without matching their tone — acknowledge it, then return to the conversation.",
+      "Someone makes a joke at your expense in front of other people. Respond without matching their tone, then bring the conversation back.",
     focus: "Notice when you feel the urge to react. Slow down instead of raising your voice.",
     tips: [
       "Slow down when you feel the urge to rush.",
@@ -93,7 +93,7 @@ export const DRILLS: Drill[] = [
     tag: "LOWERING THE TENSION",
     color: "bg-mint",
     prompt:
-      "Someone is talking over you, louder and faster. Without matching their volume, say: \"I want to hear this — and I can only hear it one voice at a time.\" Then slow your next sentence to half speed.",
+      "Someone is talking over you, louder and faster. Keep your voice steady and say: \"I want to understand what you're saying. Can we take turns so I can follow?\" Then slow your next sentence down.",
     focus:
       "Lower your volume and slow your pace. Give the other person room to respond.",
     tips: [
@@ -109,7 +109,7 @@ export const DRILLS: Drill[] = [
     tag: "GIVING SPECIFIC PRAISE",
     color: "bg-sun",
     prompt:
-      "Tell someone about one specific thing they did well this week — what they did, and what it made possible. Let the last sentence land before you stop.",
+      "Tell someone one thing they did well this week and why you appreciated it. Take your time, and let your last sentence land.",
     focus:
       "Speak clearly and take your time. Let your voice lift a little when you name what they did well.",
     tips: [
@@ -125,9 +125,9 @@ export const DRILLS: Drill[] = [
     tag: "AFTER A MISSTEP",
     color: "bg-coral",
     prompt:
-      "You just snapped at someone and you know it. Say: \"That came out sharper than I meant. Let me try that again.\" Then repeat your point, slower, at the tone you wanted the first time.",
+      "You just snapped at someone. Say: \"That came out sharper than I meant it to. Let me try again.\" Then make your point once more, a little slower.",
     focus:
-      "Acknowledge what happened briefly, then try again in the tone you intended.",
+      "Acknowledge what happened, then try again in the tone you meant to use.",
     tips: [
       "Acknowledge it briefly, then move on.",
       "Try again with a slower pace and a clear ending.",
@@ -143,10 +143,10 @@ export function getDrill(id: string): Drill | undefined {
 
 /** Scenario prompts for the trigger-reframe practice. */
 export const REFRAME_SCENARIOS = [
-  "Your boss emails \"we need to talk\" with no context.",
+  "Your manager emails \"we need to talk\" with no context.",
   "A friend cancels plans last minute for the third time.",
   "Someone takes credit for your idea in a meeting.",
   "Your partner sighs and says \"fine, whatever.\"",
-  "A stranger cuts in line in front of you.",
+  "Someone steps in front of you in line.",
   "You get critical feedback on something you worked hard on.",
 ];

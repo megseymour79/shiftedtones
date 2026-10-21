@@ -5,6 +5,7 @@ import { buildToneTrends } from "@/lib/unlocks";
 import { TONE_LABELS } from "@/lib/tone-analyzer";
 import { DRILLS } from "@/lib/drills";
 import {
+  ArrowRight,
   History,
   Minus,
   TrendingDown,
@@ -14,7 +15,6 @@ import { useQuery } from "convex/react";
 import { Link } from "react-router";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-import { ArrowRight } from "lucide-react";
 
 /**
  * /progress — your record. See your tone trends and recent takes.

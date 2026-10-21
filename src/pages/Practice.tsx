@@ -74,7 +74,7 @@ export default function Practice() {
           <NBPanel className="p-8 text-center">
             <p className="font-display text-xl">We couldn't find that drill.</p>
             <Link to="/gym" className="mt-4 inline-block">
-              <NBButton variant="paper">Back to the gym</NBButton>
+              <NBButton variant="paper">Browse drills</NBButton>
             </Link>
           </NBPanel>
         </div>
@@ -87,7 +87,7 @@ export default function Practice() {
       <AppShell>
         <div className="mx-auto max-w-3xl px-4 py-10">
           <NBPanel className="p-8 text-center">
-            <p className="text-sm text-muted-foreground">Loading drill…</p>
+            <p className="text-sm text-muted-foreground">Loading your drill…</p>
           </NBPanel>
         </div>
       </AppShell>
@@ -102,14 +102,14 @@ export default function Practice() {
             <Lock className="mx-auto size-8" />
             <p className="mt-3 font-display text-xl">{drill.name} isn't available yet</p>
             <p className="mx-auto mt-2 max-w-sm text-sm text-muted-foreground">
-              {gate?.blurb}               Your next step: {gate ? unlockGoalLine(gate, stats) : "keep practicing"}.
+              {gate?.blurb}                             To open it, try this next: {gate ? unlockGoalLine(gate, stats) : "keep practicing"}.
             </p>
             <div className="mt-5 flex justify-center gap-3">
               <Link to="/gym">
-                <NBButton variant="paper">Back to the gym</NBButton>
+                <NBButton variant="paper">Browse drills</NBButton>
               </Link>
               <Link to="/practice/steady-ground">
-                <NBButton variant="coral">Try an available drill</NBButton>
+                <NBButton variant="coral">Try another drill</NBButton>
               </Link>
             </div>
           </NBPanel>
@@ -216,7 +216,7 @@ function PracticeRunner({ drill, isDaily }: { drill: Drill; isDaily: boolean }) 
         <div className="flex items-center justify-between">
           <Link to="/gym">
             <NBButton variant="paper" className="px-3 py-2">
-              <ArrowLeft className="size-4" /> Gym
+              <ArrowLeft className="size-4" /> All drills
             </NBButton>
           </Link>
           <div className="flex items-center gap-2">
@@ -269,7 +269,7 @@ function PracticeRunner({ drill, isDaily }: { drill: Drill; isDaily: boolean }) 
                   {countdown}
                 </motion.span>
                 <p className="mt-2 text-xs font-bold uppercase tracking-widest text-muted-foreground">
-                  Breathe in… speak on the exhale
+                  Take a breath. Start speaking when you're ready.
                 </p>
               </div>
             )}
@@ -329,8 +329,8 @@ function PracticeRunner({ drill, isDaily }: { drill: Drill; isDaily: boolean }) 
 
             {state === "recording" && (
               <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
-                Live pitch · {livePitchHz ? `${Math.round(livePitchHz)} Hz` : "listening for you…"}
-                {level < 0.06 && elapsedMs > 3000 && " · we can barely hear you — move closer"}
+                Listening · {livePitchHz ? `${Math.round(livePitchHz)} Hz` : "waiting for your voice…"}
+                {level < 0.06 && elapsedMs > 3000 && " · your voice is quiet — try moving closer"}
               </p>
             )}
 
@@ -338,9 +338,8 @@ function PracticeRunner({ drill, isDaily }: { drill: Drill; isDaily: boolean }) 
 
             {state === "recording" && micMuted && (
               <p className="nb bg-sun px-3 py-2 text-sm font-medium">
-                The mic reports itself muted — check your system's mic privacy
-                setting or close the app holding it; this take will come back
-                empty otherwise.
+                Your mic seems muted. Check your device's microphone settings
+                before you continue. We may not be able to analyze this take otherwise.
               </p>
             )}
 
@@ -354,40 +353,40 @@ function PracticeRunner({ drill, isDaily }: { drill: Drill; isDaily: boolean }) 
                   disabled={countdown !== null}
                   variant="coral"
                 >
-                  <Mic className="size-4" /> Start my take
+                  <Mic className="size-4" /> Start recording
                 </NBButton>
               )}
               {state === "recording" && (
                 <NBButton onClick={stop} variant="ink">
-                  <Square className="size-4" /> Done — score it
+                  <Square className="size-4" /> Stop and see my results
                 </NBButton>
               )}
               {state === "analyzing" && (
                 <NBButton disabled variant="ink">
-                  Analyzing…
+                  Taking a look…
                 </NBButton>
               )}
               {state === "done" && (
                 <NBButton onClick={reset} variant="paper">
-                  Go again
+                  Try again
                 </NBButton>
               )}
             </div>
             <p className="hidden text-[10px] font-bold uppercase tracking-widest text-muted-foreground sm:block">
-              Tip: press Space to start / stop
+              Press Space to start or stop
             </p>
           </div>
         </NBPanel>
 
         {/* The user's context — what this take is responding to or opening. */}
-        <NBPanel className="bg-secondary p-6">
-          <div className="flex items-center gap-2">
+        <details className="nb bg-secondary p-6">
+          <summary className="flex cursor-pointer list-none items-center gap-2 font-display text-xl">
             <MessageSquareText className="size-5" />
-            <p className="font-display text-xl">Add context</p>
-          </div>
+            Add a little context <span className="text-sm font-normal text-muted-foreground">(optional)</span>
+          </summary>
           <p className="mt-2 max-w-xl text-sm text-muted-foreground">
-            Add a quick note about this take (who it is for or what happened).
-            It helps your saved feedback stay relevant.
+            A note about who this is for or what's going on can make your saved
+            feedback more useful.
           </p>
           <div className="mt-4 flex flex-wrap gap-2">
             {CONTEXT_PROMPTS.map((p) => (
@@ -411,14 +410,14 @@ function PracticeRunner({ drill, isDaily }: { drill: Drill; isDaily: boolean }) 
           <textarea
             value={context}
             onChange={(e) => setContext(e.target.value)}
-            placeholder="e.g. my manager messaged “we need to talk” and I'm rehearsing my reply"
+            placeholder="For example: My manager said “we need to talk,” and I'm thinking about how to respond."
             rows={3}
             className="nb mt-4 w-full bg-card p-3 text-sm outline-none placeholder:text-muted-foreground"
           />
           <p className="mt-2 text-xs text-muted-foreground">
-            Optional.
+            This note stays with your practice record.
           </p>
-        </NBPanel>
+        </details>
 
         {/* Results */}
         {state === "done" && analysis && (
@@ -427,7 +426,7 @@ function PracticeRunner({ drill, isDaily }: { drill: Drill; isDaily: boolean }) 
               {/* The one highest-leverage fix for next time. */}
               <div className="nb mb-5 bg-sun p-4">
                 <p className="text-[10px] font-bold uppercase tracking-widest">
-                  Biggest lever — work this one thing next take
+                  One thing to try next time
                 </p>
                 <p className="mt-1 text-sm font-medium">
                   {biggestLever(analysis).tip}
@@ -467,7 +466,7 @@ function PracticeRunner({ drill, isDaily }: { drill: Drill; isDaily: boolean }) 
                 </div>
                 <div className="text-right">
                   <div className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-                    Overall
+                    Overall score
                   </div>
                   <motion.div
                     initial={{ scale: 0.5, opacity: 0 }}
@@ -483,25 +482,25 @@ function PracticeRunner({ drill, isDaily }: { drill: Drill; isDaily: boolean }) 
               <div className="mt-5 grid gap-3 sm:grid-cols-2">
                 <div className="nb bg-secondary p-4">
                   <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-                    What this tone means
+                    How it came across
                   </p>
                   <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
                     {TONE_LABELS[analysis.dominantTone]?.note}
                   </p>
                   <p className="mt-3 text-sm leading-relaxed">
-                    This take reads as <span className="font-bold">{TONE_LABELS[analysis.dominantTone]?.label ?? analysis.dominantTone}</span>. For the next take, focus on your lowest factor below.
+                    This take came across as <span className="font-bold">{TONE_LABELS[analysis.dominantTone]?.label ?? analysis.dominantTone}</span>. For next time, start with the area that could use the most attention.
                   </p>
                 </div>
                 <div className="nb bg-secondary p-4">
                   <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-                    Highest impact fix
+                    One thing to try
                   </p>
                   <p className="mt-2 text-sm leading-relaxed">
                     {biggestLever(analysis).tip}
                   </p>
                   <div className="mt-3 flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-muted-foreground">
                     <Play className="size-3.5" />
-                    Listen back once before your next take
+                    Listen to your take before trying again
                   </div>
                 </div>
               </div>
@@ -570,10 +569,10 @@ function PracticeRunner({ drill, isDaily }: { drill: Drill; isDaily: boolean }) 
                                   <span>{fb.read}</span>
                                 </p>
                                 <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
-                                  Your numbers: {fb.yourNumbers}
+                                  What we noticed: {fb.yourNumbers}
                                 </p>
                                 <p>
-                                  <span className="font-bold">Try this: </span>
+                                  <span className="font-bold">You could try: </span>
                                   <span className="text-muted-foreground">{fb.tip}</span>
                                 </p>
                               </>
@@ -631,10 +630,10 @@ function PracticeRunner({ drill, isDaily }: { drill: Drill; isDaily: boolean }) 
         )}
 
         {/* Tips */}
-        <NBPanel className="bg-secondary p-6">
-          <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-            Before you start
-          </p>
+        <details className="nb bg-secondary p-6">
+          <summary className="cursor-pointer text-sm font-bold">
+            A few things to keep in mind
+          </summary>
           <ul className="mt-3 flex flex-col gap-2">
             {drill.tips.map((tip, i) => (
               <li key={i} className="flex items-start gap-2 text-sm">
@@ -645,7 +644,7 @@ function PracticeRunner({ drill, isDaily }: { drill: Drill; isDaily: boolean }) 
               </li>
             ))}
           </ul>
-        </NBPanel>
+        </details>
       </div>
     </AppShell>
   );
@@ -711,10 +710,10 @@ function SaveRow({
         score: analysis.overallScore,
       });
       setSavedId(sessionId);
-      toast.success("Saved to your log.");
+      toast.success("Saved to your practice log.");
       onSaved();
     } catch {
-      toast.error("We couldn't save that. Please try again.");
+      toast.error("We couldn't save that. Try again in a moment.");
     } finally {
       setSaving(false);
     }
@@ -725,7 +724,7 @@ function SaveRow({
       <div className="mt-5 flex flex-wrap items-center gap-3">
         {!saved ? (
           <NBButton onClick={handleSave} disabled={saving} variant="mint">
-            {saving ? "Saving…" : "Save to my log"}
+            {saving ? "Saving…" : "Save this take"}
           </NBButton>
         ) : (
           <span className="nb inline-flex items-center gap-1 bg-mint px-3 py-2 text-sm font-bold">
@@ -733,7 +732,7 @@ function SaveRow({
           </span>
         )}
         <NBButton onClick={onRetry} variant="paper">
-          Not my best — again
+          Try another take
         </NBButton>
       </div>
       {savedId && <CoachNote sessionId={savedId} />}
