@@ -31,14 +31,14 @@ export default function ToneCheck() {
     <PublicLayout>
       <section className="nb-grid-dots border-b-2 border-ink">
         <div className="mx-auto max-w-6xl px-4 py-14 lg:py-16">
-          <NBBadge className="bg-coral text-ink">One-minute tone check</NBBadge>
+          <NBBadge className="bg-coral text-ink">A quick tone check</NBBadge>
           <h1 className="mt-4 font-display text-4xl leading-tight sm:text-5xl">
-            We all have habits under pressure.{" "}
-            <span className="italic text-coral">What are yours?</span>
+            What do you tend to do{" "}
+            <span className="italic text-coral">under pressure?</span>
           </h1>
           <p className="mt-4 max-w-xl text-lg leading-relaxed text-muted-foreground">
-            Answer three quick questions to spot some of your usual reactions
-            and get a drill to practice. No microphone or account needed.
+            Choose what sounds most like you. You’ll get a short reflection and
+            an idea to practice—no microphone or account needed.
           </p>
         </div>
       </section>
@@ -48,7 +48,7 @@ export default function ToneCheck() {
           <NBPanel className="nb-shadow-duo overflow-hidden">
             <div className="flex items-center justify-between border-b-2 border-ink bg-paper px-5 py-3">
               <span className="font-display text-sm">
-                {toneDone ? "Your default" : `Question ${tq + 1} of ${TONE_CHECK.length}`}
+                {toneDone ? "Your usual response" : `Question ${tq + 1} of ${TONE_CHECK.length}`}
               </span>
               <span className="flex gap-1.5">
                 {TONE_CHECK.map((_, i) => (
@@ -101,7 +101,7 @@ export default function ToneCheck() {
                     </NBButton>
                   </Link>
                   <NBButton variant="paper" onClick={restartTone} className="text-sm">
-                    <RefreshCcw className="size-4" /> Retake
+                    <RefreshCcw className="size-4" />                     Try again
                   </NBButton>
                 </div>
               </motion.div>

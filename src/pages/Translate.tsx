@@ -1,7 +1,7 @@
 import { AppShell } from "@/components/AppShell";
 import { NBBadge, NBButton, NBPanel, NBStat } from "@/components/nb";
 import { MicError } from "@/components/MicError";
-import { getSavedMicDeviceId } from "@/components/MicPicker";
+import { MicPicker, getSavedMicDeviceId } from "@/components/MicPicker";
 import { ResponsePlanner } from "@/components/ResponsePlanner";
 import { useToneCapture } from "@/hooks/use-tone-capture";
 import { api } from "@/convex/_generated/api";
@@ -240,6 +240,11 @@ export default function Translate() {
                 privacy settings or close other apps using it, then try again.
               </p>
             )}
+            <MicPicker
+              activeLabel={capture.activeDeviceLabel}
+              showSelector={false}
+              className="mt-5"
+            />
           </NBPanel>
         )}
 

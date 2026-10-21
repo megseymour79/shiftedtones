@@ -2,7 +2,7 @@
  * Public-site navigation, shared by the header, mobile menu, and footer.
  * Every path here must be registered in main.tsx — site-nav.test.ts guards
  * the list so a new link without a route can't ship silently.
- * Copy style: conversational, concise, and warm; keep labels clear and direct.
+ * Keep labels conversational, concise, and easy to scan.
  */
 
 export interface NavItem {
@@ -15,7 +15,7 @@ export interface NavItem {
 export const NAV_ITEMS: NavItem[] = [
   { to: "/how", label: "How it works", dot: "bg-sun" },
   { to: "/tone-check", label: "Tone check", dot: "bg-coral" },
-  { to: "/drills", label: "Drills", dot: "bg-mint" },
+  { to: "/drills", label: "Practice", dot: "bg-mint" },
   { to: "/watch", label: "Watch", dot: "bg-coral" },
   { to: "/library", label: "Library", dot: "bg-paper" },
 ];
@@ -26,16 +26,16 @@ export const PUBLIC_ROUTES = ["/", ...NAV_ITEMS.map((n) => n.to)];
 /**
  * The guided tour: the natural reading order through the public site.
  * Each section page gets a back/forward pager so visitors can walk the
- * whole story — Home → How → Tone check → Drills → Watch → Library —
+ * whole story — Home → How → Tone check → Practice → Watch → Library —
  * without hunting for the nav. `/` opens the tour; Library closes it.
  */
 export const PAGE_ORDER: { to: string; label: string; blurb: string; dot: string }[] = [
-  { to: "/", label: "Home", blurb: "What ShiftedTone is", dot: "bg-coral" },
-  { to: "/how", label: "How it works", blurb: "A simple way to practice", dot: "bg-sun" },
-  { to: "/tone-check", label: "Tone check", blurb: "See how you respond under pressure", dot: "bg-coral" },
-  { to: "/drills", label: "Drills", blurb: "Practice with real-life situations", dot: "bg-mint" },
-  { to: "/watch", label: "Watch", blurb: "Videos on tone and communication", dot: "bg-coral" },
-  { to: "/library", label: "Library", blurb: "Books, research, and videos", dot: "bg-paper" },
+  { to: "/", label: "Home", blurb: "A little about ShiftedTone", dot: "bg-coral" },
+  { to: "/how", label: "How it works", blurb: "A few simple steps", dot: "bg-sun" },
+  { to: "/tone-check", label: "Tone check", blurb: "Notice how you respond under pressure", dot: "bg-coral" },
+  { to: "/drills", label: "Practice", blurb: "Try a few everyday scenarios", dot: "bg-mint" },
+  { to: "/watch", label: "Watch", blurb: "Short videos about tone and communication", dot: "bg-coral" },
+  { to: "/library", label: "Library", blurb: "Books and research to explore", dot: "bg-paper" },
 ];
 
 /** Prev/next stops of the tour for a given path (nulls at the ends). */
@@ -52,17 +52,17 @@ export function tourStops(
 /**
  * The signed-in app's walking order. Same idea as the public tour: every
  * page ends with back / next so the tools chain into one circuit —
- * dashboard → gym → calm → translate → quiz → reframe → progress →
+ * dashboard → practice → calm → translate → quiz → reframe → progress →
  * back home. `/practice/:drillId` matches its position by prefix.
  */
 export const APP_ORDER: { to: string; label: string; blurb: string }[] = [
-  { to: "/dashboard", label: "Dashboard", blurb: "Your day at a glance" },
-  { to: "/gym", label: "Gym", blurb: "Choose a drill and practice" },
-  { to: "/calm", label: "Calm", blurb: "Ground, then speak" },
-  { to: "/translate", label: "Translate", blurb: "Try the same words with a different tone" },
-  { to: "/quiz", label: "Read the Room", blurb: "Practice reading a situation" },
-  { to: "/reframe", label: "Reframe Lab", blurb: "Find another way to respond" },
-  { to: "/progress", label: "Progress", blurb: "Recent takes and trends" },
+  { to: "/dashboard", label: "Today", blurb: "A quick look at your practice" },
+  { to: "/gym", label: "Practice", blurb: "Choose a scenario and give it a try" },
+  { to: "/calm", label: "Pause", blurb: "Take a moment to settle" },
+  { to: "/translate", label: "Try a new tone", blurb: "Try the same words another way" },
+  { to: "/quiz", label: "Read a situation", blurb: "Think through what a moment calls for" },
+  { to: "/reframe", label: "Try another way", blurb: "Explore a different response" },
+  { to: "/progress", label: "Progress", blurb: "Look back on your practice" },
 ];
 
 /**

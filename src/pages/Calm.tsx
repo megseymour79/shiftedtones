@@ -45,7 +45,7 @@ export default function Calm() {
           <NBPanel className="bg-ink text-paper">
             <div className="border-b-2 border-paper/20 p-6">
               <div className="flex items-center gap-2 font-display text-xl">
-                <MessagesSquare className="size-5 text-sun" /> Read the Room
+                <MessagesSquare className="size-5 text-sun" /> Read a situation
               </div>
             </div>
             <div className="p-6">
@@ -64,7 +64,7 @@ export default function Calm() {
           <NBPanel className="bg-ink text-paper">
             <div className="border-b-2 border-paper/20 p-6">
               <div className="flex items-center gap-2 font-display text-xl">
-                <Shuffle className="size-5 text-sun" /> Reframe Lab
+                <Shuffle className="size-5 text-sun" /> Try another way
               </div>
             </div>
             <div className="p-6">

@@ -107,6 +107,7 @@ describe("app tour (signed-in pager)", () => {
       expect(stop.label.length).toBeGreaterThan(0);
       expect(stop.blurb.length).toBeGreaterThan(0);
     }
+    expect(APP_ORDER.find((stop) => stop.to === "/gym")?.label).toBe("Practice");
   });
 
   test("appTourStops: middle pages get their neighbors", () => {
@@ -209,11 +210,12 @@ describe("page split contracts", () => {
     }
   });
 
-  test("the grounding exercise count is dynamic wherever it's advertised", () => {
+  test("the grounding exercise count stays dynamic on the Calm page", () => {
     const dash = src("Dashboard");
     const calm = src("Calm");
+    // The dashboard no longer carries a quick link with an exercise count.
+    expect(dash).not.toContain("GROUNDING_EXERCISES.length");
     // Copy must derive from the catalog, not a hardcoded number.
-    expect(dash).toContain("GROUNDING_EXERCISES.length");
     expect(dash).not.toMatch(/"6 exercises"|Six grounding exercises/);
     expect(calm).toContain("GROUNDING_EXERCISES.length");
     expect(calm).not.toContain("Six grounding exercises");
@@ -235,6 +237,7 @@ describe("page split contracts", () => {
     expect(shell).toContain("EverythingMenu");
     expect(shell).toContain("APP_ORDER");
     expect(shell).toContain("PAGE_ORDER");
+    expect(shell).toContain("MicPicker");
     // The two destinations the training tabs never link: home + videos.
     expect(shell).toContain('to="/"');
   });

@@ -25,9 +25,7 @@ import { useQuery } from "convex/react";
 import { Link, useSearchParams } from "react-router";
 
 /**
- * /gym — the training floor. One job: pick a drill and do it. The daily
- * challenge headlines, the whole catalog sits below with honest unlock
- * gates, and the no-mic practices live one callout away.
+ * /gym — a place to choose a scenario and practice at your own pace.
  */
 export default function Gym() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -40,7 +38,7 @@ export default function Gym() {
       <AppShell active="gym">
         <div className="mx-auto max-w-3xl px-4 py-10">
           <NBPanel className="p-8 text-center">
-            <p className="text-sm text-muted-foreground">Loading drills…</p>
+            <p className="text-sm text-muted-foreground">Loading your practice…</p>
           </NBPanel>
         </div>
       </AppShell>
@@ -86,7 +84,7 @@ export default function Gym() {
               </span>
               <div>
                 <p className="text-[10px] font-bold uppercase tracking-widest">
-                  Today's challenge
+                  A simple idea to try
                 </p>
                 <h1 className="font-display text-xl leading-tight sm:text-2xl">
                   {daily.drill.name} — {daily.angle.toLowerCase()}
@@ -95,17 +93,17 @@ export default function Gym() {
             </div>
             <Link to={`/practice/${daily.drill.id}`}>
               <NBButton variant="ink" className="text-xs">
-                <Mic className="size-3.5" /> Do today's take
+              <Mic className="size-3.5" /> Try this one
               </NBButton>
             </Link>
           </div>
         </section>
 
-        {/* The gym — every drill, honest locks */}
+        {/* Practice scenarios */}
         <section>
           <div className="flex items-center justify-between">
             <h2 className="font-display text-2xl">
-              The <span className="italic text-coral">gym</span>
+              Practice
             </h2>
             <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Page {page} of {totalPages}</p>
           </div>
@@ -171,7 +169,7 @@ export default function Gym() {
                 <ChevronLeft className="size-3.5" /> Previous
               </NBButton>
               <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
-                Showing drills {(page - 1) * perPage + 1}-{Math.min(page * perPage, DRILLS.length)} of {DRILLS.length}
+                Showing scenarios {(page - 1) * perPage + 1}-{Math.min(page * perPage, DRILLS.length)} of {DRILLS.length}
               </p>
               <NBButton variant="paper" className="px-3 py-2 text-xs" onClick={() => setPage(page + 1)} disabled={page >= totalPages}>
                 Next <ChevronRight className="size-3.5" />
@@ -190,7 +188,7 @@ export default function Gym() {
               <div>
                 <h2 className="font-display text-lg leading-tight">No microphone?</h2>
                 <p className="text-sm text-paper/70">
-                  Try Read the Room to practice without recording.
+                  Try a situation without recording.
                 </p>
               </div>
             </div>

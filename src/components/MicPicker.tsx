@@ -32,11 +32,13 @@ export function MicPicker({
   activeLabel,
   className,
   alwaysShow = false,
+  showSelector = true,
 }: {
   /** Label of the device the last take actually used ("" if none yet). */
   activeLabel: string;
   className?: string;
   alwaysShow?: boolean;
+  showSelector?: boolean;
 }) {
   const [devices, setDevices] = useState<MicDeviceInfo[]>([]);
   const [selected, setSelected] = useState<string>(
@@ -91,19 +93,21 @@ export function MicPicker({
       <NBBadge className="bg-paper">
         <Mic className="size-3" /> Microphone
       </NBBadge>
-      <select
-        value={selected}
-        onChange={(e) => choose(e.target.value)}
-        className="nb max-w-[220px] bg-card px-2 py-1.5 text-xs font-bold"
-        aria-label="Microphone input"
-      >
-        <option value="">Default microphone</option>
-        {devices.map((d) => (
-          <option key={d.deviceId} value={d.deviceId}>
-            {d.label}
-          </option>
-        ))}
-      </select>
+      {showSelector && (
+        <select
+          value={selected}
+          onChange={(e) => choose(e.target.value)}
+          className="nb max-w-[220px] bg-card px-2 py-1.5 text-xs font-bold"
+          aria-label="Microphone input"
+        >
+          <option value="">Default microphone</option>
+          {devices.map((d) => (
+            <option key={d.deviceId} value={d.deviceId}>
+              {d.label}
+            </option>
+          ))}
+        </select>
+      )}
       {alwaysShow && devices.length === 0 && (
         <span className="text-xs text-muted-foreground">
           Allow microphone access during a take to see named inputs.

@@ -15,20 +15,20 @@ import { Link } from "react-router";
 const STEPS = [
   {
     icon: Mic,
-    title: "01 · Speak",
-    body: "Choose a drill and respond as you would in a real conversation. We'll give you a prompt to get started.",
+    title: "01 · Pick a prompt",
+    body: "Choose an everyday situation and say what you might normally say. No script needed.",
     color: "bg-sun",
   },
   {
     icon: Activity,
-    title: "02 · See",
-    body: "As you speak, we look at your pitch, pace, and volume, then explain what the results mean.",
+    title: "02 · Notice",
+    body: "We look at your pitch, pace, and volume, then explain what stood out.",
     color: "bg-mint",
   },
   {
     icon: Brain,
-    title: "03 · Rewire",
-    body: "You'll see how your voice came across and get one suggestion to try next time. Regular practice can help you build new habits.",
+    title: "03 · Try again",
+    body: "See one suggestion to try next time. A small change can feel more natural with practice.",
     color: "bg-coral",
   },
 ];
@@ -42,13 +42,13 @@ export default function HowItWorks() {
       {/* Header */}
       <section className="nb-grid-dots border-b-2 border-ink">
         <div className="mx-auto max-w-6xl px-4 py-14 lg:py-16">
-          <NBBadge className="bg-sun text-ink">The method</NBBadge>
+          <NBBadge className="bg-sun text-ink">A few simple steps</NBBadge>
           <h1 className="mt-4 font-display text-4xl leading-tight sm:text-5xl">
             How it <span className="italic text-coral">works</span>
           </h1>
           <p className="mt-4 max-w-xl text-lg leading-relaxed text-muted-foreground">
-            Noticing your habits is a start. Practicing a different response
-            can help you build new ones.
+            Start with an everyday situation, practice out loud, and see what
+            you might want to try next time.
           </p>
         </div>
       </section>
@@ -89,18 +89,18 @@ export default function HowItWorks() {
 
           <div className="mt-10 flex flex-wrap items-center justify-between gap-4">
             <p className="max-w-md text-sm text-muted-foreground">
-              That's the process: practice, review your results, and try again.
+              That’s it: practice, take a look at the feedback, and try again if you like.
             </p>
             <Link to="/auth">
               <NBButton variant="coral" className="px-6 py-3">
-                Get started <ArrowRight className="size-4" />
+                Give it a try <ArrowRight className="size-4" />
               </NBButton>
             </Link>
           </div>
         </div>
       </section>
 
-      {/* Today's challenge teaser */}
+      {/* A practice idea */}
       <section className="border-b-2 border-ink">
         <div className="mx-auto max-w-6xl px-4 py-12">
           <div className="nb flex flex-wrap items-center justify-between gap-4 bg-sun nb-shadow">
@@ -110,7 +110,7 @@ export default function HowItWorks() {
               </span>
               <div>
                 <p className="text-[10px] font-bold uppercase tracking-widest">
-                  Today's challenge
+                  A practice idea for today
                 </p>
                 <p className="font-display text-lg leading-tight sm:text-xl">
                   {daily.drill.name} — {daily.angle.toLowerCase()}
@@ -119,7 +119,7 @@ export default function HowItWorks() {
             </div>
             <Link to="/drills">
               <NBButton variant="ink" className="text-xs">
-                Browse the drills <ArrowRight className="size-3.5" />
+                Browse practice ideas <ArrowRight className="size-3.5" />
               </NBButton>
             </Link>
           </div>

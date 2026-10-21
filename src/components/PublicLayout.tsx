@@ -39,7 +39,7 @@ export function PublicLayout({ children }: { children: ReactNode }) {
       {/* Announcement strip */}
       <div className="border-b-2 border-ink bg-ink py-2 text-paper">
         <p className="text-center text-xs font-bold uppercase tracking-widest">
-          Notice your usual reactions and practice a different response.
+          A place to pause and try a different response.
         </p>
       </div>
 
@@ -144,7 +144,7 @@ export function PublicLayout({ children }: { children: ReactNode }) {
             </Link>
           </nav>
           <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
-            Practice your tone. Say what you mean.
+            A little practice for conversations that matter.
           </p>
         </div>
       </footer>

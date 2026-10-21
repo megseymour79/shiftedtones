@@ -1,6 +1,6 @@
 import { NBBadge, NBButton, NBPanel, NBMeter } from "@/components/nb";
 import { MicError } from "@/components/MicError";
-import { getSavedMicDeviceId } from "@/components/MicPicker";
+import { MicPicker, getSavedMicDeviceId } from "@/components/MicPicker";
 import { CoachNote } from "@/components/CoachNote";
 import { getDrill, type Drill } from "@/lib/drills";
 import { UNLOCKABLE_DRILLS, isUnlocked, unlockGoalLine } from "@/lib/unlocks";
@@ -72,9 +72,9 @@ export default function Practice() {
       <AppShell>
         <div className="mx-auto max-w-3xl px-4 py-10">
           <NBPanel className="p-8 text-center">
-            <p className="font-display text-xl">We couldn't find that drill.</p>
+            <p className="font-display text-xl">We couldn't find that scenario.</p>
             <Link to="/gym" className="mt-4 inline-block">
-              <NBButton variant="paper">Back to the gym</NBButton>
+              <NBButton variant="paper">Back to practice</NBButton>
             </Link>
           </NBPanel>
         </div>
@@ -87,7 +87,7 @@ export default function Practice() {
       <AppShell>
         <div className="mx-auto max-w-3xl px-4 py-10">
           <NBPanel className="p-8 text-center">
-            <p className="text-sm text-muted-foreground">Loading drill…</p>
+            <p className="text-sm text-muted-foreground">Loading your practice…</p>
           </NBPanel>
         </div>
       </AppShell>
@@ -106,10 +106,10 @@ export default function Practice() {
             </p>
             <div className="mt-5 flex justify-center gap-3">
               <Link to="/gym">
-                <NBButton variant="paper">Back to the gym</NBButton>
+                <NBButton variant="paper">Back to practice</NBButton>
               </Link>
               <Link to="/practice/steady-ground">
-                <NBButton variant="coral">Try an available drill</NBButton>
+                <NBButton variant="coral">Try another scenario</NBButton>
               </Link>
             </div>
           </NBPanel>
@@ -203,6 +203,7 @@ function PracticeRunner({ drill, isDaily }: { drill: Drill; isDaily: boolean }) 
     elapsedMs,
     analysis,
     transcript,
+    activeDeviceLabel,
     micMuted,
     audioUrl,
     reset,
@@ -215,11 +216,11 @@ function PracticeRunner({ drill, isDaily }: { drill: Drill; isDaily: boolean }) 
         <div className="flex items-center justify-between">
           <Link to="/gym">
             <NBButton variant="paper" className="px-3 py-2">
-              <ArrowLeft className="size-4" /> Gym
+              <ArrowLeft className="size-4" /> Practice
             </NBButton>
           </Link>
           <div className="flex items-center gap-2">
-            {isDaily && <NBBadge className="bg-coral">Today's challenge</NBBadge>}
+            {isDaily && <NBBadge className="bg-coral">A suggestion for today</NBBadge>}
             <NBBadge className="bg-sun">{drill.tag}</NBBadge>
           </div>
         </div>
@@ -342,6 +343,8 @@ function PracticeRunner({ drill, isDaily }: { drill: Drill; isDaily: boolean }) 
                 empty otherwise.
               </p>
             )}
+
+            <MicPicker activeLabel={activeDeviceLabel} showSelector={false} />
 
             {/* Controls */}
             <div className="flex items-center gap-3">

@@ -169,12 +169,12 @@ export default function Quiz() {
     <AppShell active="quiz">
       <div className="mx-auto flex max-w-2xl flex-col gap-6 px-4 pb-16 pt-6">
         <div className="flex items-center justify-end">
-          <NBBadge className="bg-mint">READ THE ROOM</NBBadge>
+          <NBBadge className="bg-mint">READ A SITUATION</NBBadge>
         </div>
 
         <div>
           <h1 className="font-display text-2xl">
-              Practice reading a situation,{" "}
+              Practice reading a moment,{" "}
               <span className="italic text-coral">no mic needed</span>
           </h1>
           <p className="mt-2 max-w-lg text-sm text-muted-foreground">

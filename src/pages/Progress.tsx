@@ -16,7 +16,7 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 
 /**
- * /progress — your record. See your tone trends and recent takes.
+ * /progress — your record. See your tone trends and  Recent sessions.
  * Clean, focused, no clutter.
  */
 export default function Progress() {
@@ -32,7 +32,7 @@ export default function Progress() {
             Your progress
           </h1>
           <p className="mt-2 text-sm text-muted-foreground">
-            See your recent practice and how your scores change over time.
+            Look back at your practice and see how your scores change over time.
           </p>
         </section>
 
@@ -42,16 +42,16 @@ export default function Progress() {
         {(!trendSessions || trendSessions.length < 2) && (
           <NBPanel className="bg-card/70 p-5">
             <p className="text-sm text-muted-foreground">
-              Complete two practice takes to see your score trends.
+              After two practice sessions, you’ll be able to see how your scores change.
             </p>
           </NBPanel>
         )}
 
-        {/* Recent takes */}
+        {/* Recent sessions */}
         <section className="nb bg-card nb-shadow">
           <div className="flex items-center justify-between border-b-2 border-ink px-6 py-4">
             <div className="flex items-center gap-2 font-display text-xl">
-              <History className="size-5" /> Recent takes
+              <History className="size-5" /> Recent sessions
             </div>
             <Link
               to="/gym"
@@ -62,11 +62,11 @@ export default function Progress() {
           </div>
           <div className="flex flex-col">
             {recentSessions === undefined && (
-              <p className="p-6 text-sm text-muted-foreground">Loading recent takes…</p>
+              <p className="p-6 text-sm text-muted-foreground">Loading your recent practice…</p>
             )}
             {recentSessions?.length === 0 && (
               <p className="p-6 text-sm text-muted-foreground">
-                No practice takes yet. Start with a drill.
+                No practice sessions yet. Start with a scenario whenever you’re ready.
               </p>
             )}
             {recentSessions?.map((s) => (
@@ -81,7 +81,7 @@ export default function Progress() {
 }
 
 /**
- * Tone trends — per-factor direction over the last 10 takes
+ * Tone trends — per-factor direction across recent sessions
  */
 function ToneTrendsPanel({
   sessions,
@@ -110,7 +110,7 @@ function ToneTrendsPanel({
         </div>
       </div>
       <p className="px-6 pt-4 text-sm text-muted-foreground">
-        The arrows show how each score has changed across your recent takes.
+        The arrows show how each score has changed across your recent sessions.
       </p>
       <div className="grid gap-4 p-6 sm:grid-cols-2 lg:grid-cols-4">
         {rows.map((r) => {
