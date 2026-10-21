@@ -15,20 +15,20 @@ import { Link } from "react-router";
 const STEPS = [
   {
     icon: Mic,
-    title: "01 · Speak",
-    body: "Choose a drill and respond as you would in a real conversation. We'll give you a prompt to get started.",
+    title: "01 · Give it a try",
+    body: "Pick a drill and answer the prompt as you might in a real conversation.",
     color: "bg-sun",
   },
   {
     icon: Activity,
-    title: "02 · See",
-    body: "As you speak, we look at your pitch, pace, and volume, then explain what the results mean.",
+    title: "02 · Get a read",
+    body: "We'll look at your pitch, pace, and volume, then show you what we noticed.",
     color: "bg-mint",
   },
   {
     icon: Brain,
-    title: "03 · Rewire",
-    body: "You'll see how your voice came across and get one suggestion to try next time. Regular practice can help you build new habits.",
+    title: "03 · Try something new",
+    body: "You'll get a note about how you came across and one thing to try next time. A little practice can help new habits stick.",
     color: "bg-coral",
   },
 ];
@@ -42,13 +42,13 @@ export default function HowItWorks() {
       {/* Header */}
       <section className="nb-grid-dots border-b-2 border-ink">
         <div className="mx-auto max-w-6xl px-4 py-14 lg:py-16">
-          <NBBadge className="bg-sun text-ink">The method</NBBadge>
+          <NBBadge className="bg-sun text-ink">A simple approach</NBBadge>
           <h1 className="mt-4 font-display text-4xl leading-tight sm:text-5xl">
             How it <span className="italic text-coral">works</span>
           </h1>
           <p className="mt-4 max-w-xl text-lg leading-relaxed text-muted-foreground">
-            Noticing your habits is a start. Practicing a different response
-            can help you build new ones.
+            Start by noticing what you tend to do. Then try a different
+            response and see how it feels.
           </p>
         </div>
       </section>
@@ -89,11 +89,11 @@ export default function HowItWorks() {
 
           <div className="mt-10 flex flex-wrap items-center justify-between gap-4">
             <p className="max-w-md text-sm text-muted-foreground">
-              That's the process: practice, review your results, and try again.
+              That's it: try a drill, see what you notice, and give it another go.
             </p>
             <Link to="/auth">
               <NBButton variant="coral" className="px-6 py-3">
-                Get started <ArrowRight className="size-4" />
+                Try it for yourself <ArrowRight className="size-4" />
               </NBButton>
             </Link>
           </div>

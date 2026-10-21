@@ -57,7 +57,7 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
       setError(
         error instanceof Error
           ? error.message
-          : "We couldn't send the sign-in code. Please try again.",
+          : "We couldn't send a sign-in code. Try again in a moment.",
       );
       setIsLoading(false);
     }
@@ -74,7 +74,7 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
       navigate(redirect);
     } catch (error) {
       console.error("OTP verification error:", error);
-      setError("That code didn't work. Check it and try again.");
+      setError("That code didn't work. Double-check it and try again.");
       setIsLoading(false);
       setOtp("");
     }
@@ -90,7 +90,7 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
     } catch (error) {
       console.error("Guest login error:", error);
       setError(
-        `We couldn't continue as a guest: ${error instanceof Error ? error.message : "Please try again."}`,
+        `We couldn't continue as a guest: ${error instanceof Error ? error.message : "Try again in a moment."}`,
       );
       setIsLoading(false);
     }
@@ -108,16 +108,15 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
         </div>
         <div>
           <h2 className="font-display text-4xl leading-tight text-balance">
-            Notice how you sound.
+            Notice how you come across.
             <br />
             <span className="text-sun">
-              Practice how you want to respond.
+              Practice responding the way you want to.
             </span>
           </h2>
           <p className="mt-5 max-w-sm text-sm leading-relaxed text-paper/70">
-            Sign in so your takes, streak, and reframes are here when you come
-            back. Your audio never leaves your device — we keep the scores, not
-            the recordings.
+            Sign in to keep your practice, streak, and notes in one place.
+            Your audio stays on your device; we save scores, not recordings.
           </p>
           <div className="mt-8 flex items-center gap-3">
             <div className="flex h-10 items-end gap-1" aria-hidden>
@@ -136,7 +135,7 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
           </div>
         </div>
         <p className="text-[10px] font-bold uppercase tracking-widest text-paper/50">
-          Calm takes practice · Start with a pause
+          Take your time · Start with a pause
         </p>
       </div>
 
@@ -168,11 +167,9 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
                     .
                   </p>
                   <div>
-                    <p className="font-display text-xl leading-none">
-                      Welcome
-                    </p>
+                    <p className="font-display text-xl leading-none">Welcome</p>
                     <p className="mt-1 text-xs font-medium text-muted-foreground">
-                      Sign in or create a free account
+                      Sign in or make a free account
                     </p>
                   </div>
                 </div>
@@ -240,7 +237,7 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
               <div className="border-b-2 border-ink bg-mint px-6 py-4">
                 <p className="font-display text-xl leading-none">Check your email</p>
                 <p className="mt-1 text-xs font-medium text-muted-foreground">
-                  We sent a 6-digit sign-in code to {step.email}.
+                  There's a 6-digit sign-in code in the inbox for {step.email}.
                 </p>
               </div>
               <form onSubmit={handleOtpSubmit}>
@@ -297,7 +294,7 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
                     onClick={() => setStep("signIn")}
                     className="text-xs font-bold uppercase tracking-widest text-muted-foreground hover:text-ink"
                   >
-                    ← Use a different email
+                    ← Try a different email
                   </button>
                 </div>
               </form>

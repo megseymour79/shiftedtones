@@ -16,14 +16,14 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
 
-/** Rotating hero ticker: the everyday moments where tone decides everything. */
+/** Everyday moments when it can help to pause and choose your words. */
 const MOMENTS = [
-  "when your boss says “got a minute?”",
-  "the “we need to talk” text",
-  "when they ask if you're okay",
-  "the third time you explain yourself",
-  "when “no” gets stuck in your throat",
-  "the apology you keep rehearsing",
+  "your manager asks, “got a minute?”",
+  "you get a “we need to talk” text",
+  "someone asks if you're okay",
+  "you've had to explain yourself again",
+  "you're trying to say no",
+  "you want to apologize, but aren't sure how",
 ];
 
 /** Cycling beats for the hero's live-read card. */
@@ -39,45 +39,45 @@ const READS: {
     toneColor: "bg-mint",
     pace: "128 wpm",
     pitch: "Steady",
-    note: "This sounds steady and clear. Try to keep that pace.",
+    note: "That sounds clear and steady. You can stick with this pace.",
   },
   {
     tone: "Rushed",
     toneColor: "bg-coral",
     pace: "186 wpm",
     pitch: "Climbing",
-    note: "Your pace is quick. Try slowing down and breathing out.",
+    note: "You're speaking quickly. Try slowing down and breathing out.",
   },
   {
     tone: "Tense",
     toneColor: "bg-sun",
     pace: "141 wpm",
     pitch: "High",
-    note: "Your pitch is high and your jaw may be tense. Relax your shoulders and try again, a little slower.",
+    note: "Your pitch is high, and you may be holding tension. Relax your shoulders and try it again, a little slower.",
   },
   {
     tone: "Flat",
     toneColor: "bg-paper",
     pace: "112 wpm",
     pitch: "Low",
-    note: "Your words are clear, but your delivery sounds flat. Let the ends of your sentences lift a little.",
+    note: "Your words are clear, though your delivery sounds a little flat. Let your sentences lift at the end.",
   },
   {
     tone: "Warm",
     toneColor: "bg-mint",
     pace: "135 wpm",
     pitch: "Steady",
-    note: "Your voice sounds warm and confident. Notice what feels comfortable about it.",
+    note: "Your voice sounds warm and confident. Notice what feels natural about it.",
   },
 ];
 
 const MARQUEE_ITEMS = [
-  "PRACTICE A STEADY TONE",
-  "TAKE A MOMENT BEFORE YOU SPEAK",
-  "A PAUSE CAN HELP",
-  "TONE SHAPES HOW WORDS LAND",
-  "MAKE ROOM TO RESPOND",
-  "PRACTICE HOW YOU WANT TO RESPOND",
+  "PAUSE BEFORE YOU ANSWER",
+  "NOTICE HOW YOU SOUND",
+  "TAKE YOUR TIME",
+  "TONE CAN CHANGE HOW WORDS LAND",
+  "MAKE ROOM TO THINK",
+  "PRACTICE WHAT YOU WANT TO SAY",
 ];
 
 export default function Home() {
@@ -122,10 +122,10 @@ export default function Home() {
                 className="size-2 bg-coral nb"
               />
               <AudioWaveform className="size-4" />
-              A live look at your tone
+              A quick look at your tone
             </motion.div>
             <h1 className="mt-6 font-display text-5xl leading-[1.02] sm:text-6xl lg:text-7xl">
-              What you{" "}
+              Say what you{" "}
               <motion.span
                 initial={{ scale: 0.4, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
@@ -134,21 +134,21 @@ export default function Home() {
               >
                 meant
               </motion.span>
-              . What they{" "}
+              {" "}and sound the way you{" "}
               <motion.span
                 initial={{ scale: 0.4, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ type: "spring", stiffness: 240, damping: 13, delay: 0.5 }}
                 className="nb bg-mint px-2 italic inline-block rotate-1"
               >
-                heard
+                mean
               </motion.span>
               .
             </h1>
             <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground">
-              Sometimes the way something sounds matters as much as the words.
-              ShiftedTone helps you notice your tone and practice responding
-              the way you intend.
+              Sometimes the words are right, but the way they come out isn't
+              quite what you meant. ShiftedTone helps you notice how you sound
+              and practice responding in a way that feels like you.
             </p>
 
             {/* Rotating real moments */}
@@ -176,21 +176,21 @@ export default function Home() {
             >
               <Link to="/auth">
                 <NBButton variant="sun" className="px-6 py-3 text-base">
-                  Try a tone check <ArrowRight className="size-4" />
+                  Take a quick tone check <ArrowRight className="size-4" />
                 </NBButton>
               </Link>
               <Link to="/how">
                 <NBButton variant="paper" className="px-6 py-3 text-base">
-                  See how it works
+                  How it works
                 </NBButton>
               </Link>
             </motion.div>
             <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs font-bold uppercase tracking-widest text-muted-foreground">
               <span className="flex items-center gap-2">
-                <ShieldCheck className="size-4" /> Your audio stays with you
+                <ShieldCheck className="size-4" /> Audio stays on your device
               </span>
               <span className="flex items-center gap-2">
-                <Timer className="size-4" /> About 45 seconds
+                <Timer className="size-4" /> Takes about 45 seconds
               </span>
             </div>
           </motion.div>
@@ -290,7 +290,7 @@ export default function Home() {
                 </div>
                 <div className="mt-3 nb bg-secondary p-3">
                   <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-                    Coach note
+                    Something to try
                   </p>
                   <AnimatePresence mode="wait">
                     <motion.p
@@ -339,26 +339,26 @@ export default function Home() {
           {[
             {
               to: "/tone-check",
-              title: "Check your tone",
-              body: "Answer three quick questions and get a practice suggestion.",
+              title: "Take a tone check",
+              body: "Answer a few questions and get a practice idea.",
               color: "bg-coral",
             },
             {
               to: "/drills",
-              title: "See the drills",
-              body: "Eight real-world reps — calm, warmth, boundaries, recovery, praise.",
+              title: "Browse the drills",
+              body: "Short practice for everyday conversations.",
               color: "bg-mint",
             },
             {
               to: "/watch",
-              title: "Learn from experts",
-              body: "Videos on tone, delivery, and staying composed.",
+              title: "Watch and learn",
+              body: "A few useful ideas about tone and communication.",
               color: "bg-sun",
             },
             {
               to: "/library",
-              title: "Explore the library",
-              body: "Books and research behind the approach.",
+              title: "Browse the library",
+              body: "Books and research if you'd like to dig deeper.",
               color: "bg-paper",
             },
           ].map((card, i) => (
@@ -382,7 +382,7 @@ export default function Home() {
                     {card.body}
                   </span>
                   <span className="mt-4 inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-widest text-coral">
-                    Explore
+                    Take a look
                     <ArrowRight className="size-3.5 transition-transform duration-300 group-hover:translate-x-1" />
                   </span>
                 </NBPanel>
@@ -400,14 +400,14 @@ export default function Home() {
         />
         <div className="relative mx-auto flex max-w-6xl flex-col items-center gap-6 px-4 py-16 text-center lg:py-20">
           <h2 className="max-w-2xl font-display text-3xl text-balance sm:text-4xl">
-            Ready for your next conversation? Practice a response that feels like you.
+            Want to feel more prepared for your next conversation?
           </h2>
           <p className="max-w-xl text-ink/70">
-            It's free to get started. All you need is a microphone.
+            You can get started for free. You'll just need a microphone.
           </p>
           <Link to={isAuthenticated ? "/dashboard" : "/auth"}>
             <NBButton variant="ink" className="nb-shadow-lg px-8 py-4 text-lg">
-              Start practicing <ArrowRight className="size-5" />
+              Give it a try <ArrowRight className="size-5" />
             </NBButton>
           </Link>
         </div>
@@ -434,15 +434,15 @@ function FeaturedWatchTeaser() {
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
             <span className="nb inline-flex items-center gap-2 bg-coral px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-ink">
-              <PlaySquare className="size-3.5" /> Watch & learn
+              <PlaySquare className="size-3.5" /> Watch and learn
             </span>
             <h2 className="mt-4 font-display text-3xl leading-tight sm:text-4xl">
-              Learn from <span className="italic text-sun">experts</span>.
+              Hear a few <span className="italic text-sun">perspectives</span>.
             </h2>
           </div>
           <p className="max-w-md text-sm leading-relaxed text-paper/60">
-            Coaches and researchers explain how tone affects communication.
-            Each video includes a related practice drill.
+            Coaches and researchers share what they've learned about tone and
+            communication. Each video comes with a short practice drill.
           </p>
         </div>
 
@@ -450,8 +450,7 @@ function FeaturedWatchTeaser() {
           <VideoCard video={featured} playInline />
           <div className="flex flex-col justify-center gap-5">
             <p className="text-base leading-relaxed text-paper/80">
-              Play a video here, then put what you learned into practice with
-              a short drill.
+              Pick a video, then try a short drill based on what you heard.
             </p>
             <div className="grid grid-cols-3 gap-3">
               {others.map((v) => (
@@ -483,12 +482,12 @@ function FeaturedWatchTeaser() {
             <div>
               <Link to="/watch">
                 <NBButton variant="paper" className="px-6 py-3 text-base">
-                  Browse all seven videos <ArrowRight className="size-4" />
+                  See all seven videos <ArrowRight className="size-4" />
                 </NBButton>
               </Link>
             </div>
             <p className="text-xs text-paper/50">
-              Seven curated videos on tone, delivery, and staying regulated.
+              Seven videos on tone, delivery, and staying grounded.
             </p>
           </div>
         </div>
