@@ -32,20 +32,11 @@ export default function Translate() {
 
   const [line, setLine] = useState<TranslationLine>(() => {
     const d = new Date();
-    return TRANSLATION_LINES[
-      (d.getDate() + d.getMonth() * 31) % TRANSLATION_LINES.length
-    ];
+    return TRANSLATION_LINES[(d.getDate() + d.getMonth() * 31) % TRANSLATION_LINES.length];
   });
-  const order = useMemo(
-    () => passOrder(line.id.length + new Date().getDate()),
-    [line.id],
-  );
-  const [reflexAnalysis, setReflexAnalysis] = useState<ToneAnalysis | null>(
-    null,
-  );
-  const [intendedAnalysis, setIntendedAnalysis] = useState<ToneAnalysis | null>(
-    null,
-  );
+  const order = useMemo(() => passOrder(line.id.length + new Date().getDate()), [line.id]);
+  const [reflexAnalysis, setReflexAnalysis] = useState<ToneAnalysis | null>(null);
+  const [intendedAnalysis, setIntendedAnalysis] = useState<ToneAnalysis | null>(null);
   const [pass, setPass] = useState<Pass>(order[0]);
   /** The pass waiting on the hook's async analysis to land. */
   const [awaiting, setAwaiting] = useState<Pass | null>(null);
@@ -119,8 +110,7 @@ export default function Translate() {
           calm: intendedAnalysis.calmScore - reflexAnalysis.calmScore,
           energy: intendedAnalysis.energyScore - reflexAnalysis.energyScore,
           clarity: intendedAnalysis.clarityScore - reflexAnalysis.clarityScore,
-          stability:
-            intendedAnalysis.stabilityScore - reflexAnalysis.stabilityScore,
+          stability: intendedAnalysis.stabilityScore - reflexAnalysis.stabilityScore,
         }
       : null;
 
@@ -157,25 +147,19 @@ export default function Translate() {
               <RefreshCw className="size-3" /> Choose another sentence
             </button>
           </div>
-          <p className="mt-3 font-display text-2xl leading-snug">
-            “{line.text}”
-          </p>
+          <p className="mt-3 font-display text-2xl leading-snug">“{line.text}”</p>
           <div className="mt-4 grid gap-3 sm:grid-cols-2">
             <div className="nb bg-card p-3">
               <p className="text-[10px] font-bold uppercase tracking-widest text-coral">
                 How it usually comes out
               </p>
-              <p className="mt-1 text-sm text-muted-foreground">
-                {line.usually}
-              </p>
+              <p className="mt-1 text-sm text-muted-foreground">{line.usually}</p>
             </div>
             <div className="nb bg-card p-3">
               <p className="text-[10px] font-bold uppercase tracking-widest text-mint">
                 What you're aiming for
               </p>
-              <p className="mt-1 text-sm text-muted-foreground">
-                {line.intended}
-              </p>
+              <p className="mt-1 text-sm text-muted-foreground">{line.intended}</p>
             </div>
           </div>
         </NBPanel>
@@ -185,9 +169,7 @@ export default function Translate() {
             moment has already passed. */}
         {!done && (
           <ResponsePlanner
-            title={
-              reflexAnalysis ? "Before your second take" : "Before you speak"
-            }
+            title={reflexAnalysis ? "Before your second take" : "Before you speak"}
             intro="Take a moment to consider what you want to say and how you want it to come across."
             accent="bg-card"
           />
@@ -200,12 +182,10 @@ export default function Translate() {
                 visible so you know where you are and what's left */}
             <div className="flex items-stretch gap-2" aria-hidden>
               {order.map((passKey, i) => {
-                const label =
-                  passKey === "reflex" ? "Usual tone" : "Intended tone";
+                const label = passKey === "reflex" ? "Usual tone" : "Intended tone";
                 const isCurrent = pass === passKey;
                 const isDone =
-                  (passKey === "reflex" ? reflexAnalysis : intendedAnalysis) !==
-                  null;
+                  (passKey === "reflex" ? reflexAnalysis : intendedAnalysis) !== null;
                 return (
                   <div
                     key={passKey}
@@ -226,25 +206,16 @@ export default function Translate() {
             </div>
 
             <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
-              <NBBadge
-                className={
-                  pass === "reflex" ? "bg-coral text-ink" : "bg-mint text-ink"
-                }
-              >
+              <NBBadge className={pass === "reflex" ? "bg-coral text-ink" : "bg-mint text-ink"}>
                 Take {passNum} of 2 —{" "}
                 {pass === "reflex" ? "your usual tone" : "your intended tone"}
               </NBBadge>
-              <span className="text-xs text-muted-foreground">
-                {line.targetHint}
-              </span>
+              <span className="text-xs text-muted-foreground">{line.targetHint}</span>
             </div>
 
             {capture.state === "idle" && (
               <div className="mt-5 flex justify-center">
-                <NBButton
-                  onClick={startPass}
-                  variant={pass === "reflex" ? "coral" : "mint"}
-                >
+                <NBButton onClick={startPass} variant={pass === "reflex" ? "coral" : "mint"}>
                   {pass === "reflex" ? "Say it as usual" : "Say it as intended"}
                 </NBButton>
               </div>
@@ -265,8 +236,8 @@ export default function Translate() {
             {capture.error && <MicError message={capture.error} />}
             {capture.state === "recording" && capture.micMuted && (
               <p className="nb mt-5 bg-sun px-3 py-2 text-sm font-medium">
-                Your microphone is muted. Check your device's microphone privacy
-                settings or close other apps using it, then try again.
+                Your microphone is muted. Check your device's microphone
+                privacy settings or close other apps using it, then try again.
               </p>
             )}
           </NBPanel>
@@ -277,9 +248,7 @@ export default function Translate() {
           <NBPanel className="p-6">
             <div className="flex flex-wrap items-center justify-between gap-2">
               <NBBadge className="bg-sun text-ink">Compare your takes</NBBadge>
-              <span className="text-xs text-muted-foreground">
-                {line.payoff}
-              </span>
+              <span className="text-xs text-muted-foreground">{line.payoff}</span>
             </div>
 
             <div className="mt-5 grid grid-cols-2 gap-4 sm:grid-cols-4">
