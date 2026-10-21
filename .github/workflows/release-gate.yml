@@ -1,0 +1,82 @@
+name: Release Gate
+
+on:
+  workflow_dispatch:
+    inputs:
+      sha:
+        description: Release commit SHA to verify
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    env:
+      RELEASE_SHA: ${{ inputs.sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.sha }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22 # current LTS
+          cache: npm
+
+      - name: Run quality gates
+        shell: bash
+        run: |
+          mkdir -p gate-logs
+          summary=gate-logs/summary.md
+          {
+            echo "## Release gate"
+            echo "- Repository: \`${GITHUB_REPOSITORY}\`"
+            echo "- Commit SHA: \`$(git rev-parse HEAD)\` (requested: \`${RELEASE_SHA}\`)"
+            echo "- Run: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+            echo "- Logs: artifact \`release-gate-logs\` on the run page"
+            echo
+            echo "| Gate command | Status |"
+            echo "| --- | --- |"
+          } > "$summary"
+
+          gates=(
+            "npm ci"
+            "npm run typecheck"
+            "npm test"
+            "npm run build"
+            "npm run validate:og"
+            "npm run check:tracked-secrets"
+          )
+          failed=""
+          for cmd in "${gates[@]}"; do
+            if [ -n "$failed" ]; then
+              echo "| \`$cmd\` | ⏭️ skipped |" >> "$summary"
+              continue
+            fi
+            echo "::group::$cmd"
+            log="gate-logs/${cmd//[ :]/_}.log"
+            if bash -o pipefail -c "$cmd" 2>&1 | tee "$log"; then
+              echo "| \`$cmd\` | ✅ pass |" >> "$summary"
+            else
+              echo "| \`$cmd\` | ❌ fail |" >> "$summary"
+              failed="$cmd"
+            fi
+            echo "::endgroup::"
+          done
+
+          cat "$summary" >> "$GITHUB_STEP_SUMMARY"
+          if [ -n "$failed" ]; then
+            echo "::error::Release gate failed at: $failed"
+            exit 1
+          fi
+
+      - name: Upload gate logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-gate-logs
+          path: gate-logs/
+          if-no-files-found: warn
