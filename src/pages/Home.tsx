@@ -1,6 +1,7 @@
 import { NBButton, NBPanel } from "@/components/nb";
 import { PublicLayout } from "@/components/PublicLayout";
 import { PagePager } from "@/components/PagePager";
+import { ToneLab } from "@/components/ToneLab";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router";
 
@@ -50,6 +51,7 @@ export default function Home() {
           <p className="mt-5 text-xs text-muted-foreground">
             No microphone needed to get started.
           </p>
+          <ToneLab />
         </div>
       </section>
 
