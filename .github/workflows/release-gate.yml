@@ -57,7 +57,7 @@ jobs:
               continue
             fi
             echo "::group::$cmd"
-            log="gate-logs/${cmd// /_}.log"
+            log="gate-logs/${cmd//[ :]/_}.log"
             if bash -o pipefail -c "$cmd" 2>&1 | tee "$log"; then
               echo "| \`$cmd\` | ✅ pass |" >> "$summary"
             else
