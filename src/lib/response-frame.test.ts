@@ -13,8 +13,8 @@ describe("FRAME_STEPS", () => {
       "aftertaste",
       "ask",
     ]);
-    expect(FRAME_STEPS[0].question).toMatch(/feel or do/i);
-    expect(FRAME_STEPS[1].question).toMatch(/underneath/i);
+    expect(FRAME_STEPS[0].question).toMatch(/want me to feel or do/i);
+    expect(FRAME_STEPS[1].question).toMatch(/underneath what they said/i);
     expect(FRAME_STEPS[2].question).toMatch(/feel after/i);
     expect(FRAME_STEPS[3].question).toMatch(/kind of message/i);
   });
