@@ -1,20 +1,16 @@
 import { APP_ORDER, PAGE_ORDER } from "@/lib/site-nav";
 import { useAuth } from "@/hooks/use-auth";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import logo from "@/assets/logo.svg";
+import { MicPicker } from "@/components/MicPicker";
 import {
+  AudioLines,
   ChevronDown,
   Clapperboard,
-  Dumbbell,
   Languages,
   LayoutDashboard,
   LogOut,
+  Mic,
   MessagesSquare,
   Shuffle,
   TrendingUp,
@@ -29,17 +25,17 @@ interface NavItem {
   to: string;
   label: string;
   short: string;
-  icon: typeof Dumbbell;
+  icon: typeof Mic;
   tab?: boolean;
 }
 
 const NAV: NavItem[] = [
-  { id: "dashboard", to: "/dashboard", label: "Dashboard", short: "Home", icon: LayoutDashboard, tab: true },
-  { id: "gym", to: "/gym", label: "Gym", short: "Gym", icon: Dumbbell, tab: true },
-  { id: "calm", to: "/calm", label: "Calm", short: "Calm", icon: Wind },
-  { id: "translate", to: "/translate", label: "Translate", short: "Translate", icon: Languages, tab: true },
-  { id: "quiz", to: "/quiz", label: "Read the Room", short: "Room", icon: MessagesSquare },
-  { id: "reframe", to: "/reframe", label: "Reframe Lab", short: "Reframe", icon: Shuffle },
+  { id: "dashboard", to: "/dashboard", label: "Today", short: "Today", icon: LayoutDashboard, tab: true },
+  { id: "gym", to: "/gym", label: "Practice", short: "Practice", icon: Mic, tab: true },
+  { id: "calm", to: "/calm", label: "Pause", short: "Pause", icon: Wind },
+  { id: "translate", to: "/translate", label: "Try a new tone", short: "New tone", icon: Languages, tab: true },
+  { id: "quiz", to: "/quiz", label: "Read a situation", short: "Room", icon: MessagesSquare },
+  { id: "reframe", to: "/reframe", label: "Try another way", short: "Reframe", icon: Shuffle },
   { id: "progress", to: "/progress", label: "Progress", short: "Progress", icon: TrendingUp, tab: true },
 ];
 
@@ -113,45 +109,47 @@ export function AppShell({
 function EverythingMenu() {
   const { pathname } = useLocation();
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <button type="button" className="nb nb-press flex items-center gap-1.5 bg-paper px-2.5 py-1.5 text-[11px] font-bold uppercase tracking-widest text-ink" aria-label="All pages menu">
-          Pages <ChevronDown className="size-3.5" />
+    <Popover>
+      <PopoverTrigger asChild>
+        <button type="button" className="nb nb-press flex items-center gap-1.5 bg-paper px-2.5 py-1.5 text-[11px] font-bold uppercase tracking-widest text-ink" aria-label="Pages and sound settings">
+          Pages<span className="hidden sm:inline"> &amp; sound</span> <ChevronDown className="size-3.5" />
         </button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" sideOffset={10} className="w-64 rounded-none border-2 border-ink bg-card p-0 nb-shadow-sm">
+      </PopoverTrigger>
+      <PopoverContent align="end" sideOffset={8} className="w-80 max-w-[calc(100vw-2rem)] rounded-none border-2 border-ink bg-card p-0 nb-shadow-sm">
         <div className="grid grid-cols-2">
           <div>
-            <DropdownMenuLabel className="border-b-2 border-ink px-3 py-2 text-[10px] font-bold uppercase tracking-widest text-ink/60">Training</DropdownMenuLabel>
+            <h2 className="border-b-2 border-ink px-3 py-2 text-[10px] font-bold uppercase tracking-widest text-ink/60">Your practice</h2>
             <div className="flex flex-col p-1">
               {APP_ORDER.map((item) => {
                 const Icon = NAV.find((n) => n.to === item.to)?.icon;
                 const isCurrent = pathname === item.to;
                 return (
-                  <DropdownMenuItem key={item.to} asChild>
-                    <Link to={item.to} aria-current={isCurrent ? "page" : undefined} className={cn("cursor-pointer justify-start gap-2 rounded-none px-3 py-1.5 text-xs font-bold uppercase tracking-wide focus:bg-sun focus:text-white", isCurrent ? "bg-sun text-white" : "text-ink")}>
-                      {Icon && <Icon className="size-3.5 shrink-0" aria-hidden />}{item.label}
-                    </Link>
-                  </DropdownMenuItem>
+                  <Link key={item.to} to={item.to} aria-current={isCurrent ? "page" : undefined} className={cn("flex cursor-pointer items-center justify-start gap-2 rounded-none px-3 py-1.5 text-xs font-bold uppercase tracking-wide hover:bg-sun hover:text-white", isCurrent ? "bg-sun text-white" : "text-ink")}>
+                    {Icon && <Icon className="size-3.5 shrink-0" aria-hidden />}{item.label}
+                  </Link>
                 );
               })}
             </div>
           </div>
           <div>
-            <DropdownMenuLabel className="border-b-2 border-l-2 border-ink px-3 py-2 text-[10px] font-bold uppercase tracking-widest text-ink/60">Learn</DropdownMenuLabel>
+            <h2 className="border-b-2 border-l-2 border-ink px-3 py-2 text-[10px] font-bold uppercase tracking-widest text-ink/60">Learn</h2>
             <div className="flex flex-col p-1">
               {PAGE_ORDER.map((item) => (
-                <DropdownMenuItem asChild key={item.to}>
-                  <Link to={item.to} className="cursor-pointer justify-start rounded-none px-3 py-1.5 text-xs font-bold uppercase tracking-wide">
-                    {item.to === "/watch" && <Clapperboard className="size-3.5" aria-hidden />}{item.label}
-                  </Link>
-                </DropdownMenuItem>
+                <Link to={item.to} key={item.to} className="flex cursor-pointer items-center justify-start gap-2 rounded-none px-3 py-1.5 text-xs font-bold uppercase tracking-wide text-ink hover:bg-sun hover:text-white">
+                  {item.to === "/watch" && <Clapperboard className="size-3.5" aria-hidden />}{item.label}
+                </Link>
               ))}
             </div>
           </div>
         </div>
-      </DropdownMenuContent>
-    </DropdownMenu>
+        <section aria-labelledby="sound-settings-heading" className="border-t-2 border-ink p-3">
+          <h2 id="sound-settings-heading" className="mb-3 flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-ink/60">
+            <AudioLines className="size-3.5" /> Sound settings
+          </h2>
+          <MicPicker activeLabel="" alwaysShow className="flex-col items-start" />
+        </section>
+      </PopoverContent>
+    </Popover>
   );
 }
 

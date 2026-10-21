@@ -30,15 +30,13 @@ export default function Drills() {
     <PublicLayout>
       <section className="nb-grid-dots border-b-2 border-ink">
         <div className="mx-auto max-w-6xl px-4 py-14 lg:py-16">
-          <NBBadge className="bg-mint text-ink">Practice drills</NBBadge>
+          <NBBadge className="bg-mint text-ink">Practice ideas</NBBadge>
           <h1 className="mt-4 font-display text-4xl leading-tight sm:text-5xl">
-            Practice for the moments that{" "}
-            <span className="italic text-coral">matter</span>
+            A little practice for everyday conversations
           </h1>
           <p className="mt-4 max-w-xl text-lg leading-relaxed text-muted-foreground">
-            Practice staying calm, speaking warmly, and setting clear
-            boundaries. Each drill takes 30–45 seconds and gives you a prompt
-            to respond to.
+            Choose a scenario, try out a response, and see what you might change.
+            Each one takes about 30–45 seconds.
           </p>
         </div>
       </section>
@@ -53,7 +51,7 @@ export default function Drills() {
               </span>
               <div>
                 <p className="text-[10px] font-bold uppercase tracking-widest">
-                  Today's challenge · {daily.tag}
+                  An idea for today · {daily.tag}
                 </p>
                 <p className="font-display text-lg leading-tight sm:text-xl">
                   {daily.drill.name} — {daily.angle.toLowerCase()}
@@ -62,7 +60,7 @@ export default function Drills() {
             </div>
             <Link to="/auth">
               <NBButton variant="ink" className="text-xs">
-                <Mic className="size-3.5" /> Try today's drill
+                <Mic className="size-3.5" /> Try this scenario
               </NBButton>
             </Link>
           </div>
@@ -74,7 +72,7 @@ export default function Drills() {
         <div className="mx-auto max-w-6xl px-4 py-14">
           <div className="mb-4 flex items-center justify-between gap-3">
             <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Page {page} of {totalPages}</p>
-            <p className="text-xs text-muted-foreground">Showing a few drills at a time.</p>
+            <p className="text-xs text-muted-foreground">Showing a few scenarios at a time.</p>
           </div>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-2">
             {visibleDrills.map((drill, i) => {
@@ -125,7 +123,7 @@ export default function Drills() {
                           variant={isToday ? "coral" : "paper"}
                           className="w-full py-2 text-xs"
                         >
-                          {isToday ? "Try today's drill" : "Start this drill"}{" "}
+                          {isToday ? "Try this scenario" : "Give it a try"}{" "}
                           <ArrowRight className="size-3.5" />
                         </NBButton>
                       </Link>

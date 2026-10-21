@@ -115,9 +115,9 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
             </span>
           </h2>
           <p className="mt-5 max-w-sm text-sm leading-relaxed text-paper/70">
-            Sign in so your takes, streak, and reframes are here when you come
-            back. Your audio never leaves your device — we keep the scores, not
-            the recordings.
+            Sign in to keep your practice history and progress in one place.
+            Your audio stays on your device; we save your scores, not the
+            recordings.
           </p>
           <div className="mt-8 flex items-center gap-3">
             <div className="flex h-10 items-end gap-1" aria-hidden>
@@ -136,7 +136,7 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
           </div>
         </div>
         <p className="text-[10px] font-bold uppercase tracking-widest text-paper/50">
-          Calm takes practice · Start with a pause
+          Start with one small practice.
         </p>
       </div>
 

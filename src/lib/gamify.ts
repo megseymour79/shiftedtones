@@ -118,15 +118,15 @@ export interface AchievementDef {
 export const ACHIEVEMENTS: AchievementDef[] = [
   {
     id: "first-word",
-    name: "First Word",
-    detail: "Record your very first take",
+    name: "First session",
+    detail: "Record your first practice session",
     tier: "bronze",
     test: (s) => s.totalSessions >= 1,
   },
   {
     id: "full-circuit",
-    name: "Full Circuit",
-    detail: "Try every drill in the gym",
+    name: "Every scenario",
+    detail: "Try every practice scenario",
     tier: "gold",
     test: (s) => s.drills > 0 && s.drillsTried >= s.drills,
   },

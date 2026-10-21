@@ -240,7 +240,11 @@ export default function Translate() {
                 privacy settings or close other apps using it, then try again.
               </p>
             )}
-            <MicPicker activeLabel={capture.activeDeviceLabel} className="mt-5" />
+            <MicPicker
+              activeLabel={capture.activeDeviceLabel}
+              showSelector={false}
+              className="mt-5"
+            />
           </NBPanel>
         )}
 

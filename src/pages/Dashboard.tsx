@@ -2,7 +2,6 @@ import { NBButton, NBPanel, NBStat } from "@/components/nb";
 import { AppShell } from "@/components/AppShell";
 import { DailyChecklist } from "@/components/DailyChecklist";
 import { dailyLabel, getAccessibleDailyChallenge } from "@/lib/daily";
-import { GROUNDING_EXERCISES } from "@/lib/grounding";
 import { arcDaysLeft, arcStageFor } from "@/lib/arc";
 import { levelInfo } from "@/lib/gamify";
 import {
@@ -12,20 +11,16 @@ import {
 } from "@/lib/unlocks";
 import { api } from "@/convex/_generated/api";
 import {
-  Languages,
-  MessagesSquare,
   Mic,
-  Shuffle,
   Sparkles,
-  Wind,
 } from "lucide-react";
 import { useQuery } from "convex/react";
 import { Link } from "react-router";
 
 /**
  * /dashboard — the day at a glance. Today's numbers, today's goals,
- * today's checklist. Training lives in /gym, the record in /progress,
- * the calm side in /calm — this page just orients.
+ * today's checklist. Practice and history each have their own page, so
+ * this view can stay focused on what might be useful today.
  */
 export default function Dashboard() {
   const progression = useQuery(api.dailyLog.progression);
@@ -75,16 +70,16 @@ export default function Dashboard() {
         <section className="flex flex-wrap items-end justify-between gap-4">
           <div>
             <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
-              {dailyLabel()} · your practice
+              {dailyLabel()}
             </p>
             <h1 className="mt-1 font-display text-3xl text-balance sm:text-4xl">
-              What would you like to practice today?
+              What feels useful today?
             </h1>
           </div>
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-            <NBStat label="Takes" value={stats.totalSessions} />
-            <NBStat label="Streak" value={stats.streakDays} suffix="d" className="bg-mint" />
-            <NBStat label="Drills tried" value={stats.drillsTried} className="bg-sun" />
+            <NBStat label="Practice takes" value={stats.totalSessions} />
+            <NBStat label="Days in a row" value={stats.streakDays} suffix="d" className="bg-mint" />
+            <NBStat label="Scenarios tried" value={stats.drillsTried} className="bg-sun" />
             <NBStat
               label="Best score"
               value={stats.bestOverall}
@@ -93,40 +88,7 @@ export default function Dashboard() {
           </div>
         </section>
 
-        {/* Quick reps — every tool one tap away */}
-        <section aria-label="Quick practice">
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-5">
-            {[
-              { to: "/gym", icon: Mic, label: "Quick practice", sub: "45 sec", color: "bg-coral" },
-              { to: "/translate", icon: Languages, label: "Try a new tone", sub: "2 rounds", color: "bg-sun" },
-              { to: "/quiz", icon: MessagesSquare, label: "Read the Room", sub: "1 scenario", color: "bg-mint" },
-              { to: "/reframe", icon: Shuffle, label: "Reframe a response", sub: "2 min", color: "bg-paper" },
-              { to: "/calm", icon: Wind, label: "Grounding", sub: `${GROUNDING_EXERCISES.length} exercises`, color: "bg-paper" },
-            ].map((rep) => {
-              const Icon = rep.icon;
-              return (
-                <Link
-                  key={rep.label}
-                  to={rep.to}
-                  className="group nb nb-press flex items-center gap-3 bg-card p-3"
-                >
-                  <span className={`nb flex size-9 shrink-0 items-center justify-center ${rep.color}`}>
-                    <Icon className="size-4" />
-                  </span>
-                  <span className="min-w-0">
-                    <span className="block truncate text-sm font-bold leading-tight">{rep.label}</span>
-                    <span className="block text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-                      {rep.sub}
-                    </span>
-                  </span>
-                </Link>
-              );
-            })}
-          </div>
-        </section>
-
-        {/* Today's two moves: challenge + checklist, side by side */}
-        <section className="grid gap-4 lg:grid-cols-[1.1fr_1fr]">
+        <section className="flex flex-col gap-4">
           <div className="nb relative overflow-hidden bg-sun nb-shadow">
             <div className="flex h-full flex-col justify-between gap-4 p-5">
               <div className="flex items-center gap-4">
@@ -135,7 +97,7 @@ export default function Dashboard() {
                 </span>
                 <div>
                   <p className="text-[10px] font-bold uppercase tracking-widest">
-                    Today's challenge
+                    One idea for today
                   </p>
                   <h2 className="font-display text-lg leading-tight sm:text-xl">
                     {daily.drill.name} — {daily.angle.toLowerCase()}
@@ -143,13 +105,13 @@ export default function Dashboard() {
                 </div>
               </div>
               <p className="text-sm text-ink/70">
-                About {daily.drill.seconds} seconds with your microphone on.
-                Browse all drills and your best scores in the gym.
+                About {daily.drill.seconds} seconds to practice aloud. You can
+                browse other scenarios whenever you like.
               </p>
               <div>
                 <Link to={`/practice/${daily.drill.id}`}>
                   <NBButton variant="ink" className="text-xs">
-                    <Mic className="size-3.5" /> Do today's take
+                    <Mic className="size-3.5" /> Try this one
                   </NBButton>
                 </Link>
               </div>
