@@ -165,7 +165,6 @@ function RecentTakeRow({
     voicedRatio: number;
     dominantTone: string;
     feedback?: string;
-    scenario?: string;
   };
 }) {
   const [open, setOpen] = useState(false);
@@ -222,24 +221,6 @@ function RecentTakeRow({
               <NBMeter value={f.score} className="mt-1 h-2" barClassName="bg-ink" />
             </div>
           ))}
-<<<<<<< HEAD
-          {s.feedback && (
-            <div className="col-span-full border-t border-dashed border-ink/20 pt-3">
-              <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-                Saved feedback
-              </p>
-              <p className="mt-1 text-sm leading-relaxed">{s.feedback}</p>
-            </div>
-          )}
-          {s.scenario && (
-            <div className="col-span-full">
-              <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-                Context note
-              </p>
-              <p className="mt-1 text-sm leading-relaxed">{s.scenario}</p>
-            </div>
-          )}
-=======
           <HistoryMetric label="Pace" value={`${s.wordsPerMinute} wpm`} />
           <HistoryMetric
             label="Pitch"
@@ -261,6 +242,14 @@ function RecentTakeRow({
             label="Duration"
             value={`${Math.round(s.durationMs / 1000)} sec`}
           />
+          {s.feedback && (
+            <div className="col-span-full border-t border-dashed border-ink/20 pt-3">
+              <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+                Saved feedback
+              </p>
+              <p className="mt-1 text-sm leading-relaxed">{s.feedback}</p>
+            </div>
+          )}
         </div>
       )}
       {open && s.scenario && (
@@ -277,7 +266,6 @@ function RecentTakeRow({
             Transcript
           </p>
           <p className="mt-1 text-sm leading-relaxed">{s.transcript}</p>
->>>>>>> origin/main
         </div>
       )}
     </div>
