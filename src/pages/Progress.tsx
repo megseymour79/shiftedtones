@@ -80,6 +80,17 @@ export default function Progress() {
   );
 }
 
+function HistoryMetric({ label, value }: { label: string; value: string }) {
+  return (
+    <div>
+      <div className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+        {label}
+      </div>
+      <div className="font-display text-lg">{value}</div>
+    </div>
+  );
+}
+
 /**
  * Tone trends — per-factor direction across recent sessions
  */
@@ -268,17 +279,6 @@ function RecentTakeRow({
           )}
         </div>
       )}
-    </div>
-  );
-}
-
-function HistoryMetric({ label, value }: { label: string; value: string }) {
-  return (
-    <div>
-      <div className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-        {label}
-      </div>
-      <div className="font-display text-lg">{value}</div>
     </div>
   );
 }

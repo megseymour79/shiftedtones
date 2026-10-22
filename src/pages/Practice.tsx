@@ -572,22 +572,21 @@ function PracticeRunner({ drill, isDaily }: { drill: Drill; isDaily: boolean }) 
               <div className="mt-5 grid gap-3 sm:grid-cols-2">
                 <div className="nb bg-secondary p-4">
                   <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-                    What went well
+                    What this tone means
                   </p>
-                  <p className="mt-2 text-sm leading-relaxed">
-                    Your strongest area was{" "}
+                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                    {TONE_LABELS[analysis.dominantTone]?.note}
+                  </p>
+                  <p className="mt-3 text-sm leading-relaxed">
+                    This take reads as <span className="font-bold">{TONE_LABELS[analysis.dominantTone]?.label ?? analysis.dominantTone}</span>. For the next take, focus on your lowest factor below.
+                  </p>
+                  <p className="mt-3 text-xs leading-relaxed">
+                    Strongest area:{" "}
                     <span className="font-bold">
                       {TONE_FACTORS[strongestFactor[0]].label}
                     </span>{" "}
-                    ({strongestFactor[1]}/100). {buildFactorFeedback(analysis)[strongestFactor[0]].read}
-                  </p>
-                  <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
-                    This take reads as{" "}
-                    <span className="font-bold">
-                      {TONE_LABELS[analysis.dominantTone]?.label ??
-                        analysis.dominantTone}
-                    </span>
-                    . {TONE_LABELS[analysis.dominantTone]?.note}
+                    ({strongestFactor[1]}/100).{" "}
+                    {buildFactorFeedback(analysis)[strongestFactor[0]].read}
                   </p>
                 </div>
                 <div className="nb bg-secondary p-4">

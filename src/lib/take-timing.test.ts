@@ -15,18 +15,6 @@ describe("capElapsedMs", () => {
   });
 });
 
-describe("capElapsedMs", () => {
-  test("stops the visible clock at the target", () => {
-    expect(capElapsedMs(47_000, 35_000)).toBe(35_000);
-    expect(capElapsedMs(34_000, 35_000)).toBe(34_000);
-  });
-
-  test("leaves uncapped clocks unchanged and never returns negative time", () => {
-    expect(capElapsedMs(47_000)).toBe(47_000);
-    expect(capElapsedMs(-1, 35_000)).toBe(0);
-  });
-});
-
 describe("paceStatus", () => {
   const target = 45_000;
 
