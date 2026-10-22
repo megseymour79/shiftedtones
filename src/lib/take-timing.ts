@@ -5,23 +5,6 @@
  * guidance stays unit-testable alongside the rest of the scoring logic.
  */
 
-<<<<<<< HEAD
-=======
-/** Seconds counted down before recording actually starts. */
-export const COUNTDOWN_SECONDS = 3;
-
-/** Clamp a recording clock to its configured target when one exists. */
-export function capElapsedMs(elapsedMs: number, maximumMs?: number): number {
-  if (!(maximumMs && maximumMs > 0)) return Math.max(0, elapsedMs);
-  return Math.max(0, Math.min(elapsedMs, maximumMs));
-}
-
-/** The countdown beats, last → first: [3, 2, 1]. */
-export function countdownBeats(): number[] {
-  return Array.from({ length: COUNTDOWN_SECONDS }, (_, i) => COUNTDOWN_SECONDS - i);
-}
-
->>>>>>> origin/main
 /** Where a take stands against the drill's suggested length. */
 export type PaceStatus = "warming-up" | "on-pace" | "good-length" | "overtime";
 
@@ -46,12 +29,10 @@ export function pacePct(elapsedMs: number, targetMs: number): number {
   return Math.min(100, Math.round((elapsedMs / targetMs) * 100));
 }
 
-/** Keep recorder time within its target while preserving uncapped timers. */
+/** Clamp elapsed time at the exercise target while preserving uncapped takes. */
 export function capElapsedMs(elapsedMs: number, maxDurationMs?: number): number {
-  const elapsed = Math.max(0, elapsedMs);
-  return maxDurationMs && maxDurationMs > 0
-    ? Math.min(elapsed, maxDurationMs)
-    : elapsed;
+  if (!(maxDurationMs && maxDurationMs > 0)) return Math.max(0, elapsedMs);
+  return Math.max(0, Math.min(elapsedMs, maxDurationMs));
 }
 
 /** The user-facing cue for each pacing status. */

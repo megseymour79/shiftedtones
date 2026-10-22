@@ -165,7 +165,6 @@ function RecentTakeRow({
     voicedRatio: number;
     dominantTone: string;
     feedback?: string;
-    scenario?: string;
   };
 }) {
   const [open, setOpen] = useState(false);
@@ -222,7 +221,15 @@ function RecentTakeRow({
               <NBMeter value={f.score} className="mt-1 h-2" barClassName="bg-ink" />
             </div>
           ))}
-<<<<<<< HEAD
+          <HistoryMetric label="Pace" value={`${s.wordsPerMinute} wpm`} />
+          <HistoryMetric label="Pitch" value={`${s.avgPitchHz} Hz`} />
+          <HistoryMetric label="Volume" value={`${Math.round(s.avgVolume * 100)}%`} />
+          <HistoryMetric
+            label="Consistency"
+            value={`${Math.round(s.volumeVariability * 100)}% variation`}
+          />
+          <HistoryMetric label="Voiced" value={`${Math.round(s.voicedRatio * 100)}%`} />
+          <HistoryMetric label="Duration" value={`${Math.round(s.durationMs / 1000)} sec`} />
           {s.feedback && (
             <div className="col-span-full border-t border-dashed border-ink/20 pt-3">
               <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
@@ -239,45 +246,14 @@ function RecentTakeRow({
               <p className="mt-1 text-sm leading-relaxed">{s.scenario}</p>
             </div>
           )}
-=======
-          <HistoryMetric label="Pace" value={`${s.wordsPerMinute} wpm`} />
-          <HistoryMetric
-            label="Pitch"
-            value={`${s.avgPitchHz} Hz`}
-          />
-          <HistoryMetric
-            label="Volume"
-            value={`${Math.round(s.avgVolume * 100)}%`}
-          />
-          <HistoryMetric
-            label="Consistency"
-            value={`${Math.round(s.volumeVariability * 100)}% variation`}
-          />
-          <HistoryMetric
-            label="Voiced"
-            value={`${Math.round(s.voicedRatio * 100)}%`}
-          />
-          <HistoryMetric
-            label="Duration"
-            value={`${Math.round(s.durationMs / 1000)} sec`}
-          />
-        </div>
-      )}
-      {open && s.scenario && (
-        <div className="border-t border-ink/10 px-6 py-4">
-          <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-            Your context note
-          </p>
-          <p className="mt-1 text-sm leading-relaxed">{s.scenario}</p>
-        </div>
-      )}
-      {open && s.transcript && (
-        <div className="border-t border-ink/10 px-6 py-4">
-          <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-            Transcript
-          </p>
-          <p className="mt-1 text-sm leading-relaxed">{s.transcript}</p>
->>>>>>> origin/main
+          {s.transcript && (
+            <div className="col-span-full border-t border-dashed border-ink/20 pt-3">
+              <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+                Transcript
+              </p>
+              <p className="mt-1 text-sm leading-relaxed">{s.transcript}</p>
+            </div>
+          )}
         </div>
       )}
     </div>

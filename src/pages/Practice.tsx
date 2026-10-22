@@ -50,59 +50,6 @@ function fmtTime(ms: number) {
   return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
 }
 
-<<<<<<< HEAD
-function buildScoreBreakdown(analysis: ToneAnalysis, transcript: string) {
-  const fillerCount =
-    transcript.match(/\b(?:um+|uh+|erm+|ah+|you know|i mean)\b/gi)?.length ?? 0;
-  const paceScore = Math.max(
-    0,
-    Math.round(100 - Math.min(Math.abs(analysis.wordsPerMinute - 130) * 0.7, 100)),
-  );
-
-  return [
-    {
-      label: "Pace",
-      score: paceScore,
-      detail: `${analysis.wordsPerMinute} words per minute; the guide is around 130.`,
-    },
-    {
-      label: "Pitch & tone",
-      score: analysis.energyScore,
-      detail: `${analysis.pitchRangeHz} Hz of pitch movement; more movement can add expression.`,
-    },
-    {
-      label: "Volume & clarity",
-      score: analysis.clarityScore,
-      detail: `Average input ${Math.round(analysis.avgVolume * 100)}%; volume variation ±${Math.round(analysis.volumeVariability * 100)}%.`,
-    },
-    {
-      label: "Pauses & fillers",
-      score: transcript.trim() ? Math.max(0, 100 - fillerCount * 12) : null,
-      detail: transcript.trim()
-        ? `${fillerCount} common filler${fillerCount === 1 ? "" : "s"} found in the optional transcript. Pauses are not scored.`
-        : "Not scored because speech-to-text was unavailable. Intentional pauses are useful.",
-    },
-    {
-      label: "Confidence & consistency",
-      score: analysis.stabilityScore,
-      detail: "Pitch stability is a delivery consistency signal, not a measure of how confident you felt.",
-    },
-  ] as const;
-}
-
-function feedbackSummary(analysis: ToneAnalysis): string {
-  const scores: Record<FactorKey, number> = {
-    calm: analysis.calmScore,
-    energy: analysis.energyScore,
-    clarity: analysis.clarityScore,
-    stability: analysis.stabilityScore,
-  };
-  const strongest = (Object.keys(scores) as FactorKey[]).reduce((best, key) =>
-    scores[key] > scores[best] ? key : best,
-  );
-  const next = biggestLever(analysis);
-  return `What went well: ${TONE_FACTORS[strongest].label} (${scores[strongest]}/100). ${buildFactorFeedback(analysis)[strongest].read} Improve next: ${TONE_FACTORS[next.factor].label} (${scores[next.factor]}/100). Next action: ${next.tip}`;
-=======
 function DeliveryDetail({
   label,
   value,
@@ -121,7 +68,20 @@ function DeliveryDetail({
       <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{note}</p>
     </div>
   );
->>>>>>> origin/main
+}
+
+function feedbackSummary(analysis: ToneAnalysis): string {
+  const scores: Record<FactorKey, number> = {
+    calm: analysis.calmScore,
+    energy: analysis.energyScore,
+    clarity: analysis.clarityScore,
+    stability: analysis.stabilityScore,
+  };
+  const strongest = (Object.keys(scores) as FactorKey[]).reduce((best, key) =>
+    scores[key] > scores[best] ? key : best,
+  );
+  const next = biggestLever(analysis);
+  return `What went well: ${TONE_FACTORS[strongest].label} (${scores[strongest]}/100). ${buildFactorFeedback(analysis)[strongest].read} Improve next: ${TONE_FACTORS[next.factor].label} (${scores[next.factor]}/100). Next action: ${next.tip}`;
 }
 
 export default function Practice() {
@@ -204,13 +164,9 @@ export default function Practice() {
 function PracticeRunner({ drill, isDaily }: { drill: Drill; isDaily: boolean }) {
   const capture = useToneCapture();
   const [saved, setSaved] = useState(false);
-<<<<<<< HEAD
-  const [priorBestScore, setPriorBestScore] = useState<number | null>(null);
-=======
   const [previousBestAtResult, setPreviousBestAtResult] = useState<
     { bestScore: number; attemptCount: number } | null | undefined
   >();
->>>>>>> origin/main
   // The user's own context: what this take is responding to or opening.
   const [context, setContext] = useState("");
   const [expandedFactor, setExpandedFactor] = useState<
@@ -228,29 +184,18 @@ function PracticeRunner({ drill, isDaily }: { drill: Drill; isDaily: boolean }) 
   }, [capture]);
   const startTake = () => {
     const current = captureRef.current;
-    setPriorBestScore(currentDrillStats?.bestScore ?? null);
+    setPreviousBestAtResult(
+      drillStats === undefined
+        ? undefined
+        : currentDrillStats
+          ? {
+              bestScore: currentDrillStats.bestScore,
+              attemptCount: currentDrillStats.attemptCount,
+            }
+          : null,
+    );
     void current.start(current.lastPeakRawRms, getSavedMicDeviceId(), targetMs);
   };
-<<<<<<< HEAD
-=======
-  useEffect(() => {
-    if (countdown === null) return;
-    const t = window.setTimeout(() => {
-      if (countdown <= 1) {
-        setCountdown(null);
-        const c = captureRef.current;
-        c.start(
-          c.lastPeakRawRms,
-          getSavedMicDeviceId(),
-          drill.seconds * 1000,
-        );
-        return;
-      }
-      setCountdown((c) => (c ?? 1) - 1);
-    }, 1000);
-    return () => window.clearTimeout(t);
-  }, [countdown, drill.seconds]);
->>>>>>> origin/main
 
   // Space toggles record/stop — the desktop flow never leaves the keyboard.
   useEffect(() => {
@@ -261,13 +206,22 @@ function PracticeRunner({ drill, isDaily }: { drill: Drill; isDaily: boolean }) 
       e.preventDefault();
       const c = captureRef.current;
       if (c.state === "idle") {
-        setPriorBestScore(currentDrillStats?.bestScore ?? null);
+        setPreviousBestAtResult(
+          drillStats === undefined
+            ? undefined
+            : currentDrillStats
+              ? {
+                  bestScore: currentDrillStats.bestScore,
+                  attemptCount: currentDrillStats.attemptCount,
+                }
+              : null,
+        );
         void c.start(c.lastPeakRawRms, getSavedMicDeviceId(), targetMs);
       } else if (c.state === "recording") c.stop();
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [currentDrillStats?.bestScore, targetMs]);
+  }, [currentDrillStats, drillStats, targetMs]);
 
   // Landing on the results: the reveal draws the eye to the verdict.
   const resultsRef = useRef<HTMLDivElement | null>(null);
@@ -282,16 +236,6 @@ function PracticeRunner({ drill, isDaily }: { drill: Drill; isDaily: boolean }) 
   // Pacing guidance against the drill's suggested length.
   const pace = paceStatus(capture.elapsedMs, targetMs);
   const pct = pacePct(capture.elapsedMs, targetMs);
-  const previousBest = bestByDrill.get(drill.id);
-  if (!capture.analysis && previousBestAtResult !== undefined) {
-    setPreviousBestAtResult(undefined);
-  } else if (
-    capture.analysis &&
-    drillStats !== undefined &&
-    previousBestAtResult === undefined
-  ) {
-    setPreviousBestAtResult(previousBest ?? null);
-  }
   const strongestFactor = (
     [
       ["calm", capture.analysis?.calmScore ?? 0],
@@ -313,7 +257,9 @@ function PracticeRunner({ drill, isDaily }: { drill: Drill; isDaily: boolean }) 
     audioUrl,
     reset,
   } = capture;
-  const fillerCount = transcript.match(/\b(?:um+|uh+|er+|you know)\b/gi)?.length;
+  const fillerCount = transcript
+    ? (transcript.match(/\b(?:um+|uh+|erm+|er+|ah+|you know|i mean)\b/gi)?.length ?? 0)
+    : undefined;
 
   return (
     <AppShell>
@@ -441,18 +387,8 @@ function PracticeRunner({ drill, isDaily }: { drill: Drill; isDaily: boolean }) 
               className={cn(
                 "flex items-center gap-3",
                 state === "recording" &&
-<<<<<<< HEAD
-                  "fixed inset-x-0 z-50 mx-auto w-fit bg-paper/95 p-3 shadow-lg backdrop-blur md:static md:bg-transparent md:p-0 md:shadow-none md:backdrop-blur-none",
+                  "fixed inset-x-0 bottom-[calc(4rem+env(safe-area-inset-bottom))] z-50 mx-auto w-fit justify-center bg-paper/95 p-3 shadow-lg backdrop-blur md:static md:bg-transparent md:p-0 md:shadow-none md:backdrop-blur-none",
               )}
-              style={
-                state === "recording"
-                  ? { bottom: "calc(4.5rem + env(safe-area-inset-bottom))" }
-                  : undefined
-              }
-=======
-                  "fixed inset-x-0 bottom-[calc(4rem+env(safe-area-inset-bottom))] z-50 justify-center px-4 md:static md:bottom-auto md:z-auto md:px-0",
-              )}
->>>>>>> origin/main
             >
               {state === "idle" && (
                 <NBButton
@@ -634,7 +570,6 @@ function PracticeRunner({ drill, isDaily }: { drill: Drill; isDaily: boolean }) 
                 </div>
                 <div className="nb bg-secondary p-4">
                   <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-<<<<<<< HEAD
                     Concrete next action
                   </p>
                   <p className="mt-2 text-sm leading-relaxed">{biggestLever(analysis).tip}</p>
@@ -642,14 +577,15 @@ function PracticeRunner({ drill, isDaily }: { drill: Drill; isDaily: boolean }) 
                     <Play className="size-3.5" />
                     Listen back once before your next take
                   </div>
-=======
+                </div>
+              </div>
+
+              {previousBestAtResult !== undefined && (
+                <div className="nb mt-4 bg-secondary p-4">
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
                     Compared with your previous takes
                   </p>
-                  {previousBestAtResult === undefined ? (
-                    <p className="mt-2 text-sm text-muted-foreground">
-                      Loading your previous take details…
-                    </p>
-                  ) : previousBestAtResult ? (
+                  {previousBestAtResult ? (
                     <p className="mt-2 text-sm leading-relaxed">
                       Your score is{" "}
                       <span className="font-bold">
@@ -659,58 +595,15 @@ function PracticeRunner({ drill, isDaily }: { drill: Drill; isDaily: boolean }) 
                         {analysis.overallScore - previousBestAtResult.bestScore}
                       </span>{" "}
                       compared with your previous best of{" "}
-                      <span className="font-bold">
-                        {previousBestAtResult.bestScore}
-                      </span>{" "}
+                      <span className="font-bold">{previousBestAtResult.bestScore}</span>{" "}
                       across {previousBestAtResult.attemptCount}{" "}
-                      {previousBestAtResult.attemptCount === 1
-                        ? "take"
-                        : "takes"}.
+                      {previousBestAtResult.attemptCount === 1 ? "take" : "takes"}.
                     </p>
                   ) : (
                     <p className="mt-2 text-sm leading-relaxed">
-                      This is your first saved take for this exercise. Save it
-                      to make a useful comparison next time.
+                      This is your first saved take for this exercise. Save it to make a useful comparison next time.
                     </p>
                   )}
-                  <p className="mt-3 flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-muted-foreground">
-                    <Play className="size-3.5" />
-                    {biggestLever(analysis).tip}
-                  </p>
->>>>>>> origin/main
-                </div>
-              </div>
-
-              <section className="mt-6" aria-labelledby="take-score-breakdown">
-                <h2 id="take-score-breakdown" className="font-display text-xl">
-                  This exercise, in detail
-                </h2>
-                <div className="mt-3 grid gap-3 sm:grid-cols-2">
-                  {buildScoreBreakdown(analysis, transcript).map((dimension) => (
-                    <div key={dimension.label} className="nb bg-card p-3">
-                      <div className="flex items-baseline justify-between gap-2">
-                        <h3 className="text-xs font-bold uppercase tracking-widest">{dimension.label}</h3>
-                        <span className="font-display text-lg">
-                          {dimension.score === null ? "Not scored" : `${dimension.score}/100`}
-                        </span>
-                      </div>
-                      {dimension.score !== null && <NBMeter value={dimension.score} className="mt-2 h-2" />}
-                      <p className="mt-2 text-xs leading-relaxed text-muted-foreground">{dimension.detail}</p>
-                    </div>
-                  ))}
-                </div>
-              </section>
-
-              {priorBestScore !== null && (
-                <div className="nb mt-4 bg-secondary p-4">
-                  <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-                    Compared with your previous best {drill.name} take
-                  </p>
-                  <p className="mt-1 text-sm">
-                    {analysis.overallScore - priorBestScore > 0 ? "+" : ""}
-                    {analysis.overallScore - priorBestScore} points overall
-                    <span className="text-muted-foreground"> (previously {priorBestScore})</span>
-                  </p>
                 </div>
               )}
 
