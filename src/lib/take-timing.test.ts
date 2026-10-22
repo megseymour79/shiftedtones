@@ -3,10 +3,6 @@ import {
   PACE_BAR_CLASS,
   PACE_HINTS,
   capElapsedMs,
-<<<<<<< HEAD
-=======
-  countdownBeats,
->>>>>>> origin/main
   pacePct,
   paceStatus,
 } from "./take-timing";
