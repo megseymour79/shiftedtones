@@ -21,7 +21,7 @@ import {
   updateNoiseFloor,
 } from "@/lib/capture-gain";
 
-export type CaptureState = "idle" | "recording" | "analyzing" | "done";
+export type CaptureState = "idle" | "requesting" | "recording" | "analyzing" | "done";
 
 /**
  * True when the app is embedded in an iframe (e.g. a preview pane).
@@ -56,6 +56,7 @@ interface UseToneCapture {
   start: (
     lastPeakRawRms?: number | null,
     deviceId?: string | null,
+    maxDurationMs?: number,
   ) => Promise<void>;
   stop: () => void;
   reset: () => void;
@@ -137,7 +138,6 @@ export function useToneCapture(): UseToneCapture {
   const recognitionRef = useRef<SpeechRecognitionLike | null>(null);
   const transcriptRef = useRef("");
   const recorderRef = useRef<MediaRecorder | null>(null);
-  const audioChunksRef = useRef<BlobPart[]>([]);
   const audioUrlRef = useRef<string | null>(null);
   /** Gained copy of the analyser buffer, reused per frame (no per-frame alloc). */
   const gainedBufRef = useRef<Float32Array | null>(null);
@@ -153,6 +153,8 @@ export function useToneCapture(): UseToneCapture {
   const analyzeTimerRef = useRef<number | null>(null);
   const lastUiAtRef = useRef(0);
   const lastPitchRef = useRef<number | null>(null);
+  const smoothedLevelRef = useRef(0);
+  const maxDurationRef = useRef<number | null>(null);
   /** Adaptive input gain (see capture-gain.ts) — raised when loud speech
    * still lands below the speech floor, relaxed on hot input. */
   const inputGainRef = useRef(1);
@@ -170,6 +172,17 @@ export function useToneCapture(): UseToneCapture {
     setAudioUrl(null);
   }, []);
 
+  const releaseAudioResources = useCallback(() => {
+    trackRef.current = null;
+    micMutedRef.current = false;
+    setMicMuted(false);
+    streamRef.current?.getTracks().forEach((t) => t.stop());
+    streamRef.current = null;
+    ctxRef.current?.close().catch(() => {});
+    ctxRef.current = null;
+    gainedBufRef.current = null;
+  }, []);
+
   const cleanup = useCallback(() => {
     if (rafRef.current !== null) {
       cancelAnimationFrame(rafRef.current);
@@ -180,6 +193,8 @@ export function useToneCapture(): UseToneCapture {
       analyzeTimerRef.current = null;
     }
     if (recorderRef.current && recorderRef.current.state !== "inactive") {
+      recorderRef.current.ondataavailable = null;
+      recorderRef.current.onstop = null;
       try {
         recorderRef.current.stop();
       } catch {
@@ -187,17 +202,10 @@ export function useToneCapture(): UseToneCapture {
       }
     }
     recorderRef.current = null;
-    audioChunksRef.current = [];
     startingRef.current = false;
-    trackRef.current = null;
-    micMutedRef.current = false;
-    setMicMuted(false);
-    streamRef.current?.getTracks().forEach((t) => t.stop());
-    streamRef.current = null;
-    ctxRef.current?.close().catch(() => {});
-    ctxRef.current = null;
-    gainedBufRef.current = null;
-  }, []);
+    maxDurationRef.current = null;
+    releaseAudioResources();
+  }, [releaseAudioResources]);
 
   useEffect(
     () => () => {
@@ -270,9 +278,15 @@ export function useToneCapture(): UseToneCapture {
       // transcript is best-effort
     }
     recognitionRef.current = null;
-    const durationMs = performance.now() - startedAtRef.current;
+    const durationMs = Math.min(
+      performance.now() - startedAtRef.current,
+      maxDurationRef.current ?? Infinity,
+    );
+    setElapsedMs(durationMs);
     setState("analyzing");
     setLevel(0);
+    smoothedLevelRef.current = 0;
+    releaseAudioResources();
 
     // Let the UI paint the analyzing state before the (sync) aggregation.
     // Tracked so reset/unmount cancels it — no setState after unmount, and
@@ -284,10 +298,14 @@ export function useToneCapture(): UseToneCapture {
       setState("done");
       cleanup();
     }, 60);
-  }, [cleanup]);
+  }, [cleanup, releaseAudioResources]);
 
   const start = useCallback(
-    async (lastPeakRawRms?: number | null, deviceId?: string | null) => {
+    async (
+      lastPeakRawRms?: number | null,
+      deviceId?: string | null,
+      maxDurationMs?: number,
+    ) => {
       // Double-start guard: rAF covers the recording phase; startingRef covers
       // the async window before it (permission prompt, getUserMedia) where
       // state is still "idle" and the Start button is still clickable — a
@@ -302,6 +320,8 @@ export function useToneCapture(): UseToneCapture {
       }
       startingRef.current = true;
       const session = ++sessionRef.current;
+      maxDurationRef.current =
+        maxDurationMs && maxDurationMs > 0 ? maxDurationMs : null;
       setError(null);
       setAnalysis(null);
       framesRef.current = [];
@@ -310,6 +330,8 @@ export function useToneCapture(): UseToneCapture {
       setLevel(0);
       setLivePitchHz(null);
       setElapsedMs(0);
+      setState("requesting");
+      smoothedLevelRef.current = 0;
       setTranscript("");
       transcriptRef.current = "";
       inputGainRef.current = 1;
@@ -425,31 +447,37 @@ export function useToneCapture(): UseToneCapture {
         setState("recording");
 
         if ("MediaRecorder" in window) {
-          const mimeType = [
-            "audio/webm;codecs=opus",
-            "audio/webm",
-            "audio/mp4",
-          ].find((type) => MediaRecorder.isTypeSupported(type));
-          const recorder = mimeType
-            ? new MediaRecorder(stream, { mimeType })
-            : new MediaRecorder(stream);
-          recorderRef.current = recorder;
-          audioChunksRef.current = [];
-          recorder.ondataavailable = (event) => {
-            if (event.data.size > 0) audioChunksRef.current.push(event.data);
-          };
-          recorder.onstop = () => {
-            const blob = new Blob(audioChunksRef.current, {
-              type: recorder.mimeType || "audio/webm",
-            });
-            if (blob.size > 0) {
-              const nextUrl = URL.createObjectURL(blob);
-              if (audioUrlRef.current) URL.revokeObjectURL(audioUrlRef.current);
-              audioUrlRef.current = nextUrl;
-              setAudioUrl(nextUrl);
-            }
-          };
-          recorder.start(250);
+          try {
+            const mimeType = [
+              "audio/webm;codecs=opus",
+              "audio/webm",
+              "audio/mp4",
+            ].find((type) => MediaRecorder.isTypeSupported?.(type));
+            const recorder = mimeType
+              ? new MediaRecorder(stream, { mimeType })
+              : new MediaRecorder(stream);
+            const chunks: BlobPart[] = [];
+            recorderRef.current = recorder;
+            recorder.ondataavailable = (event) => {
+              if (event.data.size > 0) chunks.push(event.data);
+            };
+            recorder.onstop = () => {
+              if (session !== sessionRef.current) return;
+              const blob = new Blob(chunks, {
+                type: recorder.mimeType || "audio/mp4",
+              });
+              if (blob.size > 0) {
+                const nextUrl = URL.createObjectURL(blob);
+                if (audioUrlRef.current) URL.revokeObjectURL(audioUrlRef.current);
+                audioUrlRef.current = nextUrl;
+                setAudioUrl(nextUrl);
+              }
+            };
+            recorder.start(250);
+          } catch {
+            // Analysis still works when a browser cannot encode a playback take.
+            recorderRef.current = null;
+          }
         }
 
         // Defensive: release any recognizer a previous take left behind —
@@ -492,6 +520,12 @@ export function useToneCapture(): UseToneCapture {
 
         const loop = () => {
           const now = performance.now();
+          const elapsed = now - startedAtRef.current;
+          if (maxDurationRef.current !== null && elapsed >= maxDurationRef.current) {
+            setElapsedMs(maxDurationRef.current);
+            stop();
+            return;
+          }
           // A device that ends mid-take (Bluetooth out of range, unplug) must
           // stop the loop — otherwise we record empty frames forever.
           if (trackRef.current?.readyState === "ended") {
@@ -574,17 +608,21 @@ export function useToneCapture(): UseToneCapture {
               micMutedRef.current = muted;
               setMicMuted(muted);
             }
-            setLevel(Math.min(gainedRms * 4, 1));
+            const targetLevel = Math.min(gainedRms * 4, 1);
+            const smoothing = targetLevel > smoothedLevelRef.current ? 0.35 : 0.15;
+            smoothedLevelRef.current +=
+              (targetLevel - smoothedLevelRef.current) * smoothing;
+            setLevel(smoothedLevelRef.current);
             setLivePitchHz(lastPitchRef.current);
-            setElapsedMs(now - startedAtRef.current);
+            setElapsedMs(Math.min(elapsed, maxDurationRef.current ?? Infinity));
           }
           rafRef.current = requestAnimationFrame(loop);
         };
         rafRef.current = requestAnimationFrame(loop);
       } catch (e) {
+        if (session !== sessionRef.current) return;
         cleanup();
-        // Only touch state if this take is still the live one.
-        if (session === sessionRef.current) setState("idle");
+        setState("idle");
         const name = e instanceof Error ? e.name : "";
         setError(
           name === "NotAllowedError" || name === "SecurityError"
@@ -619,6 +657,7 @@ export function useToneCapture(): UseToneCapture {
     setError(null);
     setAnalysis(null);
     setLevel(0);
+    smoothedLevelRef.current = 0;
     setLivePitchHz(null);
     setElapsedMs(0);
     setTranscript("");
