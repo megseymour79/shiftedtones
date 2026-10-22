@@ -18,6 +18,7 @@ import {
   isSpeechFrame,
   RECALIBRATE_EVERY,
   SOFTWARE_GAIN,
+  smoothMeterLevel,
   updateNoiseFloor,
 } from "@/lib/capture-gain";
 import { capElapsedMs } from "@/lib/take-timing";
@@ -154,7 +155,6 @@ export function useToneCapture(): UseToneCapture {
   const analyzeTimerRef = useRef<number | null>(null);
   const lastUiAtRef = useRef(0);
   const lastPitchRef = useRef<number | null>(null);
-  const smoothedLevelRef = useRef(0);
   const maxDurationRef = useRef<number | null>(null);
   /** Adaptive input gain (see capture-gain.ts) — raised when loud speech
    * still lands below the speech floor, relaxed on hot input. */
@@ -164,6 +164,7 @@ export function useToneCapture(): UseToneCapture {
   const windowMaxRawRef = useRef(0);
   const maxRawRef = useRef(0);
   const framesSinceCalibrationRef = useRef(0);
+  const meterLevelRef = useRef(0);
 
   const clearAudioUrl = useCallback(() => {
     if (audioUrlRef.current) {
@@ -286,7 +287,7 @@ export function useToneCapture(): UseToneCapture {
     setState("analyzing");
     setLevel(0);
     setMicMuted(false);
-    smoothedLevelRef.current = 0;
+    meterLevelRef.current = 0;
     releaseAudioResources();
 
     // Let the UI paint the analyzing state before the (sync) aggregation.
@@ -332,7 +333,7 @@ export function useToneCapture(): UseToneCapture {
       setLivePitchHz(null);
       setElapsedMs(0);
       setState("requesting");
-      smoothedLevelRef.current = 0;
+      meterLevelRef.current = 0;
       setTranscript("");
       transcriptRef.current = "";
       inputGainRef.current = 1;
@@ -610,10 +611,11 @@ export function useToneCapture(): UseToneCapture {
               setMicMuted(muted);
             }
             const targetLevel = Math.min(gainedRms * 4, 1);
-            const smoothing = targetLevel > smoothedLevelRef.current ? 0.35 : 0.15;
-            smoothedLevelRef.current +=
-              (targetLevel - smoothedLevelRef.current) * smoothing;
-            setLevel(smoothedLevelRef.current);
+            meterLevelRef.current = smoothMeterLevel(
+              meterLevelRef.current,
+              targetLevel,
+            );
+            setLevel(meterLevelRef.current);
             setLivePitchHz(lastPitchRef.current);
             setElapsedMs(capElapsedMs(elapsed, maxDurationRef.current ?? undefined));
           }
@@ -659,9 +661,9 @@ export function useToneCapture(): UseToneCapture {
     setAnalysis(null);
     setLevel(0);
     setMicMuted(false);
-    smoothedLevelRef.current = 0;
     setLivePitchHz(null);
     setElapsedMs(0);
+    meterLevelRef.current = 0;
     setTranscript("");
     transcriptRef.current = "";
     setActiveDeviceLabel("");
