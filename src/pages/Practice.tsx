@@ -183,20 +183,17 @@ export default function Practice() {
 function PracticeRunner({ drill, isDaily }: { drill: Drill; isDaily: boolean }) {
   const capture = useToneCapture();
   const [saved, setSaved] = useState(false);
+  const [priorBestScore, setPriorBestScore] = useState<number | null>(null);
   // The user's own context: what this take is responding to or opening.
   const [context, setContext] = useState("");
   const [expandedFactor, setExpandedFactor] = useState<
     "calm" | "energy" | "clarity" | "stability" | null
   >(null);
   const drillStats = useQuery(api.sessions.drillStats);
-  const bestByDrill = new Map((drillStats ?? []).map((s) => [s.drill, s]));
-  const priorBestScore = useRef<number | null>(null);
+  const currentDrillStats = drillStats?.find((stat) => stat.drill === drill.id);
 
-  // Pre-roll countdown: hit Start, breathe for three beats, then the
-  // recorder actually opens. State lives here (UI choreography), the
-  // capture hook stays a pure clock. The hook object is unstable across
-  // renders, so the effect reads it through a ref — a mid-countdown
-  // re-render must never reset the ticking timer.
+  // Start directly from the click so iOS Safari receives the user gesture
+  // needed to open the microphone and resume its audio context.
   const targetMs = drill.seconds * 1000;
   const captureRef = useRef(capture);
   useEffect(() => {
@@ -204,7 +201,7 @@ function PracticeRunner({ drill, isDaily }: { drill: Drill; isDaily: boolean }) 
   }, [capture]);
   const startTake = () => {
     const current = captureRef.current;
-    priorBestScore.current = bestByDrill.get(drill.id)?.bestScore ?? null;
+    setPriorBestScore(currentDrillStats?.bestScore ?? null);
     void current.start(current.lastPeakRawRms, getSavedMicDeviceId(), targetMs);
   };
 
@@ -217,14 +214,13 @@ function PracticeRunner({ drill, isDaily }: { drill: Drill; isDaily: boolean }) 
       e.preventDefault();
       const c = captureRef.current;
       if (c.state === "idle") {
-        priorBestScore.current = bestByDrill.get(drill.id)?.bestScore ?? null;
+        setPriorBestScore(currentDrillStats?.bestScore ?? null);
         void c.start(c.lastPeakRawRms, getSavedMicDeviceId(), targetMs);
-      }
-      else if (c.state === "recording") c.stop();
+      } else if (c.state === "recording") c.stop();
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [bestByDrill, drill.id, targetMs]);
+  }, [currentDrillStats?.bestScore, targetMs]);
 
   // Landing on the results: the reveal draws the eye to the verdict.
   const resultsRef = useRef<HTMLDivElement | null>(null);
@@ -589,15 +585,15 @@ function PracticeRunner({ drill, isDaily }: { drill: Drill; isDaily: boolean }) 
                 </div>
               </section>
 
-              {priorBestScore.current !== null && (
+              {priorBestScore !== null && (
                 <div className="nb mt-4 bg-secondary p-4">
                   <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
                     Compared with your previous best {drill.name} take
                   </p>
                   <p className="mt-1 text-sm">
-                    {analysis.overallScore - priorBestScore.current > 0 ? "+" : ""}
-                    {analysis.overallScore - priorBestScore.current} points overall
-                    <span className="text-muted-foreground"> (previously {priorBestScore.current})</span>
+                    {analysis.overallScore - priorBestScore > 0 ? "+" : ""}
+                    {analysis.overallScore - priorBestScore} points overall
+                    <span className="text-muted-foreground"> (previously {priorBestScore})</span>
                   </p>
                 </div>
               )}
@@ -721,7 +717,7 @@ function PracticeRunner({ drill, isDaily }: { drill: Drill; isDaily: boolean }) 
                 saved={saved}
                 onSaved={() => setSaved(true)}
                 onRetry={reset}
-                drillStats={bestByDrill.get(drill.id)}
+                drillStats={currentDrillStats}
               />
             </NBPanel>
           </div>
