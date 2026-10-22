@@ -1,5 +1,5 @@
 /**
- * "Tone check" — a 60-second, three-question self-assessment that maps
+ * "Tone check" — a 60-second, six-question self-assessment that maps
  * the visitor's default-under-pressure to one of four archetypes, each
  * paired with the drill that trains its exact weakness. Interactive on
  * the landing page; no mic, no account needed.
@@ -47,6 +47,36 @@ export const TONE_CHECK: ToneCheckQuestion[] = [
       { text: "Thank them, then stay bothered about it", archetype: "absorber" },
       { text: "Go through the details until we agree", archetype: "fixer" },
       { text: "Nod, but avoid bringing it up again", archetype: "fader" },
+    ],
+  },
+  {
+    id: "changing-priorities",
+    prompt: "A teammate changes the plan right before you start. You…",
+    options: [
+      { text: "Point out that they keep changing things at the last minute", archetype: "matcher" },
+      { text: "Accept the change, even though it throws off your day", archetype: "absorber" },
+      { text: "Ask what changed and which part matters most now", archetype: "fixer" },
+      { text: "Say you will handle it, then leave out your concerns", archetype: "fader" },
+    ],
+  },
+  {
+    id: "misread-message",
+    prompt: "A short text from a friend feels colder than usual. Your first move?",
+    options: [
+      { text: "Reply just as briefly so they know you noticed", archetype: "matcher" },
+      { text: "Assume they're upset with you and apologize", archetype: "absorber" },
+      { text: "Ask if they meant the message the way it sounded to you", archetype: "fixer" },
+      { text: "Wait and hope the awkward feeling passes", archetype: "fader" },
+    ],
+  },
+  {
+    id: "last-minute-request",
+    prompt: "Someone asks you to take on extra work when your day is full. You…",
+    options: [
+      { text: "Tell them it's unfair to ask you at the last minute", archetype: "matcher" },
+      { text: "Say yes, then try to fit it in somehow", archetype: "absorber" },
+      { text: "Ask which current task should move to make room", archetype: "fixer" },
+      { text: "Say maybe, even though you know you cannot do it", archetype: "fader" },
     ],
   },
 ];

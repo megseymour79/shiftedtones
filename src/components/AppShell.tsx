@@ -95,10 +95,14 @@ export function AppShell({
         </div>
       </header>
 
+<<<<<<< HEAD
+      <main id="app-main" className="flex-1 pb-24 md:pb-0">
+=======
       <main
         id="app-main"
         className="flex-1 pb-[calc(5rem+env(safe-area-inset-bottom))] md:pb-0"
       >
+>>>>>>> origin/main
         {children}
         <AppPager pathname={pathname} />
       </main>
@@ -125,6 +129,30 @@ function AppPager({ pathname }: { pathname: string }) {
       className="mx-auto flex max-w-4xl items-stretch justify-between gap-3 px-4 pb-8 pt-2"
     >
       <Link to={prev.to} className="group min-w-0 flex-1">
+<<<<<<< HEAD
+        <div className="nb nb-press flex h-full items-center gap-2 bg-card p-3 sm:gap-3 sm:p-4">
+          <span className="min-w-0">
+            <span className="block text-[9px] font-bold uppercase tracking-widest text-muted-foreground sm:text-[10px]">
+              Previous — {prev.blurb}
+            </span>
+            <span className="block truncate font-display text-base leading-tight sm:text-lg">
+              {prev.label}
+            </span>
+          </span>
+        </div>
+      </Link>
+      <Link to={next.to} className="group min-w-0 flex-1">
+        <div className="nb nb-press flex h-full items-center justify-end gap-2 bg-sun p-3 text-right sm:gap-3 sm:p-4">
+          <span className="min-w-0">
+            <span className="block text-[9px] font-bold uppercase tracking-widest text-ink/70 sm:text-[10px]">
+              Next — {next.blurb}
+            </span>
+            <span className="block truncate font-display text-base leading-tight sm:text-lg">
+              {next.label}
+            </span>
+          </span>
+        </div>
+=======
         <span className="nb nb-press flex h-full items-center gap-2 bg-card p-3 sm:gap-3 sm:p-4">
           <ArrowLeft className="size-4 shrink-0 transition-transform group-hover:-translate-x-1" />
           <span className="min-w-0">
@@ -149,6 +177,7 @@ function AppPager({ pathname }: { pathname: string }) {
           </span>
           <ArrowRight className="size-4 shrink-0 transition-transform group-hover:translate-x-1" />
         </span>
+>>>>>>> origin/main
       </Link>
     </nav>
   );

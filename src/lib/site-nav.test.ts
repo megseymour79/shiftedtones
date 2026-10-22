@@ -158,9 +158,15 @@ describe("app tour (signed-in pager)", () => {
       new URL("../components/AppShell.tsx", import.meta.url),
       "utf8",
     );
+<<<<<<< HEAD
+    expect(shell).toContain("appTourStops(pathname)");
+    expect(shell).toContain('aria-label="Practice pages"');
+    expect(shell).toContain("pb-24");
+=======
     expect(shell).toContain("AppPager pathname={pathname}");
     expect(shell).toContain('aria-label="Practice pages"');
     expect(shell).toContain("appTourStops(pathname)");
+>>>>>>> origin/main
   });
 });
 
