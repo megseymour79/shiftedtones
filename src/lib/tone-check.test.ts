@@ -8,6 +8,19 @@ import {
 import { DRILLS } from "./drills";
 
 describe("tone-check data", () => {
+  test("includes six assessment questions with stable result mappings", () => {
+    expect(TONE_CHECK).toHaveLength(6);
+    for (const question of TONE_CHECK) {
+      expect(new Set(question.options.map((option) => option.archetype)).size).toBe(4);
+    }
+    expect(Object.keys(ARCHETYPES).sort()).toEqual([
+      "absorber",
+      "fader",
+      "fixer",
+      "matcher",
+    ]);
+  });
+
   test("each question offers one option per archetype, shuffled order", () => {
     for (const q of TONE_CHECK) {
       expect(q.options.length).toBe(4);
@@ -47,6 +60,7 @@ describe("scoreToneCheck", () => {
     expect(["absorber", "fixer", "fader"]).toContain(result);
     // Deterministic: same input, same output.
     expect(scoreToneCheck(tie)).toBe(result);
+    expect(scoreToneCheck(["absorber", "fixer", "fader", "matcher"])).toBe("matcher");
   });
 });
 

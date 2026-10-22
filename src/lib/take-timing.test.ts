@@ -1,17 +1,17 @@
 import { describe, expect, test } from "bun:test";
 import {
-  COUNTDOWN_SECONDS,
   PACE_BAR_CLASS,
   PACE_HINTS,
-  countdownBeats,
+  capElapsedMs,
   pacePct,
   paceStatus,
 } from "./take-timing";
 
-describe("countdown beats", () => {
-  test("counts down from COUNTDOWN_SECONDS to 1", () => {
-    expect(countdownBeats()).toEqual([3, 2, 1]);
-    expect(countdownBeats().length).toBe(COUNTDOWN_SECONDS);
+describe("capElapsedMs", () => {
+  test("caps elapsed time at the exercise target without changing untimed takes", () => {
+    expect(capElapsedMs(36_250, 35_000)).toBe(35_000);
+    expect(capElapsedMs(12_500, 35_000)).toBe(12_500);
+    expect(capElapsedMs(36_250)).toBe(36_250);
   });
 });
 

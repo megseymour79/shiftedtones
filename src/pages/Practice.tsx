@@ -6,7 +6,6 @@ import { getDrill, type Drill } from "@/lib/drills";
 import { UNLOCKABLE_DRILLS, isUnlocked, unlockGoalLine } from "@/lib/unlocks";
 import { getAccessibleDailyChallenge } from "@/lib/daily";
 import {
-  COUNTDOWN_SECONDS,
   PACE_BAR_CLASS,
   PACE_HINTS,
   pacePct,
@@ -17,6 +16,7 @@ import {
   buildFactorFeedback,
   TONE_FACTORS,
   TONE_LABELS,
+  type FactorKey,
   type FactorFeedback,
   type ToneAnalysis,
 } from "@/lib/tone-analyzer";
@@ -48,6 +48,59 @@ import type { Id } from "@/convex/_generated/dataModel";
 function fmtTime(ms: number) {
   const s = Math.floor(ms / 1000);
   return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
+}
+
+function buildScoreBreakdown(analysis: ToneAnalysis, transcript: string) {
+  const fillerCount =
+    transcript.match(/\b(?:um+|uh+|erm+|ah+|you know|i mean)\b/gi)?.length ?? 0;
+  const paceScore = Math.max(
+    0,
+    Math.round(100 - Math.min(Math.abs(analysis.wordsPerMinute - 130) * 0.7, 100)),
+  );
+
+  return [
+    {
+      label: "Pace",
+      score: paceScore,
+      detail: `${analysis.wordsPerMinute} words per minute; the guide is around 130.`,
+    },
+    {
+      label: "Pitch & tone",
+      score: analysis.energyScore,
+      detail: `${analysis.pitchRangeHz} Hz of pitch movement; more movement can add expression.`,
+    },
+    {
+      label: "Volume & clarity",
+      score: analysis.clarityScore,
+      detail: `Average input ${Math.round(analysis.avgVolume * 100)}%; volume variation ±${Math.round(analysis.volumeVariability * 100)}%.`,
+    },
+    {
+      label: "Pauses & fillers",
+      score: transcript.trim() ? Math.max(0, 100 - fillerCount * 12) : null,
+      detail: transcript.trim()
+        ? `${fillerCount} common filler${fillerCount === 1 ? "" : "s"} found in the optional transcript. Pauses are not scored.`
+        : "Not scored because speech-to-text was unavailable. Intentional pauses are useful.",
+    },
+    {
+      label: "Confidence & consistency",
+      score: analysis.stabilityScore,
+      detail: "Pitch stability is a delivery consistency signal, not a measure of how confident you felt.",
+    },
+  ] as const;
+}
+
+function feedbackSummary(analysis: ToneAnalysis): string {
+  const scores: Record<FactorKey, number> = {
+    calm: analysis.calmScore,
+    energy: analysis.energyScore,
+    clarity: analysis.clarityScore,
+    stability: analysis.stabilityScore,
+  };
+  const strongest = (Object.keys(scores) as FactorKey[]).reduce((best, key) =>
+    scores[key] > scores[best] ? key : best,
+  );
+  const next = biggestLever(analysis);
+  return `What went well: ${TONE_FACTORS[strongest].label} (${scores[strongest]}/100). ${buildFactorFeedback(analysis)[strongest].read} Improve next: ${TONE_FACTORS[next.factor].label} (${scores[next.factor]}/100). Next action: ${next.tip}`;
 }
 
 export default function Practice() {
@@ -137,33 +190,23 @@ function PracticeRunner({ drill, isDaily }: { drill: Drill; isDaily: boolean }) 
   >(null);
   const drillStats = useQuery(api.sessions.drillStats);
   const bestByDrill = new Map((drillStats ?? []).map((s) => [s.drill, s]));
+  const priorBestScore = useRef<number | null>(null);
 
   // Pre-roll countdown: hit Start, breathe for three beats, then the
   // recorder actually opens. State lives here (UI choreography), the
   // capture hook stays a pure clock. The hook object is unstable across
   // renders, so the effect reads it through a ref — a mid-countdown
   // re-render must never reset the ticking timer.
-  const [countdown, setCountdown] = useState<number | null>(null);
+  const targetMs = drill.seconds * 1000;
   const captureRef = useRef(capture);
   useEffect(() => {
     captureRef.current = capture;
   }, [capture]);
-  const beginCountdown = () => {
-    setCountdown(COUNTDOWN_SECONDS);
+  const startTake = () => {
+    const current = captureRef.current;
+    priorBestScore.current = bestByDrill.get(drill.id)?.bestScore ?? null;
+    void current.start(current.lastPeakRawRms, getSavedMicDeviceId(), targetMs);
   };
-  useEffect(() => {
-    if (countdown === null) return;
-    const t = window.setTimeout(() => {
-      if (countdown <= 1) {
-        setCountdown(null);
-        const c = captureRef.current;
-        c.start(c.lastPeakRawRms, getSavedMicDeviceId());
-        return;
-      }
-      setCountdown((c) => (c ?? 1) - 1);
-    }, 1000);
-    return () => window.clearTimeout(t);
-  }, [countdown]);
 
   // Space toggles record/stop — the desktop flow never leaves the keyboard.
   useEffect(() => {
@@ -173,12 +216,15 @@ function PracticeRunner({ drill, isDaily }: { drill: Drill; isDaily: boolean }) 
       if (el && ["INPUT", "TEXTAREA", "SELECT", "BUTTON"].includes(el.tagName)) return;
       e.preventDefault();
       const c = captureRef.current;
-      if (c.state === "idle" && countdown === null) beginCountdown();
+      if (c.state === "idle") {
+        priorBestScore.current = bestByDrill.get(drill.id)?.bestScore ?? null;
+        void c.start(c.lastPeakRawRms, getSavedMicDeviceId(), targetMs);
+      }
       else if (c.state === "recording") c.stop();
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [countdown]);
+  }, [bestByDrill, drill.id, targetMs]);
 
   // Landing on the results: the reveal draws the eye to the verdict.
   const resultsRef = useRef<HTMLDivElement | null>(null);
@@ -191,7 +237,6 @@ function PracticeRunner({ drill, isDaily }: { drill: Drill; isDaily: boolean }) 
   }, [capture.analysis]);
 
   // Pacing guidance against the drill's suggested length.
-  const targetMs = drill.seconds * 1000;
   const pace = paceStatus(capture.elapsedMs, targetMs);
   const pct = pacePct(capture.elapsedMs, targetMs);
 
@@ -253,29 +298,8 @@ function PracticeRunner({ drill, isDaily }: { drill: Drill; isDaily: boolean }) 
         {/* Recorder */}
         <NBPanel className="p-6">
           <div className="flex flex-col items-center gap-5">
-            {/* Pre-roll countdown overlay */}
-            {countdown !== null && state === "idle" && (
-              <div
-                className="flex h-24 w-full flex-col items-center justify-center"
-                aria-live="assertive"
-              >
-                <motion.span
-                  key={countdown}
-                  initial={{ scale: 0.4, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  transition={{ type: "spring", stiffness: 300, damping: 18 }}
-                  className="nb flex size-16 items-center justify-center bg-sun font-display text-4xl nb-shadow"
-                >
-                  {countdown}
-                </motion.span>
-                <p className="mt-2 text-xs font-bold uppercase tracking-widest text-muted-foreground">
-                  Breathe in… speak on the exhale
-                </p>
-              </div>
-            )}
-
             {/* Live visualizer */}
-            {countdown === null && (
+            {state !== "requesting" && (
               <div
                 className="flex h-24 w-full items-end justify-center gap-1"
                 aria-hidden
@@ -330,7 +354,12 @@ function PracticeRunner({ drill, isDaily }: { drill: Drill; isDaily: boolean }) 
             {state === "recording" && (
               <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
                 Live pitch · {livePitchHz ? `${Math.round(livePitchHz)} Hz` : "listening for you…"}
-                {level < 0.06 && elapsedMs > 3000 && " · we can barely hear you — move closer"}
+                {level < 0.2 && elapsedMs > 3000 && " · we can barely hear you — move closer"}
+              </p>
+            )}
+            {state === "requesting" && (
+              <p className="text-sm text-muted-foreground" role="status">
+                Waiting for microphone access…
               </p>
             )}
 
@@ -347,14 +376,29 @@ function PracticeRunner({ drill, isDaily }: { drill: Drill; isDaily: boolean }) 
             <MicPicker activeLabel={activeDeviceLabel} showSelector={false} />
 
             {/* Controls */}
-            <div className="flex items-center gap-3">
+            <div
+              className={cn(
+                "flex items-center gap-3",
+                state === "recording" &&
+                  "fixed inset-x-0 z-50 mx-auto w-fit bg-paper/95 p-3 shadow-lg backdrop-blur md:static md:bg-transparent md:p-0 md:shadow-none md:backdrop-blur-none",
+              )}
+              style={
+                state === "recording"
+                  ? { bottom: "calc(4.5rem + env(safe-area-inset-bottom))" }
+                  : undefined
+              }
+            >
               {state === "idle" && (
                 <NBButton
-                  onClick={beginCountdown}
-                  disabled={countdown !== null}
+                  onClick={startTake}
                   variant="coral"
                 >
                   <Mic className="size-4" /> Start my take
+                </NBButton>
+              )}
+              {state === "requesting" && (
+                <NBButton onClick={reset} variant="paper">
+                  Cancel microphone request
                 </NBButton>
               )}
               {state === "recording" && (
@@ -424,14 +468,35 @@ function PracticeRunner({ drill, isDaily }: { drill: Drill; isDaily: boolean }) 
         {state === "done" && analysis && (
           <div ref={resultsRef}>
             <NBPanel className="p-6">
-              {/* The one highest-leverage fix for next time. */}
-              <div className="nb mb-5 bg-sun p-4">
-                <p className="text-[10px] font-bold uppercase tracking-widest">
-                  Biggest lever — work this one thing next take
-                </p>
-                <p className="mt-1 text-sm font-medium">
-                  {biggestLever(analysis).tip}
-                </p>
+              <div className="mb-5 grid gap-3 sm:grid-cols-2">
+                {(() => {
+                  const scores: Record<FactorKey, number> = {
+                    calm: analysis.calmScore,
+                    energy: analysis.energyScore,
+                    clarity: analysis.clarityScore,
+                    stability: analysis.stabilityScore,
+                  };
+                  const strongest = (Object.keys(scores) as FactorKey[]).reduce((best, key) =>
+                    scores[key] > scores[best] ? key : best,
+                  );
+                  const next = biggestLever(analysis);
+                  return (
+                    <>
+                      <div className="nb bg-mint p-4">
+                        <p className="text-[10px] font-bold uppercase tracking-widest">
+                          What went well · {TONE_FACTORS[strongest].label} {scores[strongest]}/100
+                        </p>
+                        <p className="mt-1 text-sm">{buildFactorFeedback(analysis)[strongest].read}</p>
+                      </div>
+                      <div className="nb bg-sun p-4">
+                        <p className="text-[10px] font-bold uppercase tracking-widest">
+                          Improve next · {TONE_FACTORS[next.factor].label}
+                        </p>
+                        <p className="mt-1 text-sm">{next.tip}</p>
+                      </div>
+                    </>
+                  );
+                })()}
               </div>
 
               {audioUrl && (
@@ -494,17 +559,48 @@ function PracticeRunner({ drill, isDaily }: { drill: Drill; isDaily: boolean }) 
                 </div>
                 <div className="nb bg-secondary p-4">
                   <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-                    Highest impact fix
+                    Concrete next action
                   </p>
-                  <p className="mt-2 text-sm leading-relaxed">
-                    {biggestLever(analysis).tip}
-                  </p>
+                  <p className="mt-2 text-sm leading-relaxed">{biggestLever(analysis).tip}</p>
                   <div className="mt-3 flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-muted-foreground">
                     <Play className="size-3.5" />
                     Listen back once before your next take
                   </div>
                 </div>
               </div>
+
+              <section className="mt-6" aria-labelledby="take-score-breakdown">
+                <h2 id="take-score-breakdown" className="font-display text-xl">
+                  This exercise, in detail
+                </h2>
+                <div className="mt-3 grid gap-3 sm:grid-cols-2">
+                  {buildScoreBreakdown(analysis, transcript).map((dimension) => (
+                    <div key={dimension.label} className="nb bg-card p-3">
+                      <div className="flex items-baseline justify-between gap-2">
+                        <h3 className="text-xs font-bold uppercase tracking-widest">{dimension.label}</h3>
+                        <span className="font-display text-lg">
+                          {dimension.score === null ? "Not scored" : `${dimension.score}/100`}
+                        </span>
+                      </div>
+                      {dimension.score !== null && <NBMeter value={dimension.score} className="mt-2 h-2" />}
+                      <p className="mt-2 text-xs leading-relaxed text-muted-foreground">{dimension.detail}</p>
+                    </div>
+                  ))}
+                </div>
+              </section>
+
+              {priorBestScore.current !== null && (
+                <div className="nb mt-4 bg-secondary p-4">
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+                    Compared with your previous best {drill.name} take
+                  </p>
+                  <p className="mt-1 text-sm">
+                    {analysis.overallScore - priorBestScore.current > 0 ? "+" : ""}
+                    {analysis.overallScore - priorBestScore.current} points overall
+                    <span className="text-muted-foreground"> (previously {priorBestScore.current})</span>
+                  </p>
+                </div>
+              )}
 
               <div className="mt-6 grid gap-4 sm:grid-cols-2">
                 {(
@@ -621,6 +717,7 @@ function PracticeRunner({ drill, isDaily }: { drill: Drill; isDaily: boolean }) 
                 elapsedMs={elapsedMs}
                 transcript={transcript}
                 context={context.trim() || undefined}
+                feedback={feedbackSummary(analysis)}
                 saved={saved}
                 onSaved={() => setSaved(true)}
                 onRetry={reset}
@@ -657,6 +754,7 @@ function SaveRow({
   elapsedMs,
   transcript,
   context,
+  feedback,
   saved,
   onSaved,
   onRetry,
@@ -667,6 +765,7 @@ function SaveRow({
   elapsedMs: number;
   transcript: string;
   context?: string;
+  feedback: string;
   saved: boolean;
   onSaved: () => void;
   onRetry: () => void;
@@ -705,6 +804,7 @@ function SaveRow({
         dominantTone: analysis.dominantTone,
         transcript: transcript || undefined,
         scenario: context,
+        feedback,
       });
       trackEvent("practice_saved", {
         drill: drillId,

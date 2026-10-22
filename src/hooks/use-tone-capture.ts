@@ -20,6 +20,7 @@ import {
   SOFTWARE_GAIN,
   updateNoiseFloor,
 } from "@/lib/capture-gain";
+import { capElapsedMs } from "@/lib/take-timing";
 
 export type CaptureState = "idle" | "requesting" | "recording" | "analyzing" | "done";
 
@@ -175,7 +176,6 @@ export function useToneCapture(): UseToneCapture {
   const releaseAudioResources = useCallback(() => {
     trackRef.current = null;
     micMutedRef.current = false;
-    setMicMuted(false);
     streamRef.current?.getTracks().forEach((t) => t.stop());
     streamRef.current = null;
     ctxRef.current?.close().catch(() => {});
@@ -278,13 +278,14 @@ export function useToneCapture(): UseToneCapture {
       // transcript is best-effort
     }
     recognitionRef.current = null;
-    const durationMs = Math.min(
+    const durationMs = capElapsedMs(
       performance.now() - startedAtRef.current,
-      maxDurationRef.current ?? Infinity,
+      maxDurationRef.current ?? undefined,
     );
     setElapsedMs(durationMs);
     setState("analyzing");
     setLevel(0);
+    setMicMuted(false);
     smoothedLevelRef.current = 0;
     releaseAudioResources();
 
@@ -614,7 +615,7 @@ export function useToneCapture(): UseToneCapture {
               (targetLevel - smoothedLevelRef.current) * smoothing;
             setLevel(smoothedLevelRef.current);
             setLivePitchHz(lastPitchRef.current);
-            setElapsedMs(Math.min(elapsed, maxDurationRef.current ?? Infinity));
+            setElapsedMs(capElapsedMs(elapsed, maxDurationRef.current ?? undefined));
           }
           rafRef.current = requestAnimationFrame(loop);
         };
@@ -657,6 +658,7 @@ export function useToneCapture(): UseToneCapture {
     setError(null);
     setAnalysis(null);
     setLevel(0);
+    setMicMuted(false);
     smoothedLevelRef.current = 0;
     setLivePitchHz(null);
     setElapsedMs(0);

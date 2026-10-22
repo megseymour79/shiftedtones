@@ -44,6 +44,7 @@ const schema = defineSchema(
       userId: v.id("users"),
       drill: v.string(), // e.g. "steady-ground" | "warm-open" | "firm-clear"
       scenario: v.optional(v.string()), // free-text context the user typed
+      feedback: v.optional(v.string()), // saved take summary and concrete next action
       durationMs: v.number(),
       // Aggregate scores 0..100 from the client-side audio analysis
       calmScore: v.number(),

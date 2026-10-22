@@ -8,6 +8,7 @@ export const saveSession = mutation({
   args: {
     drill: v.string(),
     scenario: v.optional(v.string()),
+    feedback: v.optional(v.string()),
     durationMs: v.number(),
     calmScore: v.number(),
     energyScore: v.number(),
