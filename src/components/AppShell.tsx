@@ -1,9 +1,11 @@
-import { APP_ORDER, PAGE_ORDER } from "@/lib/site-nav";
+import { APP_ORDER, PAGE_ORDER, appTourStops } from "@/lib/site-nav";
 import { useAuth } from "@/hooks/use-auth";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import logo from "@/assets/logo.svg";
 import { MicPicker } from "@/components/MicPicker";
 import {
+  ArrowLeft,
+  ArrowRight,
   AudioLines,
   ChevronDown,
   Clapperboard,
@@ -47,6 +49,7 @@ export function AppShell({
   children: ReactNode;
 }) {
   const { signOut } = useAuth();
+  const { pathname } = useLocation();
 
   const handleSignOut = async () => {
     await signOut();
@@ -92,7 +95,13 @@ export function AppShell({
         </div>
       </header>
 
-      <main id="app-main" className="flex-1 pb-16 md:pb-0">{children}</main>
+      <main
+        id="app-main"
+        className="flex-1 pb-[calc(5rem+env(safe-area-inset-bottom))] md:pb-0"
+      >
+        {children}
+        <AppPager pathname={pathname} />
+      </main>
 
       {/* Simplified mobile bottom nav: 4 tabs only, no mic button */}
       <nav aria-label="Primary (mobile)" className="fixed inset-x-0 bottom-0 z-40 border-t-2 border-ink bg-paper md:hidden">
@@ -103,6 +112,45 @@ export function AppShell({
         </div>
       </nav>
     </div>
+  );
+}
+
+function AppPager({ pathname }: { pathname: string }) {
+  const { prev, next } = appTourStops(pathname);
+  if (!prev || !next) return null;
+
+  return (
+    <nav
+      aria-label="Practice pages"
+      className="mx-auto flex max-w-4xl items-stretch justify-between gap-3 px-4 pb-8 pt-2"
+    >
+      <Link to={prev.to} className="group min-w-0 flex-1">
+        <span className="nb nb-press flex h-full items-center gap-2 bg-card p-3 sm:gap-3 sm:p-4">
+          <ArrowLeft className="size-4 shrink-0 transition-transform group-hover:-translate-x-1" />
+          <span className="min-w-0">
+            <span className="block text-[9px] font-bold uppercase tracking-widest text-muted-foreground sm:text-[10px]">
+              Back
+            </span>
+            <span className="block truncate font-display text-sm leading-tight sm:text-lg">
+              {prev.label}
+            </span>
+          </span>
+        </span>
+      </Link>
+      <Link to={next.to} className="group min-w-0 flex-1">
+        <span className="nb nb-press flex h-full items-center justify-end gap-2 bg-sun p-3 text-right sm:gap-3 sm:p-4">
+          <span className="min-w-0">
+            <span className="block text-[9px] font-bold uppercase tracking-widest text-ink/70 sm:text-[10px]">
+              Next
+            </span>
+            <span className="block truncate font-display text-sm leading-tight sm:text-lg">
+              {next.label}
+            </span>
+          </span>
+          <ArrowRight className="size-4 shrink-0 transition-transform group-hover:translate-x-1" />
+        </span>
+      </Link>
+    </nav>
   );
 }
 

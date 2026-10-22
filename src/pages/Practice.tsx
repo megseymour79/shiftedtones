@@ -50,6 +50,26 @@ function fmtTime(ms: number) {
   return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
 }
 
+function DeliveryDetail({
+  label,
+  value,
+  note,
+}: {
+  label: string;
+  value: string;
+  note: string;
+}) {
+  return (
+    <div className="nb bg-secondary p-3">
+      <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+        {label}
+      </p>
+      <p className="mt-1 font-display text-base">{value}</p>
+      <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{note}</p>
+    </div>
+  );
+}
+
 export default function Practice() {
   const { drillId } = useParams();
   const drill = drillId ? getDrill(drillId) : undefined;
@@ -130,6 +150,9 @@ export default function Practice() {
 function PracticeRunner({ drill, isDaily }: { drill: Drill; isDaily: boolean }) {
   const capture = useToneCapture();
   const [saved, setSaved] = useState(false);
+  const [previousBestAtResult, setPreviousBestAtResult] = useState<
+    { bestScore: number; attemptCount: number } | null | undefined
+  >();
   // The user's own context: what this take is responding to or opening.
   const [context, setContext] = useState("");
   const [expandedFactor, setExpandedFactor] = useState<
@@ -157,13 +180,17 @@ function PracticeRunner({ drill, isDaily }: { drill: Drill; isDaily: boolean }) 
       if (countdown <= 1) {
         setCountdown(null);
         const c = captureRef.current;
-        c.start(c.lastPeakRawRms, getSavedMicDeviceId());
+        c.start(
+          c.lastPeakRawRms,
+          getSavedMicDeviceId(),
+          drill.seconds * 1000,
+        );
         return;
       }
       setCountdown((c) => (c ?? 1) - 1);
     }, 1000);
     return () => window.clearTimeout(t);
-  }, [countdown]);
+  }, [countdown, drill.seconds]);
 
   // Space toggles record/stop — the desktop flow never leaves the keyboard.
   useEffect(() => {
@@ -194,7 +221,24 @@ function PracticeRunner({ drill, isDaily }: { drill: Drill; isDaily: boolean }) 
   const targetMs = drill.seconds * 1000;
   const pace = paceStatus(capture.elapsedMs, targetMs);
   const pct = pacePct(capture.elapsedMs, targetMs);
-
+  const previousBest = bestByDrill.get(drill.id);
+  if (!capture.analysis && previousBestAtResult !== undefined) {
+    setPreviousBestAtResult(undefined);
+  } else if (
+    capture.analysis &&
+    drillStats !== undefined &&
+    previousBestAtResult === undefined
+  ) {
+    setPreviousBestAtResult(previousBest ?? null);
+  }
+  const strongestFactor = (
+    [
+      ["calm", capture.analysis?.calmScore ?? 0],
+      ["energy", capture.analysis?.energyScore ?? 0],
+      ["clarity", capture.analysis?.clarityScore ?? 0],
+      ["stability", capture.analysis?.stabilityScore ?? 0],
+    ] as const
+  ).reduce((best, current) => (current[1] > best[1] ? current : best));
   const {
     state,
     error,
@@ -208,6 +252,7 @@ function PracticeRunner({ drill, isDaily }: { drill: Drill; isDaily: boolean }) 
     audioUrl,
     reset,
   } = capture;
+  const fillerCount = transcript.match(/\b(?:um+|uh+|er+|you know)\b/gi)?.length;
 
   return (
     <AppShell>
@@ -347,7 +392,13 @@ function PracticeRunner({ drill, isDaily }: { drill: Drill; isDaily: boolean }) 
             <MicPicker activeLabel={activeDeviceLabel} showSelector={false} />
 
             {/* Controls */}
-            <div className="flex items-center gap-3">
+            <div
+              className={cn(
+                "flex items-center gap-3",
+                state === "recording" &&
+                  "fixed inset-x-0 bottom-[calc(4rem+env(safe-area-inset-bottom))] z-50 justify-center px-4 md:static md:bottom-auto md:z-auto md:px-0",
+              )}
+            >
               {state === "idle" && (
                 <NBButton
                   onClick={beginCountdown}
@@ -483,26 +534,60 @@ function PracticeRunner({ drill, isDaily }: { drill: Drill; isDaily: boolean }) 
               <div className="mt-5 grid gap-3 sm:grid-cols-2">
                 <div className="nb bg-secondary p-4">
                   <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-                    What this tone means
+                    What went well
                   </p>
-                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                    {TONE_LABELS[analysis.dominantTone]?.note}
+                  <p className="mt-2 text-sm leading-relaxed">
+                    Your strongest area was{" "}
+                    <span className="font-bold">
+                      {TONE_FACTORS[strongestFactor[0]].label}
+                    </span>{" "}
+                    ({strongestFactor[1]}/100). {buildFactorFeedback(analysis)[strongestFactor[0]].read}
                   </p>
-                  <p className="mt-3 text-sm leading-relaxed">
-                    This take reads as <span className="font-bold">{TONE_LABELS[analysis.dominantTone]?.label ?? analysis.dominantTone}</span>. For the next take, focus on your lowest factor below.
+                  <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
+                    This take reads as{" "}
+                    <span className="font-bold">
+                      {TONE_LABELS[analysis.dominantTone]?.label ??
+                        analysis.dominantTone}
+                    </span>
+                    . {TONE_LABELS[analysis.dominantTone]?.note}
                   </p>
                 </div>
                 <div className="nb bg-secondary p-4">
                   <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-                    Highest impact fix
+                    Compared with your previous takes
                   </p>
-                  <p className="mt-2 text-sm leading-relaxed">
+                  {previousBestAtResult === undefined ? (
+                    <p className="mt-2 text-sm text-muted-foreground">
+                      Loading your previous take details…
+                    </p>
+                  ) : previousBestAtResult ? (
+                    <p className="mt-2 text-sm leading-relaxed">
+                      Your score is{" "}
+                      <span className="font-bold">
+                        {analysis.overallScore - previousBestAtResult.bestScore >= 0
+                          ? "+"
+                          : ""}
+                        {analysis.overallScore - previousBestAtResult.bestScore}
+                      </span>{" "}
+                      compared with your previous best of{" "}
+                      <span className="font-bold">
+                        {previousBestAtResult.bestScore}
+                      </span>{" "}
+                      across {previousBestAtResult.attemptCount}{" "}
+                      {previousBestAtResult.attemptCount === 1
+                        ? "take"
+                        : "takes"}.
+                    </p>
+                  ) : (
+                    <p className="mt-2 text-sm leading-relaxed">
+                      This is your first saved take for this exercise. Save it
+                      to make a useful comparison next time.
+                    </p>
+                  )}
+                  <p className="mt-3 flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-muted-foreground">
+                    <Play className="size-3.5" />
                     {biggestLever(analysis).tip}
                   </p>
-                  <div className="mt-3 flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-muted-foreground">
-                    <Play className="size-3.5" />
-                    Listen back once before your next take
-                  </div>
                 </div>
               </div>
 
@@ -614,6 +699,51 @@ function PracticeRunner({ drill, isDaily }: { drill: Drill; isDaily: boolean }) 
                   </div>
                 </div>
               </div>
+
+              <section aria-labelledby="delivery-details-title" className="mt-6">
+                <h2
+                  id="delivery-details-title"
+                  className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground"
+                >
+                  Delivery details
+                </h2>
+                <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                  <DeliveryDetail
+                    label="Pace"
+                    value={`${analysis.wordsPerMinute} words/min`}
+                    note="Estimated from the speech detected in this take."
+                  />
+                  <DeliveryDetail
+                    label="Pitch & tone"
+                    value={`${analysis.avgPitchHz} Hz average · ${analysis.pitchRangeHz} Hz range`}
+                    note={`The overall tone came across as ${TONE_LABELS[analysis.dominantTone]?.label ?? analysis.dominantTone}.`}
+                  />
+                  <DeliveryDetail
+                    label="Volume & clarity"
+                    value={`${Math.round(analysis.avgVolume * 100)}% volume · ${analysis.clarityScore}/100 clarity`}
+                    note="Volume is a relative microphone level, not a measure of how loud you should speak."
+                  />
+                  <DeliveryDetail
+                    label="Pauses"
+                    value={`${Math.round((1 - analysis.voicedRatio) * 100)}% unvoiced`}
+                    note="Includes pauses and breaths; a lower voiced share is not automatically a problem."
+                  />
+                  <DeliveryDetail
+                    label="Fillers"
+                    value={
+                      fillerCount === undefined
+                        ? "Transcript unavailable"
+                        : `${fillerCount} detected`
+                    }
+                    note="Estimated from the optional speech transcript; this may miss words or mistake them."
+                  />
+                  <DeliveryDetail
+                    label="Confidence & consistency"
+                    value={`${analysis.stabilityScore}/100 consistency`}
+                    note="Consistency reflects steady delivery. Confidence itself can't be reliably measured from audio alone."
+                  />
+                </div>
+              </section>
 
               <SaveRow
                 analysis={analysis}

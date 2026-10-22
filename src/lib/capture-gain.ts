@@ -39,6 +39,13 @@ export function gainedVolume(rawRms: number, inputGain = 1): number {
   return Math.min(rawRms * SOFTWARE_GAIN * inputGain, MAX_RECORDED_VOLUME);
 }
 
+/** Smooth the live meter without hiding sudden speech onset or dropouts. */
+export function smoothMeterLevel(current: number, target: number): number {
+  const clampedTarget = Math.max(0, Math.min(1, target));
+  const rate = clampedTarget > current ? 0.55 : 0.2;
+  return current + (clampedTarget - current) * rate;
+}
+
 /** Does this gained volume clear the speech floor? */
 export function isSpeechLevel(gainedRms: number): boolean {
   return gainedRms >= SPEECH_FLOOR;
