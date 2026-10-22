@@ -8,6 +8,12 @@
 /** Seconds counted down before recording actually starts. */
 export const COUNTDOWN_SECONDS = 3;
 
+/** Clamp a recording clock to its configured target when one exists. */
+export function capElapsedMs(elapsedMs: number, maximumMs?: number): number {
+  if (!(maximumMs && maximumMs > 0)) return Math.max(0, elapsedMs);
+  return Math.max(0, Math.min(elapsedMs, maximumMs));
+}
+
 /** The countdown beats, last → first: [3, 2, 1]. */
 export function countdownBeats(): number[] {
   return Array.from({ length: COUNTDOWN_SECONDS }, (_, i) => COUNTDOWN_SECONDS - i);

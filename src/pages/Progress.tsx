@@ -150,6 +150,9 @@ function RecentTakeRow({
   session: {
     _id: string;
     drill: string;
+    durationMs: number;
+    scenario?: string;
+    transcript?: string;
     overallScore: number;
     calmScore: number;
     energyScore: number;
@@ -157,6 +160,8 @@ function RecentTakeRow({
     stabilityScore: number;
     wordsPerMinute: number;
     avgPitchHz: number;
+    avgVolume: number;
+    volumeVariability: number;
     voicedRatio: number;
     dominantTone: string;
   };
@@ -215,8 +220,56 @@ function RecentTakeRow({
               <NBMeter value={f.score} className="mt-1 h-2" barClassName="bg-ink" />
             </div>
           ))}
+          <HistoryMetric label="Pace" value={`${s.wordsPerMinute} wpm`} />
+          <HistoryMetric
+            label="Pitch"
+            value={`${s.avgPitchHz} Hz`}
+          />
+          <HistoryMetric
+            label="Volume"
+            value={`${Math.round(s.avgVolume * 100)}%`}
+          />
+          <HistoryMetric
+            label="Consistency"
+            value={`${Math.round(s.volumeVariability * 100)}% variation`}
+          />
+          <HistoryMetric
+            label="Voiced"
+            value={`${Math.round(s.voicedRatio * 100)}%`}
+          />
+          <HistoryMetric
+            label="Duration"
+            value={`${Math.round(s.durationMs / 1000)} sec`}
+          />
         </div>
       )}
+      {open && s.scenario && (
+        <div className="border-t border-ink/10 px-6 py-4">
+          <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+            Your context note
+          </p>
+          <p className="mt-1 text-sm leading-relaxed">{s.scenario}</p>
+        </div>
+      )}
+      {open && s.transcript && (
+        <div className="border-t border-ink/10 px-6 py-4">
+          <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+            Transcript
+          </p>
+          <p className="mt-1 text-sm leading-relaxed">{s.transcript}</p>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function HistoryMetric({ label, value }: { label: string; value: string }) {
+  return (
+    <div>
+      <div className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+        {label}
+      </div>
+      <div className="font-display text-lg">{value}</div>
     </div>
   );
 }
