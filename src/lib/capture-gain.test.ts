@@ -18,6 +18,7 @@ import {
   MIN_SPEECH_FRAMES,
   SOFTWARE_GAIN,
   SPEECH_FLOOR,
+  smoothMeterLevel,
 } from "./capture-gain";
 
 /** Build analyzer frames from raw RMS values through the real gain path. */
@@ -33,6 +34,13 @@ function framesFromRaw(raws: number[], inputGain = 1, pitchHz = 160): ToneFrame[
 }
 
 describe("capture gain staging", () => {
+  test("smooths noisy meter updates while reacting faster to speech onset", () => {
+    expect(smoothMeterLevel(0, 1)).toBeCloseTo(0.55);
+    expect(smoothMeterLevel(1, 0)).toBeCloseTo(0.8);
+    expect(smoothMeterLevel(0.5, 2)).toBeLessThanOrEqual(1);
+    expect(smoothMeterLevel(0.5, -1)).toBeGreaterThanOrEqual(0);
+  });
+
   test("typical laptop-mic speech lands above the speech floor", () => {
     // Quiet-mic speech: raw RMS 0.02–0.05 (documented quiet-mic band)
     for (const raw of [0.02, 0.03, 0.04, 0.05]) {
