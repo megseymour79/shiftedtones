@@ -629,7 +629,10 @@ function PracticeRunner({ drill, isDaily }: { drill: Drill; isDaily: boolean }) 
                   <p className="mt-1 text-sm">
                     {analysis.overallScore - priorBestScore > 0 ? "+" : ""}
                     {analysis.overallScore - priorBestScore} points overall
-                    <span className="text-muted-foreground"> (previously {priorBestScore})</span>
+                    <span className="text-muted-foreground">
+                      {" "}
+                      (previously {priorBestScore})
+                    </span>
                   </p>
                 </div>
               )}

@@ -205,6 +205,7 @@ export function useToneCapture(): UseToneCapture {
     recorderRef.current = null;
     startingRef.current = false;
     maxDurationRef.current = null;
+    meterLevelRef.current = 0;
     releaseAudioResources();
   }, [releaseAudioResources]);
 
@@ -461,7 +462,9 @@ export function useToneCapture(): UseToneCapture {
             const chunks: BlobPart[] = [];
             recorderRef.current = recorder;
             recorder.ondataavailable = (event) => {
-              if (event.data.size > 0) chunks.push(event.data);
+              if (session === sessionRef.current && event.data.size > 0) {
+                chunks.push(event.data);
+              }
             };
             recorder.onstop = () => {
               if (session !== sessionRef.current) return;

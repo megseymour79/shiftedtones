@@ -233,10 +233,7 @@ function RecentTakeRow({
             </div>
           ))}
           <HistoryMetric label="Pace" value={`${s.wordsPerMinute} wpm`} />
-          <HistoryMetric
-            label="Pitch"
-            value={`${s.avgPitchHz} Hz`}
-          />
+          <HistoryMetric label="Pitch" value={`${s.avgPitchHz} Hz`} />
           <HistoryMetric
             label="Volume"
             value={`${Math.round(s.avgVolume * 100)}%`}
